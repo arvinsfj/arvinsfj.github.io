@@ -8,7 +8,25 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="../css/style.css" />
 	<link rel="icon" href="../img/favicon.ico" type="image/png" />
+	<script src="../../lib/marked.js"></script>
+	<script src="../../lib/jquery-3.1.0.js"></script>
 	<title>Arvin Home Page</title>
+	
+	<script language="javascript">
+		function GetRequest() { 
+			var url = location.search; //获取url中"?"符后的字串 
+			var theRequest = new Object(); 
+			if (url.indexOf("?") != -1) { 
+				var str = url.substr(1); 
+				strs = str.split("&"); 
+				for(var i = 0; i < strs.length; i ++) { 
+					theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]); 
+				} 
+			}
+			return theRequest; 
+		}
+	</script>
+	
 </head>
 
 
@@ -24,19 +42,28 @@
 		<div class="sitedate"><a href="document.html">Archive</a></div>
 	</div>
 	
-	<div class="content">
-		<h1>HOWTOs</h1>
-		<hr />
-		<ul>
-			<li><a href="detail.html?doc=documents/Markdown_Syntax.md">Markdown Syntax</a></li>
-		</ul>
+	<div id="content" class="content">
 		
-		<h1>Tools</h1>
-		<hr />
-		<ul>
-			<li><a href="Tools/EpicEditor/editor.html">Markdown Online</a></li>
-		</ul>
 	</div>
+	
+	<script language="javascript">
+		var request = GetRequest();
+		$(document).ready(function(){
+			for (var type in request) {
+				if (type = "doc") {
+					htmlobj=$.ajax({url:request[type],async:false});
+					$("#content").html(marked(htmlobj.responseText));
+					break;
+				}
+				
+				if (type = "blog") {
+					htmlobj=$.ajax({url:request[type],async:false});
+					$("#content").html(marked(htmlobj.responseText));
+					break;
+				}
+			}
+		});
+	</script>
 	
 </body>
 </html>
