@@ -1,0 +1,86 @@
+
+/* Baisic style */
+ body {
+	margin:0;
+	padding:0;
+	font-family: Georgia,Cambria,serif;
+	background-color: rgb(247,250,252);
+	/*background-color: #ffffff;*/
+    color:#111111;
+	}
+p {
+	font-family: Georgia,Cambria,serif;
+	margin:0 0 1em 0;
+	padding:0;
+	}
+.content>p {text-indent:2em; margin:0;}
+.content>p+p {text-indent:2em; margin-top: 1ex;}
+
+h1 {
+	font-size: large;
+	margin-top: 2ex;
+	margin-bottom: 0.9ex;
+	color: rgb(163,170,189);
+	}
+
+a {
+	color:rgb(161,169,189);
+	text-decoration:none;
+	font-family:Georgia,Cambria,serif;height:100%;
+	}
+a:hover {color:rgb(108,212,188);}
+
+.content a {
+	color:rgb(108,212,188);
+	text-decoration:none;
+	font-family:Georgia,Cambria,serif;height:100%;
+	}
+.content a:hover {color:rgb(161,169,189);}
+
+hr {height:1px;border:none;border-top:1px solid #E8E8E8;}
+
+.header {
+	color:white;
+	font-family:Georgia,Cambria,serif;height:100%;
+	margin:0;
+	padding:0;
+	background-color:rgb(56,61,72);
+	height:50px;
+	}
+	
+.siteicon {
+    display: block;
+    float: left;
+    padding: 10px 10px 10px 10px;
+    height: 30px;
+    width: 30px;
+}
+
+.sitename {
+    float: left;
+    margin: 0 20px 0 0;
+    padding: 0;
+    line-height: 50px;
+}
+
+.sitedesc {
+	font-size:0.7em;
+	color:rgb(108,212,188);
+    float: left;
+    margin: 0 10px 0 0;
+    padding: 0;
+    line-height: 50px;
+}
+
+.sitedate {
+	color:rgb(161,169,189);
+    float: right;
+    margin: 0 20px 0 0px;
+    padding: 0;
+    line-height: 50px;
+}
+
+.content {
+	margin:10px 8em 10px 8em;
+	padding:10px;
+	}

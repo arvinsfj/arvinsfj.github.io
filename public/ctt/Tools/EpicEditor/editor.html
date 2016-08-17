@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>Markdown</title>
+</head>
+<body>
+<div id="epiceditor" style="width:100%; height:100%;"></div>
+<script src="./js/epiceditor.min.js"></script>
+<script>
+var opts = {
+  container: 'epiceditor',
+  textarea: null,
+  basePath: './',
+  clientSideStorage: true,
+  localStorageName: 'EpicEditor',
+  useNativeFullscreen: true,
+  parser: marked,
+  file: {
+    name: 'epiceditor',
+    defaultContent: '',
+    autoSave: 100
+  },
+  theme: {
+    base: '/themes/base/epiceditor.css',
+    preview: '/themes/preview/preview-dark.css',
+    editor: '/themes/editor/epic-dark.css'
+  },
+  button: {
+    preview: true,
+    fullscreen: true,
+    bar: "auto"
+  },
+  focusOnLoad: true,
+  shortcut: {
+    modifier: 18,
+    fullscreen: 70,
+    preview: 80
+  },
+  string: {
+    togglePreview: 'Toggle Preview Mode',
+    toggleEdit: 'Toggle Edit Mode',
+    toggleFullscreen: 'Enter Fullscreen'
+  },
+  autogrow: false
+}
+var editor = new EpicEditor(opts).load(function () {
+  console.log("Editor loaded.")
+});
+</script>
+</body>
+</html>
