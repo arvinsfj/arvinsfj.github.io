@@ -1,5 +1,10 @@
-##《One more time,One more chance》演唱：山崎まさよし（山崎将义）
---------------------------------------------------------------
+# **One more time, One more chance**
+
+>*演唱：山崎まさよし（山崎将义）*
+
+-----------
+
+>BEGIN
 
 これ以上何を失えば　心は许されるの
 
@@ -265,8 +270,8 @@ One more time 回到那与你嬉戏的时光
 
 -----------
 
-END
+>END
 
 -----------
 
-[音乐台](http://v.yinyuetai.com/video/52112)
+[网易云音乐](http://music.163.com/#/song?id=540968) 和 [音乐台](http://v.yinyuetai.com/video/52112)

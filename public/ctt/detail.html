@@ -55,12 +55,6 @@
 					$("#content").html(marked(htmlobj.responseText));
 					break;
 				}
-				
-				if (type = "blog") {
-					htmlobj=$.ajax({url:request[type],async:false});
-					$("#content").html(marked(htmlobj.responseText));
-					break;
-				}
 			}
 		});
 	</script>
