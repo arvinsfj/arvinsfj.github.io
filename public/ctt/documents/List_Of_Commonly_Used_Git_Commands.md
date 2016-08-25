@@ -9,13 +9,12 @@
 
 ![git_summary](documents/git_summary.png)
 
-下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。
-
     1. Workspace：工作区
     2. Index / Stage：暂存区
     3. Repository：仓库区（或本地仓库）
     4. Remote：远程仓库
 
+下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。
 
 ### 一、新建代码库
 --------------------
