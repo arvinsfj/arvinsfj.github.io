@@ -8,7 +8,7 @@
 一般来说，日常使用只要记住下图6个命令，就可以了。但是熟练使用，恐怕要记住60～100个命令。
 
 
-![git_summary](documents/git_summary.png)
+![git_summary](../img/git_summary.png)
 
 
     1. Workspace：工作区
