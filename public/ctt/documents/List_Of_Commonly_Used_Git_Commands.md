@@ -296,4 +296,4 @@ Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置�
 
 >END
 
-[Git官网](https://git-scm.com/) And [Github官网](https://github.com/) And [Git教程](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
+[Git官网](https://git-scm.com/) And [Github官网](https://github.com/) And [ProGit](http://git.oschina.net/progit/) And [Git教程](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
