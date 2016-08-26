@@ -16,4 +16,4 @@
 * [Markdown Online](Tools/EpicEditor/editor.html)
 * [Prose - Editor For Github](http://prose.io/)
 * [Sample1 - babylon.js](Tools/sample1/index.html)
-* [Sample1 - babylon.js](Tools/sample2/index.html)
+* [Sample2 - babylon.js](Tools/sample2/index.html)
