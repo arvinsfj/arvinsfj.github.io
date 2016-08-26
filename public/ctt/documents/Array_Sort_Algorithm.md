@@ -94,10 +94,10 @@
 	    int L[] = {18, 7, 5, 8, 99};
 	    int size = sizeof(L) / sizeof(int);
 	    //insert_sort(L, size);
-      //bubble_sort(L, size);
-      //select_sort(L, size);
-      quick_sort(L, 0, 4);
-      print_array(L, size);
+        //bubble_sort(L, size);
+        //select_sort(L, size);
+        quick_sort(L, 0, 4);
+        print_array(L, size);
 	    return 0;
     }
 
