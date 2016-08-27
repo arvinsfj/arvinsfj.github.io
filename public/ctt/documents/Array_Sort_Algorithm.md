@@ -55,9 +55,7 @@
         int tmp,i,j,min;
         for(i = 0; i < size - 1; i++){
             min = i;
-            for(j = i + 1; j < size; j++){
-                if(L[min] > L[j]) min = j;
-            }
+            for(j = i + 1; j < size; j++) if(L[min] > L[j]) min = j;
             if(min != i){ tmp = L[min]; L[min] = L[i]; L[i] = tmp; }
         }
     }
