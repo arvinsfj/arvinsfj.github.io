@@ -14,7 +14,7 @@
         int tmp, i, j;
         for (i = 0; i < size - 1; i++) {
             for (j = 0; j < size - 1 - i; j++) {
-                if (L[j] > L[j+1]) { tmp = L[j]; L[j] = L[j+1]; L[j+1] = tmp; }
+                if (L[j] > L[j+1]){ tmp = L[j]; L[j] = L[j+1]; L[j+1] = tmp; }
             }
         }
     }
