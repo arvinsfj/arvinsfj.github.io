@@ -14,9 +14,7 @@
         int tmp, i, j;
         for (i = 0; i < size - 1; i++) {
             for (j = 0; j < size - 1 - i; j++) {
-                if (L[j] > L[j+1]) {
-                    tmp = L[j];L[j] = L[j+1];L[j+1] = tmp;
-                }
+                if (L[j] > L[j+1]) { tmp = L[j]; L[j] = L[j+1]; L[j+1] = tmp; }
             }
         }
     }
@@ -37,16 +35,15 @@
 ---------------------------------
     void quick_sort(int* L, int left, int right)
     {
-        if(left >= right)return;
+        if(left >= right) return;
         
         int i = left, j = right, key = L[left];
-        
         while(i < j){
             while(i < j && key <= L[j]) j--; L[i] = L[j];
             while(i < j && key >= L[i]) i++; L[j] = L[i];
         }
-        
         L[i] = key;
+        
         quick_sort(L, left, i - 1);
         quick_sort(L, i + 1, right);
     }
@@ -61,9 +58,7 @@
             for(j = i + 1; j < size; j++){
                 if(L[min] > L[j]) min = j;
             }
-            if(min != i){
-                tmp = L[min];L[min] = L[i];L[i] = tmp;
-            }
+            if(min != i){ tmp = L[min]; L[min] = L[i]; L[i] = tmp; }
         }
     }
 
