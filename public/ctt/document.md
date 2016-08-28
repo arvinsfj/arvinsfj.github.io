@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [Function In C Style](detail.html?doc=documents/Function_In_C_Style.md)
 * [Array Sort Algorithm](detail.html?doc=documents/Array_Sort_Algorithm.md)
 * [Commonly Used Git Commands](detail.html?doc=documents/List_Of_Commonly_Used_Git_Commands.md)
 * [Markdown Syntax](detail.html?doc=documents/Markdown_Syntax.md)
