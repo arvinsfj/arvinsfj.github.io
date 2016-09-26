@@ -2,6 +2,7 @@
 # Others
 ----------------------
 
+* [How to write a NES emulator](http://blog.alexanderdickson.com/)
 * [Chip-8](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM) AND [Emulator](http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/)
 * [Github Developer](https://developer.github.com/v3/)
 * [Github API](https://api.github.com/)
