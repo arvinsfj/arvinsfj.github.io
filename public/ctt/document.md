@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [Communication Between Devices](detail.html?doc=documents/Devivce_To_Device.md)
 * [Python Basic Syntax](detail.html?doc=documents/Python_Basic_Syntax.md)
 * [Function In C Style](detail.html?doc=documents/Function_In_C_Style.md)
 * [Array Sort Algorithm](detail.html?doc=documents/Array_Sort_Algorithm.md)
