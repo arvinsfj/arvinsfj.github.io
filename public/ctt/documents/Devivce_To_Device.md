@@ -1,5 +1,11 @@
-## iOS近场通信(蓝牙开发,WiFi开发)
------------------------
+# iOS近场通信(蓝牙开发,WiFi开发)
+
+> *作者：Arvin 日期：2016年8月26日*
+
+---------------------------------
+
+>BEGIN
+
 ### 1. AirDrop (UIActivityViewController类)
 
 功能：实现iOS设备间的文件和数据分享。AirDrop使用蓝牙来扫描周围的设备，当两台设备通过蓝牙建立起了连接，考虑到更快速的数据传输，它就会创建点对点的WiFi网络来连接两部iOS 设备。但并不意味着为了使用AirDrop而需要把设备连接至WiFi网络。
@@ -56,3 +62,4 @@
 支持系统：RTOS、Arduino、Linux、Android、iOS、Windows、Mac
 [简介](https://allseenalliance.org/framework/documentation/develop/tutorial/ios)
 
+>END
