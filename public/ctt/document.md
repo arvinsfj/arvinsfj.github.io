@@ -16,6 +16,8 @@
 # TOOLs
 ----------------------
 
+* [ImageReader1](Tools/ImageReader/demo.html)
+* [ImageReader2](Tools/ImageReader/basic.html)
 * [Markdown Online](Tools/EpicEditor/editor.html)
 * [Prose - Editor For Github](http://prose.io/)
 * [Sample1 - babylon.js](Tools/sample1/index.html)
