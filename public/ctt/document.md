@@ -17,6 +17,7 @@
 # TOOLs
 ----------------------
 
+* [Music](Tools/NetEasyMusic/music.py)
 * [ImageReader](Tools/ImageReader/demo.html)
 * [Markdown Online](Tools/EpicEditor/editor.html)
 * [Prose - Editor For Github](http://prose.io/)
