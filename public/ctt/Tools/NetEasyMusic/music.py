@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os
@@ -9,9 +10,9 @@ import httplib,urllib,urllib2
 headers = {"Cookie": "appver=1.5.0.75771", "Referer": "http://music.163.com/", "Accept": "application/json"}
 
 #type：搜索的类型 歌曲 1 专辑 10 歌手 100 歌单 1000 用户 1002 mv 1004 歌词 1006 主播电台 1009
-def musicSearch(word, type, offset, limit):
+def musicSearch(word, offset, limit):
     url = "http://music.163.com/api/search/pc"
-    parameters = { "s":word, "type":type, "offset":offset, "limit":limit }
+    parameters = { "s":word, "type":1, "offset":offset, "limit":limit }
     data_encode = urllib.urlencode(parameters)
     req = urllib2.Request(url, data_encode, headers)
     response = urllib2.urlopen(req)
@@ -83,9 +84,7 @@ def encrypted_id(id):
 #print musicPlaylist("37880978")
 #print musicText("25949862")
 #print musicMV("319104")
-
-#eid = encrypted_id("2544269907079544")#6634453162708212,2544269907079544
-#print eid
+#print encrypted_id("2544269907079544")#6634453162708212,2544269907079544
 #http://m2.music.126.net/E3Yr5zI6mhMFDbSmhkfoFQ==/2544269907079544.mp3
 
 def musicSave(name, path, url):
@@ -109,33 +108,23 @@ def musicSave(name, path, url):
 
 
 isSave = True
-
-jsonStr = musicSearch("邓紫棋", 1, 0, 100)
+jsonStr = musicSearch("王菲", 0, 100)
 data = json.loads(jsonStr)
 songs = data["result"]["songs"]
 for i in xrange(len(songs)):
     song = songs[i]
-    #dfsId = str(song["hMusic"]["dfsId"])
     name = song["name"]
     name = string.replace(name, '/', '_')
     name = string.replace(name, '?', '_')
     name = string.replace(name, '!', '_')
-    #url = "http://m2.music.126.net/%s/%s.mp3" % (encrypted_id(dfsId), dfsId)
-    url = song["mp3Url"]
-    if isSave == True:
-        musicSave(name, "/Users/arvin/Desktop/Music/Music1/", url)
+    url = None
+    if song["hMusic"]:
+        dfsId = song["hMusic"]["dfsId"]
+        url = "http://m2.music.126.net/%s/%s.mp3" % (encrypted_id(str(dfsId)), dfsId)
+    else:
+        url = song["mp3Url"]
+
+    if isSave:
+        musicSave(name, "/Users/arvin/Desktop/Music/", url)
     else:
         print name ,"\n" ,url
-
-
-
-
-
-
-
-
-
-
-
-
-
