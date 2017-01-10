@@ -17,7 +17,7 @@
 # TOOLs
 ----------------------
 
-* [PythonSocket](Tools/Script/script.zip) 
+* [ScriptTool](Tools/Script/script.zip) 
 * [Music](Tools/NetEasyMusic/music.py)
 * [ImageReader](Tools/ImageReader/demo.html)
 * [Markdown Online](Tools/EpicEditor/editor.html)
