@@ -17,6 +17,7 @@
 # TOOLs
 ----------------------
 
+* [AppInfo](Tools/Script/appinfo.zip) 
 * [ScriptTool](Tools/Script/script.zip) 
 * [Music](Tools/NetEasyMusic/music.py)
 * [ImageReader](Tools/ImageReader/demo.html)
