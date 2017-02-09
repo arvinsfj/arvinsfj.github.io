@@ -17,6 +17,7 @@
 # TOOLs
 ----------------------
 
+* [Fenny](Tools/Script/fenny.py) 
 * [AppInfo](Tools/Script/appinfo.zip) 
 * [ScriptTool](Tools/Script/script.zip) 
 * [Music](Tools/NetEasyMusic/music.py)
