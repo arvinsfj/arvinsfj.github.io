@@ -18,6 +18,7 @@
 # TOOLs
 ----------------------
 
+* [TGA Tool For C](Tools/Script/tga_c.zip)
 * [NesJs](Tools/NESJS/index.html)
 * [TinyRender](Tools/TinyRender/tr.zip)
 * [TalkRoom](Tools/Script/talk_room.zip)
