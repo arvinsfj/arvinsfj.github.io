@@ -75,5 +75,9 @@ hacking
 
 english
 
+mobile is a movable computer.
+browser is a programable platform, like a computer.
+
+
 >END
 
