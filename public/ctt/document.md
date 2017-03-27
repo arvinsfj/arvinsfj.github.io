@@ -18,6 +18,7 @@
 # TOOLs
 ----------------------
 
+* [TTS](Tools/Script/tts.txt)
 * [PhotoBrowser For OC](Tools/Script/PhotoBrowser.zip)
 * [ShareAPI For OC](Tools/Script/ShareAPI.zip)
 * [TGA Tool For C](Tools/Script/tga_c.zip)
