@@ -18,7 +18,7 @@
 # TOOLs
 ----------------------
 
-* [TTS](Tools/Script/tts.txt)
+* [DTTS](Tools/Script/dtts.zip) -> **install sox first**
 * [PhotoBrowser For OC](Tools/Script/PhotoBrowser.zip)
 * [ShareAPI For OC](Tools/Script/ShareAPI.zip)
 * [TGA Tool For C](Tools/Script/tga_c.zip)
