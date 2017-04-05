@@ -2,15 +2,9 @@
 # About Me
 ----------------------
 
-Welcome!
+Hello!
 
-My name is Cheng Ze. You can call me Arvin. I was born in 1980s.
-
-I am an developer focusing on mobile terminal technology, and a strong advocate and believer of software hacking.
-
-I am an bachelor in Information Management and Information Systems.
-
-In spare time, I like reading book, surfing internet, listening music and hacking software.
+My name is Cheng Ze. You can call me Arvin. I was born in 1980s. I live in Shanghai, China with my soulmate. I work at aifuwo as an Project Manager (or Senior Software Engineer) on the iOS Development team. I love programing and am usually busy with side projects or software hacking. My favorite languages are Go and Python, but I have broad experience with many languages and technologies. Much of my computing interest is geared toward graphics, 3d render, emulator, os, hacking. In spare time, I like reading, gardening, 80's game, hacking and all kinds of music.
 
 [Email me](mailto:arvin.sfj@gmail.com)
 
