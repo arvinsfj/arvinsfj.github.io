@@ -1,0 +1,2 @@
+http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=我爱我自己&spd=6
+http://tts.baidu.com/text2audio?lan=en&ie=UTF-8&spd=4&text=my name is arvin
