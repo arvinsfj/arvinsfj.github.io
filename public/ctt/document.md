@@ -18,6 +18,7 @@
 # TOOLs
 ----------------------
 
+* [Brainf***](Tools/BFLang/BF.html)
 * [PhotoBrowser For OC](Tools/Script/PhotoBrowser.zip)
 * [ShareAPI For OC](Tools/Script/ShareAPI.zip)
 * [TGA Tool For C](Tools/Script/tga_c.zip)
