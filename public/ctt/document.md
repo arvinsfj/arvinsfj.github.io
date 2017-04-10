@@ -19,6 +19,7 @@
 # TOOLs
 ----------------------
 
+* [CFont](Tools/Script/cfont.zip)
 * [Brainf***](Tools/BFLang/BF.html)
 * [DTTS](Tools/Script/dtts.zip) -> **install sox first**
 * [PhotoBrowser For OC](Tools/Script/PhotoBrowser.zip)
