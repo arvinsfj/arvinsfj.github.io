@@ -27,5 +27,3 @@
 
 >END
 
-[代码下载](documents/array_sort.zip)
-
