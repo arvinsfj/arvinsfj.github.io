@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [How To Wirte In C](detail.html?doc=documents/How_To_Write_In_C.md)
 * [Kernel Develop Enviroment](detail.html?doc=documents/Kernel_Develop_Env.md)
 * [Communication Between Devices](detail.html?doc=documents/Devivce_To_Device.md)
 * [Python Basic Syntax](detail.html?doc=documents/Python_Basic_Syntax.md)
