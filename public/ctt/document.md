@@ -19,7 +19,7 @@
 # TOOLs
 ----------------------
 
-* [CFont](Tools/Script/cfont.zip)
+* [ASCIIMAGE](Tools/Script/asciimage.zip)
 * [Brainf***](Tools/BFLang/BF.html)
 * [DTTS](Tools/Script/dtts.zip) -> **install sox first**
 * [PhotoBrowser For OC](Tools/Script/PhotoBrowser.zip)
@@ -29,9 +29,8 @@
 * [TinyRender](Tools/TinyRender/tr.zip)
 * [TalkRoom](Tools/Script/talk_room.zip)
 * [Markdown](http://daringfireball.net/projects/markdown/dingus)
-* [Mistune](Tools/Script/md.pl)
+* [MD](Tools/Script/md.pl)
 * [Mistune](Tools/Script/mistune.py)
-* [Fenny](Tools/Script/fenny.py) 
 * [AppInfo](Tools/Script/appinfo.zip) 
 * [ScriptTool](Tools/Script/script.zip) 
 * [Music](Tools/NetEasyMusic/music.py)
