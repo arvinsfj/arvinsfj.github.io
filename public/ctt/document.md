@@ -19,6 +19,7 @@
 # TOOLs
 ----------------------
 
+* [jscii](Tools/jscii/index.html)
 * [ASCIIMAGE](Tools/Script/asciimage.zip)
 * [Brainf***](Tools/BFLang/BF.html)
 * [DTTS](Tools/Script/dtts.zip) -> **install sox first**
