@@ -8,3 +8,6 @@ Computer Science
 For Fall admission: March 31
 For Winter admission: July 31 for Winter admission
 For Spring/Summer admission: November 30
+
+
+他目前几年在做的有：三支决策，粒计算，粗糙集，概念格。还有几个以前做，现在做得少
