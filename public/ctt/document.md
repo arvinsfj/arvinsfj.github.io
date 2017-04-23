@@ -19,6 +19,7 @@
 # TOOLs
 ----------------------
 
+* [QBJS](Tools/qbjs/index.html)
 * [Pong](Tools/Pong/pong.html)
 * [ASCIIMAGE](Tools/Script/asciimage.zip)
 * [Brainf***](Tools/BFLang/BF.html)
