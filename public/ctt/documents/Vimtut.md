@@ -9,7 +9,7 @@ level 1
 * dd -> delete a line and save to shear plate
 * p -> paste from shear plate
 * hjkl -> move cursor
-* :help <command> -> show the help of the command
+* :help `<command>` -> show the help of the command
  
 level 2
 =====================================
@@ -26,11 +26,11 @@ level 2
 * yy -> copy the current line like ddP
 * 
 * u -> undo
-* <C-r> -> redo
+* `<C-r>` -> redo
 * 
-* :e <file path> -> open and edit a new file
+* :e `<file path>` -> open and edit a new file
 * :w -> save file
-* :saveas <file> -> save as a new file
+* :saveas `<file>` -> save as a new file
 * :x,ZZ,:wq -> save and quit
 * :!q -> quit and not save
 * :qa! -> quit all
@@ -50,7 +50,7 @@ level 3
 * w -> move to the begin char of the next word
 * e -> move to the end char of the next word
 * W,E -> ignore blank char like w,e
-* % -> match (,[,{ and move to ),],}
+* % -> match `(,[,{` and move to `),],}`
 * *,# -> match the current word and move to next or pre word
 * 
 * <start position><command><end position>
@@ -68,32 +68,32 @@ level 4
 =====================================
 * 0 ^ $ f F t T , ; -> move in line
 * dt" -> delete all text until "
-* <action>a<object>
-* <action>i<object>
+* `<action>`a`<object>`
+* `<action>`i`<object>`
 * action: command like: d y v
 * object: w W s p " ' ) ] }
 * 
-* <C-v>
-* 0 <C-v><C-d> I-- [ESC]
+* `<C-v>`
+* 0 `<C-v>``<C-d>` I-- [ESC]
 * 
-* <C-n> <C-p> -> auto complete
+* `<C-n>` `<C-p>` -> auto complete
 * 
 * qa, @a, @@ -> micro record and replay
 * 
-* qaYp<C-a>q
+* qaYp`<C-a>`q
 * @a
 * @@
 * 
-* v, V, <C-v>
+* v, V, `<C-v>`
 * J -> connect all lines
 * <, > -> left or right indent
 * = -> auto indent
 * A -> append string when visual selected
 * 
 * :split, vsplit -> split screen h or v
-* <C-w><dir> -> <C-w>hjkl change window
-* <C-w>_or| -> max window
-* <C-w>+or- -> change window size
+* `<C-w><dir>` -> `<C-w>`hjkl change window
+* `<C-w>_or|` -> max window
+* `<C-w>+or-` -> change window size
 
 * `s/*/*` 
 * `s/*/* /g`
