@@ -23,10 +23,10 @@ level 2
 * p -> paste
 * yy -> copy the current line like ddP
 * u -> undo
-* `<C-r>` -> redo
-* :e `<file path>` -> open and edit a new file
+* `C-r` -> redo
+* :e `file path` -> open and edit a new file
 * :w -> save file
-* :saveas `<file>` -> save as a new file
+* :saveas `file` -> save as a new file
 * :x,ZZ,:wq -> save and quit
 * :!q -> quit and not save
 * :qa! -> quit all
@@ -35,7 +35,7 @@ level 2
 level 3
 =====================================
 * . -> repeat pre command
-* N<command> -> repeat N times the command
+* N`command` -> repeat N times the command
 * 2dd -> delete 2 lines
 * 3p -> paste 3 times
 * 3. -> 3 times pre command
@@ -49,7 +49,7 @@ level 3
 * % -> match `(,[,{` and move to `),],}`
 * *,# -> match the current word and move to next or pre word
 * 
-* <start position><command><end position>
+* `start position``command``end position`
 * 
 * 0y$ -> copy a line frome the begine to the end 
 * ye -> copy sub string from the current char to the end
@@ -64,32 +64,32 @@ level 4
 =====================================
 * 0 ^ $ f F t T , ; -> move in line
 * dt" -> delete all text until "
-* `<action>`a`<object>`
-* `<action>`i`<object>`
+* `action`a`object`
+* `action`i`object`
 * action: command like: d y v
 * object: w W s p " ' ) ] }
 * 
-* `<C-v>`
-* 0 `<C-v>``<C-d>` I-- [ESC]
+* `C-v`
+* 0 `C-v``C-d` I-- `ESC`
 * 
-* `<C-n>` `<C-p>` -> auto complete
+* `C-n` `C-p` -> auto complete
 * 
 * qa, @a, @@ -> micro record and replay
 * 
-* qaYp`<C-a>`q
+* qaYp`C-a`q
 * @a
 * @@
 * 
-* v, V, `<C-v>`
+* v, V, `C-v`
 * J -> connect all lines
 * <, > -> left or right indent
 * = -> auto indent
 * A -> append string when visual selected
 * 
 * :split, vsplit -> split screen h or v
-* `<C-w><dir>` -> `<C-w>`hjkl change window
-* `<C-w>_or|` -> max window
-* `<C-w>+or-` -> change window size
+* `C-w``dir` -> `C-w`hjkl change window
+* `C-w`_or| -> max window
+* `C-w`+or- -> change window size
 
 * `s/*/*` 
 * `s/*/* /g`
