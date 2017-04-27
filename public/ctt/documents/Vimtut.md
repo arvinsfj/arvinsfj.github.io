@@ -9,7 +9,7 @@ level 1
 * dd -> delete a line and save to shear plate
 * p -> paste from shear plate
 * hjkl -> move cursor
-* :help **<command>** -> show the help of the command
+* :help `command` -> show the help of the command
  
 level 2
 =====================================
