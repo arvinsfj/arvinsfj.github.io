@@ -9,7 +9,7 @@ level 1
 * dd -> delete a line and save to shear plate
 * p -> paste from shear plate
 * hjkl -> move cursor
-* :help `<command>` -> show the help of the command
+* :help **<command>** -> show the help of the command
  
 level 2
 =====================================
@@ -17,17 +17,13 @@ level 2
 * o -> insert a line behind the current line
 * O -> insert a line before the current line
 * cw -> replace a word
-* 
 * 0 -> move to the head of a line 
 * $ -> move to the end of a line
 * /pattern -> search pattern string
-* 
 * p -> paste
 * yy -> copy the current line like ddP
-* 
 * u -> undo
 * `<C-r>` -> redo
-* 
 * :e `<file path>` -> open and edit a new file
 * :w -> save file
 * :saveas `<file>` -> save as a new file
