@@ -95,7 +95,7 @@ level 4
 * <C-w>_or| -> max window
 * <C-w>+or- -> change window size
 
-* s/*/* 
-* s/*/* /g
-* %s/*/* 
-* %s/*/* /g 
+* `s/*/*` 
+* `s/*/* /g`
+* `%s/*/* `
+* `%s/*/* /g` 
