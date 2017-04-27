@@ -20,6 +20,8 @@
 # TOOLs
 ----------------------
 
+* [QBJS](Tools/qbjs/index.html)
+* [Pong](Tools/Pong/pong.html)
 * [pnd read](ools/Script/png.zip)
 * [SoftEngine_Ascii - Swift](Tools/Script/SoftEngine_Ascii_Fonts.zip)
 * [jscii](Tools/jscii/index.html)
