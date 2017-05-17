@@ -2,6 +2,7 @@
 # Blogs
 ----------------------
 
+* [Think In English](detail.html?doc=blogs/Think_In_English.md)
 * [Platform Idea](detail.html?doc=blogs/Platform_Idea.md)
 * [Unix Like Dev](detail.html?doc=blogs/Unix_Like_Dev.md)
 * [The Personal Plan On 2017](detail.html?doc=blogs/2017_Personal_Plan.md)
