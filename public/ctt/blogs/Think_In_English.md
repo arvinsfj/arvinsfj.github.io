@@ -5,7 +5,7 @@
 
 >BEGIN
 
-Let's take a test. Clear your mind and calculate 45*67 in English, not in native language absolutely. Can you get the result? You find it difficult, and can't get the result 3015. Why? First, the 9*9 multiplication table encoded in your brain is the native language sound. Second, you can't remember the intermediate result during the calculate process. It's a proof that you doesn't think in English.
+Let's take a test. Clear your mind and calculate 45x67 in English, not in native language absolutely. Can you get the result? You find it difficult, and can't get the result 3015. Why? First, the 9x9 multiplication table encoded in your brain is the native language sound. Second, you can't remember the intermediate result during the calculate process. It's a proof that you doesn't think in English.
 
 Second test, "Nomad3D", what's read in your mind? what's the pronunciation of the '3' sound? "三" or "three".
 
@@ -49,7 +49,9 @@ If you already think English – fair enough, you’ve mastered the skill and yo
 
 If you still keep having two “layers” of thoughts in your mind – your native language AND English – then keep reading, this is for you!
 
-So, what you basically need to do is the following – you need to learn to verbalize the ABSTRACT CONCEPTS into English. You need to make your speech process look like this: ABSTRACT CONCEPT -> THINKING IN ENGLISH SPEAKING.
+----------------------------------------------------------------
+
+So, what you basically need to do is the following – you need to learn to verbalize the ABSTRACT CONCEPTS into English. You need to make your speech process look like this: ABSTRACT CONCEPT -> THINKING IN ENGLISH -> SPEAKING.
 
 First you have the abstract concepts and images floating in your mind. Then comes thinking process in the language you speak, and then you produce the actual speech. Once you do away with the translation between your native language and English, your speech becomes more fluent and automatic. It’s of course easier said than done, so here’s a really good piece of advice on how to achieve the state of mind when you’re able to think in English without getting your mother’s tongue involved.
 
