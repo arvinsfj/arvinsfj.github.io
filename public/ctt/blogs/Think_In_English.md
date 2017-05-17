@@ -7,7 +7,7 @@
 
 Let's take a test. Clear your mind and calculate 45x67 in English, not in native language absolutely. Can you get the result? You find it difficult, and can't get the result 3015. Why? First, the 9x9 multiplication table encoded in your brain is the native language sound. Second, you can't remember the intermediate result during the calculate process. It's a proof that you doesn't think in English.
 
-Second test, "Nomad3D", what's read in your mind? what's the pronunciation of the '3' sound? "三" or "three".
+Second test, "Nomad3D", what's read in your mind? what's the pronunciation of the '3'? "三" or "three".
 
 We all speak our native language fluently, quite naturally. The speech formation happens instantaneously and we don't actually differentiate between a number of subsequent processes taking place when we speak.
 
