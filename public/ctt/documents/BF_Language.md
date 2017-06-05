@@ -33,6 +33,12 @@ The semantics of the Brainfuck commands can also be succinctly expressed in term
     [  becomes  while (*p) {
     ]  becomes  }
 
+-------------------------------------------
+
+Hello World!
+
+    ++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
+
 >END
 
 [BrainFuck](http://www.muppetlabs.com/~breadbox/bf/) and [Download](documents/BF.zip)
