@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [BrainFuck](detail.html?doc=documents/BF_Language.md)
 * [RGB Format](detail.html?doc=documents/RGB_Pixel_Format.md)
 * [YUV Format](detail.html?doc=documents/YUV_Pixel_Format.md)
 * [Vimtut](detail.html?doc=documents/Vimtut.md)||[Vimtutor](detail.html?doc=documents/Vimtutor.md)
