@@ -35,4 +35,4 @@ The semantics of the Brainfuck commands can also be succinctly expressed in term
 
 >END
 
-[BrainFuck](http://www.muppetlabs.com/~breadbox/bf/) and [Download](./BF.zip)
+[BrainFuck](http://www.muppetlabs.com/~breadbox/bf/) and [Download](documents/BF.zip)
