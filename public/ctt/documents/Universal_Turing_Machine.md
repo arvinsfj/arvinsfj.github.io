@@ -89,5 +89,26 @@
 
 从人类的计算过程，抽象出图灵机，从图灵机制造出了电子计算机，从计算机中提炼出了编程语言，最后使用编程语言编写各种功能的软件。这就是计算机科学的进步，但是图灵计算模型从来没变。有时候模仿人类，或许就能得到最佳答案。
 
+### 附件
+
+---------------------------------------
+
+Each turing machine can be specified by the five elements:
+
+    * A finite set of symbols A, also called the alphabet.
+    * An initial symbol ainit, which each cell contains on initialization.
+    * A finite set of states S.
+    * An initial state sinit.
+    * A final state sfinal.
+    * A function f of state and symbols onto a tupple consisting of a new state, a new symbol, and a movement. The movement can be one of right and left.
+
+Many interesting properties of Turing Machines have been proven so far. For example, that each Turing Machine can be transformed into a Turing Machine with a tape that is cut-off on one side, and endless on the other side. Or that every Turing machine can be transformed into a Turing machine with set of symbols contains just two symbols.
+
+A language is said to be 'Turing-complete', if for each functions that can be calculated with a Turing Machine, it can be shown that there is a program in this language that performs the same function. There are basically three approaches to proof that a language is Turing-complete. These are:
+
+    1. Show there is some mapping from each possible Turing machine to a program in the language.
+    2. Show that there is a program in the language that emulates a Universal Turing Machine.
+    3. Show that the language is equivalent with (or a superset of) a language that is known to be Turing-complete.
+
 
 >END
