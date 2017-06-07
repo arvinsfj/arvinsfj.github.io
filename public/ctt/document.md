@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [Think In Turing Machine](detail.html?doc=documents/Think_In_Turing_Machine.md)
 * [Turing Machine](detail.html?doc=documents/Universal_Turing_Machine.md)
 * [BrainFuck](detail.html?doc=documents/BF_Language.md)
 * [RGB Format](detail.html?doc=documents/RGB_Pixel_Format.md)
