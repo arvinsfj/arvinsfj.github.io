@@ -35,7 +35,7 @@ The Brainfuck programming language consists of eight commands, each of which is 
         char cs[30000];
         long ip;
         
-        char ds[30000];
+        char ds[30000];//可以不为char类型
         long dp;
     } vm;
 
@@ -50,7 +50,7 @@ The Brainfuck programming language consists of eight commands, each of which is 
         char ds[30000];
         long dp;
 
-        Callback fn[128];
+        Callback fn[128];//128,因为单个字符的ascii值不会超过128
     } vm;
 
 fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符，ascii总共128个字符，命令作为下标最大也是128）查找对应的命令函数。
@@ -60,7 +60,7 @@ fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符
 ">"命令：
 
     void vm_forward(){
-        vm.dp++;
+        vm.dp++;//没有考虑数组下标越界的情况，可以使用%运算限制
     }
 
 "<"命令：
@@ -104,7 +104,7 @@ fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符
         char ds[30000];
         long dp;
 
-        long ss[1000];
+        long ss[1000];//存放cs数组下标，所以是long类型
         long sp;
 
         Callback fn[128];
@@ -122,9 +122,9 @@ fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符
 
     void vm_while_enter(){
         if (vm.ds[vm.dp]){
-            vm.ss[vm.sp] = vm.ip - 1;
+            vm.ss[vm.sp] = vm.ip - 1;//因为在run函数中ip自动加1的缘故，当前ip已经指向"["后面一条命令了，所以要减1
             vm.sp++;
-        }else{
+        }else{//跳过所有的[...]
             int c = 1;
             for (vm.ip++; vm.cs[vm.ip] && c; vm.ip++) {
                 if (vm.cs[vm.ip] == '[') {
@@ -145,7 +145,7 @@ fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符
         int i;
     
         memset(&vm, 0, sizeof(vm));
-        vm.fn['>'] = vm_forward;
+        vm.fn['>'] = vm_forward;//单个字符ascii值不超过128，字符作为数组下标
         vm.fn['<'] = vm_backward;
         vm.fn['+'] = vm_increment;
         vm.fn['-'] = vm_decrement;
@@ -155,7 +155,7 @@ fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符
         vm.fn[']'] = vm_while_exit;
     
         for (i = 0; (c = getchar()) != EOF; ) {
-            if (strchr("<>.,+-[]", c)) {
+            if (strchr("<>.,+-[]", c)) {//判定有效命令
                 vm.cs[i] = c;
                 i++;
             }
