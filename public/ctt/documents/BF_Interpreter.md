@@ -122,7 +122,7 @@ fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符
 
     void vm_while_enter(){
         if (vm.ds[vm.dp]){
-            vm.ss[vm.sp] = vm.ip - 1;//因为在run函数中ip自动加1的缘故，当前ip已经指向"["后面一条命令了，所以要减1
+            vm.ss[vm.sp] = vm.ip;//"["位置入栈
             vm.sp++;
         }else{//跳过所有的[...]
             int c = 1;
