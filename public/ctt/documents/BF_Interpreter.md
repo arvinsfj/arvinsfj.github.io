@@ -114,10 +114,8 @@ fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符
 “]”命令：
 
     void vm_while_exit(){
-        if (vm.ds[vm.dp]){
-            vm.sp--;
-            vm.ip = vm.ss[vm.sp];
-        }
+        vm.sp--;
+        vm.ip = vm.ss[vm.sp];
     }
 
 "["命令：
