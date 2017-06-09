@@ -114,15 +114,17 @@ fn是函数查找表，可以通过8种命令（BF中的命令都是单个字符
 “]”命令：
 
     void vm_while_exit(){
-        vm.sp--;
-        vm.ip = vm.ss[vm.sp];
+        vm.sp--;//栈顶元素出栈
+        if (vm.ds[vm.bp]) {//如果不为0，则回溯到"["位置的前一个位置，run函数会自动对ip加1，也就是"["的位置
+            vm.ip = vm.ss[vm.sp];
+        }
     }
 
 "["命令：
 
     void vm_while_enter(){
         if (vm.ds[vm.dp]){
-            vm.ss[vm.sp] = vm.ip;//"["位置入栈
+            vm.ss[vm.sp] = vm.ip - 1;//"["的前一个命令位置入栈，因为run函数自动对ip增加1
             vm.sp++;
         }else{//跳过所有的[...]
             int c = 1;
