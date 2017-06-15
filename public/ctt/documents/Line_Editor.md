@@ -1,7 +1,7 @@
 
 # Line Editor 
 
-> *作者：Arvin 日期：2017年6月14日*
+> *作者：Arvin 日期：2017年6月15日*
 
 ----------------------------------------
 
@@ -55,9 +55,9 @@ The line editor consists of some elements, such as the memory structure, the edi
         char* lines[10000];
         long ln;
 
-        CMD fn[16];//15条命令
+        CMD fn[16];//16条命令
         
-        char changed;//文本是否改变
+        char changed;//文本是否改变，暂未用到
         char running;//是否正在运行
         char* filename;//文件名
     } txt;
@@ -66,157 +66,407 @@ fn是函数查找表，可以通过命令字符串查找对应的命令函数。
 
 有上面的结构，我们可以开始实现基本的命令函数了。
 
-">"命令：
+"load"命令：
 
-    void vm_forward(){
-        vm.dp++;//没有考虑数组下标越界的情况，可以使用%运算限制
-    }
-
-"<"命令：
-
-    void vm_backward(){
-        vm.dp--;
-    }
-
-"+"命令：
-
-    void vm_increment(){
-        vm.ds[vm.dp]++;
-    }
-
-"-"命令：
-
-    void vm_decrement(){
-        vm.ds[vm.dp]--;
-    }
-
-"."命令：
-
-    void vm_input(){
-        vm.ds[vm.dp] = getchar();
-    }
-
-","命令：
-
-    void vm_output(){
-        putchar(vm.ds[vm.dp]);
-    }
-
-上面的命令基本都是操作数据或者当前数据位置的，没什么逻辑结构非常基本。剩下的“[”和“]”涉及到当前程序指针的跳转，也就是代码段的重复执行，即循环结构，并且循环本身涉及到条件跳转。那么条件本身存放在哪个地方呢？按照BF的尿性，当然是“the pointer”了，也就是当前数据指针所指向的位置。判定跳转的逻辑是什么呢？如果“the pointer”位置数据为0，则离开循环继续执行“]”后面的命令，否则回溯到"["命令执行。因为需要回溯到“[”命令，所以在遇到"["命令的时候，需要记录该命令的位置。还需要考虑一个情况，那就是“[-[+]]”，即循环的嵌套结构。嵌套结构，基本可以使用栈结构来表示。也就是遇到“[”我们会将该命令的位置保存（记录）在栈中的一个元素，遇到"]"会将栈顶元素出栈，即回溯位置出栈。同时要兼顾进出栈的判定条件，即跳转条件。这里我们需要一个栈结构，足够大的数组+当前栈顶位置，就可以简单的构成一个栈结构。
-
-    typedef void (*Callback)(void);
-    
-    struct {
-        char cs[30000];
-        long ip;
-        
-        char ds[30000];
-        long dp;
-
-        long ss[1000];//存放cs数组下标，所以是long类型
-        long sp;
-
-        Callback fn[128];
-    } vm;
-
-
-“]”命令：
-
-    void vm_while_exit(){
-        vm.sp--;//栈顶元素出栈
-        if (vm.ds[vm.bp]) {//如果不为0，则回溯到"["位置的前一个位置，run函数会自动对ip加1，也就是"["的位置
-            vm.ip = vm.ss[vm.sp];
-        }
-    }
-
-"["命令：
-
-    void vm_while_enter(){
-        if (vm.ds[vm.dp]){
-            vm.ss[vm.sp] = vm.ip - 1;//"["的前一个命令位置入栈，因为run函数自动对ip增加1
-            vm.sp++;
-        }else{//跳过所有的[...]
-            int c = 1;
-            for (vm.ip++; vm.cs[vm.ip] && c; vm.ip++) {
-                if (vm.cs[vm.ip] == '[') {
-                    c++;
-                } else if (vm.cs[vm.ip] == ']') {
-                    c--;
+    void load(char* param)
+    {  
+        char* filename = nextToken(param);
+        if (filename&&strlen(filename)) {
+            memset(txt.lines, 0, 10000);
+            txt.filename = filename;
+            FILE *fp = fopen(filename, "r");
+            if(fp){
+                char line[1000] = {0};
+                long ln = 0;
+                while(!feof(fp)&&ln<10000){
+                    memset(line, 0, 1000);
+                    fgets(line, 1000, fp);//fgets获取的字符串除最后包一行外含文件的'\n'字符
+                    long llen = strlen(line);
+                    if (line[llen-1] != '\n') {//文件的最后一行不包含'\n'，其他行包含'\n'
+                        llen+=1;
+                    }
+                    txt.lines[ln] = malloc(llen);
+                    memset(txt.lines[ln], 0, llen);
+                    memcpy(txt.lines[ln], line, llen-1);//去除'\n',但确保是完整的字符串,包含'\0'结尾
+                    
+                    txt.ln = ln;
+                    ln++;
                 }
+                txt.lmax = txt.ln;
+                printf("%ld lines read successfully from %s\n", ln, filename);
+                
+            }else{
+                printf("failed to open file: %s\n", filename);
+            }
+            fclose(fp);
+        }else{
+            printf("error: must specify filename\n");
+        }
+    }
+
+"save"命令：
+
+    void save(char* param)
+    {
+        char* filename = nextToken(param);
+        if (filename&&strlen(filename)) {
+            txt.filename = filename;
+            FILE *fp = fopen(filename, "w");
+            if(fp){
+                long ln = 0;
+                for (ln = 0; ln <= txt.lmax; ln++) {
+                    fputs(txt.lines[ln], fp);
+                    if (ln != txt.lmax) {//文件最后一行不需要添加'\n'
+                        fputc('\n', fp);
+                    }
+                }
+                printf("%ld lines write to file %s successfully\n", ln, filename);
+                
+            }else{
+                printf("failed to open file: %s\n", filename);
+            }
+            fclose(fp);
+        }else{
+            printf("error: must specify filename\n");
+        }
+    }
+
+"quit"命令：
+
+    void quit(char* param)
+    {
+        txt.running = 0;
+    }
+
+"help"命令：
+
+    void help(char* param)
+    {
+        printf("help info!\n[cmd] [param]\n");
+    }
+
+"execute"命令：
+
+    void execute(char* param)
+    {//考虑可以跟语言解释器结合起来
+        printf("not implement!\n");
+    }
+
+"status"命令：
+
+    void status(char* param)
+    {
+        printf("filename: %s\n", !txt.filename?"<undefined>":txt.filename);//直接创建文本，没有文件名
+        printf("current line: %ld\n", txt.ln<=0?0:txt.ln);//txt.ln和txt.lmax最小值都是-1，即没有一行文本
+        printf("total lines: %ld\n", txt.lmax+1);//同上解释
+    }
+
+"top"命令：
+
+    void top(char* param)
+    {
+        if (txt.ln>=0) {//ln最小值-1，代表没有一行文本，此时top命令无效
+            txt.ln = 0;
+        }
+    }
+
+"bottom"命令：
+
+    void bottom(char* param)
+    {
+        txt.ln = txt.lmax;//有可能是-1
+    }
+
+"up"命令：
+
+    void up(char* param)
+    {
+        char* num = nextToken(param);
+        long ln = atoi(num);
+        if (txt.ln-ln<=-1) {
+            txt.ln = -1;//-1代表没有一行文本
+            return;
+        }else{
+            txt.ln = txt.ln-ln;
+        }
+    }
+
+"down"命令：
+
+    void down(char* param)
+    {
+        char* num = nextToken(param);
+        long ln = atoi(num);
+        if (txt.ln+ln>=txt.lmax) {
+            txt.ln = txt.lmax;
+            return;
+        }else{
+            txt.ln = txt.ln+ln;
+        }
+    }
+
+"show"命令：
+
+    void show(char* param)
+    {
+        if (txt.ln>=0&&txt.ln<=txt.lmax) {//同上
+            printf("%04u %s\n", (unsigned int)txt.ln, txt.lines[txt.ln]);
+        }
+    }
+
+"all"命令：
+
+    void all(char* param)
+    {
+        for (long i = 0; i <= txt.lmax; i++) {//lmax有可能等于-1，内存中的每行文本不包含'\n'
+            printf("%04u %s\n", (unsigned int)i, txt.lines[i]);
+        }
+    }
+
+"append"命令：
+
+    void append(char* param)
+    {//文本最后一行新建一行文本
+        char* line = nextToken(param);
+        long llen = strlen(line)+1;//+1是为了把文本结束符'\0'也算在内
+        if (llen>1&&txt.lmax<9999) {
+            bottom(param);
+            txt.ln++;
+            txt.lines[txt.ln] = malloc(llen);
+            memcpy(txt.lines[txt.ln], line, llen);
+            txt.lmax++;
+        }else{
+            printf("not enough memory or have not line text!\n");
+        }
+    }
+
+"insert"命令：
+
+    void insert(char* param)
+    {//在当前行后面插入一行新文本
+        char* line = nextToken(param);
+        long llen = strlen(line)+1;
+        if (llen>1&&txt.lmax<9999) {
+            for (long i = txt.lmax; i >= txt.ln+1; i--) {//数组后移动,空出位置
+                txt.lines[i+1] = txt.lines[i];
+            }
+            txt.ln++;
+            txt.lines[txt.ln] = malloc(llen);
+            memcpy(txt.lines[txt.ln], line, llen);
+            txt.lmax++;
+        }else{
+            printf("not enough memory or have not line text!\n");
+        }
+    }
+
+"delete"命令：
+
+    void delete(char* param)
+    {
+        if (txt.ln>=0) {//ln==-1,代表没有一行文本
+            free(txt.lines[txt.ln]);
+            for (long i = txt.ln; i <= txt.lmax; i++) {//数组前移,删除当前行文本
+                txt.lines[i] = txt.lines[i+1];
+            }
+            txt.lines[txt.lmax] = 0;
+            txt.lmax--;
+            if (txt.ln>=txt.lmax) {//当前行下标不能超过最大行下标
+                txt.ln = txt.lmax;
+            }
+        }else{
+            printf("have no line\n");
+        }
+    }
+
+"edit"命令：
+
+    void edit(char* param)
+    {
+        char* line = nextToken(param);
+        long llen = strlen(line)+1;//+1位了'\0'计算在内
+        if (llen>1) {
+            free(txt.lines[txt.ln]);
+            txt.lines[txt.ln] = malloc(llen);
+            memcpy(txt.lines[txt.ln], line, llen);
+        }else{
+            printf("have not line text!\n");
+        }
+    }
+
+命令函数就这么多，还需要一些辅助函数，比如：命令函数查询表（fn）的构建、命令参数读取函数、数据的初始化以及命令匹配函数。
+
+    //去掉左边的空格
+    void strltrim(char *pStr)
+    {
+        char *pTmp = pStr;
+        while (*pTmp == ' '){
+            pTmp++;
+        }
+        while(*pTmp != '\0'){
+            *pStr = *pTmp;
+            pStr++;
+            pTmp++;
+        }
+        *pStr = '\0';
+    }
+
+    //去掉右边的空格
+    void strrtrim(char *pStr)
+    {
+        char *pTmp = pStr+strlen(pStr)-1;
+        while (*pTmp == ' '){
+            *pTmp = '\0';
+            pTmp--;
+        }
+    }
+
+    //获取命令参数字符串函数
+    char* nextToken(char* line)
+    {
+        char* pp = strchr(line, ' ');
+        if (pp) {
+            long plen = strlen(pp)+1;
+            char* tmpParam = malloc(plen);
+            memcpy(tmpParam, pp, plen);
+            strltrim(tmpParam);
+            strrtrim(tmpParam);
+            if (strlen(tmpParam)) {//排除参数全部是空格的情况
+                return tmpParam;
             }
         }
+        
+        return NULL;
     }
 
-如果一开始“the pointer”位置的值就是0，就不需要进入到循环中，直接跳过"[...]"。这点就是条件跳转，类似高级语言的"if"结构。
-
-命令函数就这么多，还需要一些辅助函数，比如：命令函数查询表（fn）的构建、BF程序文件读入内存（cs）函数、数据的初始化以及取指和执指循环函数。
-
-    void setup() {
-        int c;
-        int i;
+    //设置和初始化函数
+    void setup()
+    {
+        memset(txt.lines, 0, 10000);
+        txt.ln = -1;
+        txt.lmax = -1;
+        txt.changed = 0;
+        txt.running = 1;
+        txt.filename = 0;
     
-        memset(&vm, 0, sizeof(vm));
-        vm.fn['>'] = vm_forward;//单个字符ascii值不超过128，字符作为数组下标
-        vm.fn['<'] = vm_backward;
-        vm.fn['+'] = vm_increment;
-        vm.fn['-'] = vm_decrement;
-        vm.fn['.'] = vm_output;
-        vm.fn[','] = vm_input;
-        vm.fn['['] = vm_while_entry;
-        vm.fn[']'] = vm_while_exit;
-    
-        for (i = 0; (c = getchar()) != EOF; ) {
-            if (strchr("<>.,+-[]", c)) {//判定有效命令
-                vm.cs[i] = c;
-                i++;
+        //下面的代码是构建命令函数映射表，难看
+        struct CMD cmd_load = {"load", load};
+        struct CMD cmd_save = {"save", save};
+        struct CMD cmd_quit = {"quit", quit};
+        struct CMD cmd_help = {"help", help};
+        struct CMD cmd_execute = {"execute", execute};
+        struct CMD cmd_status = {"status", status};
+        struct CMD cmd_top = {"top", top};
+        struct CMD cmd_bottom = {"bottom", bottom};
+        struct CMD cmd_up = {"up", up};
+        struct CMD cmd_down = {"down", down};
+        struct CMD cmd_show = {"show", show};
+        struct CMD cmd_all = {"all", all};
+        struct CMD cmd_append = {"append", append};
+        struct CMD cmd_insert = {"insert", insert};
+        struct CMD cmd_delete = {"delete", delete};
+        struct CMD cmd_edit = {"edit", edit};
+        txt.fn[0] = cmd_load;
+        txt.fn[1] = cmd_save;
+        txt.fn[2] = cmd_quit;
+        txt.fn[3] = cmd_help;
+        txt.fn[4] = cmd_execute;
+        txt.fn[5] = cmd_status;
+        txt.fn[6] = cmd_top;
+        txt.fn[7] = cmd_bottom;
+        txt.fn[8] = cmd_up;
+        txt.fn[9] = cmd_down;
+        txt.fn[10] = cmd_show;
+        txt.fn[11] = cmd_all;
+        txt.fn[12] = cmd_append;
+        txt.fn[13] = cmd_insert;
+        txt.fn[14] = cmd_delete;
+        txt.fn[15] = cmd_edit;
+    }
+
+    //命令和操作匹配函数，由于命令使用了字符串（而非单个字符），所以需要CMD结构体来封装命令
+    void handleInput(char* line)
+    {
+        line[strlen(line)-1] = '\0';//除掉fgets函数获得的字符串结尾处的'\n'字符
+        //printf("%s\n", line);
+        int lcmd = 0;
+        char* endp = strchr(line, ' ');
+        if (endp) {
+            lcmd = endp - line + 1;//指针（地址）的差值即是字符串的长度
+        }else{//有可能命令后面没有参数
+            lcmd = strlen(line) + 1;
+        }
+        
+        char* cmd = malloc(lcmd);
+        memset(cmd, 0, lcmd);
+        memcpy(cmd, line, lcmd-1);
+        //printf("%s\n", cmd);
+        char isvalid = 0;
+        for (int i = 0; i < 16; i++) {//命令与命令函数匹配，循环搜索效率肯定没有数组单字符下标映射高
+            struct CMD scmd = txt.fn[i];
+            if (!strncmp(scmd.cmd_name, cmd, lcmd)) {
+                scmd.cmd_fn(line);
+                isvalid = 1;
+                break;
             }
         }
-    }
-
-    void run() {
-        while (vm.cs[vm.ip]) {
-            vm.fn[vm.cs[vm.ip]]();
-            vm.ip++;
+        if (!isvalid) {
+            printf("invalid command: %s\n", cmd);
         }
     }
 
-最后是解释器的入口函数：main函数
+
 
-    int main(int argc, char* argv[]) {
-        if (argc > 1) {  
-            freopen(argv[1], "r", stdin);//将打开的文件重定向到标准输入(stdin)，程序后面直接从stdin获取数据
-        }  
-    
-        setup();  
-        run();  
-    
-        return 0;  
+最后是编辑器的入口函数：main函数
+
+    int main(int argc, char** argv)
+    {
+        setup();
+        
+        printf("editor version: %s\n", "0.1");
+        char line[1000] = {0};
+        do {
+            printf(">> ");
+            memset(line, 0, 1000);
+            fgets(line, 1000, stdin);//char '\n' included at the end of the string
+            handleInput(line);
+        } while (txt.running);//操作循环,使用命令“quit”结束循环
+        
+        return 0;
     }
 
-OK，整个解释器的C代码就这些，保存为“bf.c”文件，命令行执行“gcc bf.c -o bf”命令编译成可执行程序"bf"。执行“./bf hello.bf”就会得到"hello.bf"程序的结果了。
+OK，整个行编辑器的C代码就这些，保存为“ledit.c”文件，命令行执行“gcc ledit.c -o ledit”命令编译成可执行程序"ledit"。执行“./ledit”就可以运行ledit程序了，在">> "后执行"load s.bas"命令加载s.bas文件内容，执行"all"命令查看所加载的内容。
 
-下面是“hello.bf”程序：
+下面是“s.bas”程序：
 
-    ++++++++[>++++++++<-]>+.>++++++++++[>+++++++++++<-]>++++.++++.-------------.+++++.>++++++++++.
+    LET I = 0
+    PRINT I * I
+    LET I = I + 1
+    IF I < 10 THEN GOTO 1
+    PRINT I
 
 
 --------------------------------
 
 ### 结语
 
-1. 编写解释器没有想象中的难
-2. ascii字符作为数组下标，可以直接将数组大小设置成128即可
-3. 利用数组可以简化条件的判断，可以直接通过下标映射到函数
-4. 利用求余运算可以限制数组越界，不需要条件判断
-5. 利用数组+位置变量的方式可以避免指针的使用
-6. 嵌套结构可以使用栈来表示，栈可以使用数组+栈顶位置的组合构成
-7. 循环结构和条件结构可以使用跳转来实现（条件跳转和强制跳转），循环结构包含了条件跳转
-8. 数据和当前数据的指针可以同时修改，程序的当前指针可以修改，但是一般程序本身数据指令是不能修改的。（ps：特殊方法还是可以修改程序本身的，毕竟程序也是数据）
-9. 使用freopen函数可以简化文件的读取
-10. 使用strchr函数可以判定字符串是否包含某个字符
+1. 上面是简单的行编辑器实现，`ed`是真实的行编辑器，可以分析它的源代码，原理都是差不多的
+2. 命令字符串跟命令函数的匹配，需要额外的结构体封装和循环搜索，降低了代码耦合性，增加了扩展性
+3. C程序设计，都是从内存数据结构开始，然后基于该结构实现特定功能，因此写代码之前要看清目标软件的内存数据结构，继而是操作原理
+4. 循环不仅用于批量处理数据，还可以跟输入函数（阻塞函数）一起用于用户交互处理
+5. 二维文本表示，这里是使用字符串数组结构表示，更好的方法是字符串双向链表结构，插入和删除操作就不需要移动数据了
+6. fgets函数获取一行字符串，其中很大可能是包含换行'\n'字符的，文本的最后一行不包含'\n'，原因是最后一行的结尾是EOF标志
+7. stdin、stdout、stderr是三个标准输入和输出，可以认为是内置的文件描述符FD，当然操作也跟文件操作差不多
+8. C可以通过memcpy函数、strcpy函数来获取子串，memcpy注意字符串长度问题，要将'\0'一起拷贝，也可以利用一个指针来“创建”（模拟）子串，比如一个指针指向一个字符串的中间，那么该指针指向的位置到字符串结尾就是一个子串
+9. 抽象是一个暧昧的概念，我觉得不仅仅用于面向对象的语言，也可以是面向过程的语言，比如C中的函数、结构体、变量、指针等
+10. 上面的编辑器只是起点，比如可以简化命令字符串、增强删除命令支持多行删除、插入多行、打印多行、clear命令、复制粘贴命令、绑定语言解释器等
+11. 现在只考虑行的操作，如果考虑每行字符串的列操作，就是一个screen-full类似vi的编辑器，如果编辑器基于GUI，就是比较现代的编辑器了，但是编辑器的内存数据结构基本没变
+12. 再一个就是考虑编辑器模式问题，比如支持编辑模式和命令模式
+13. 逻辑和定义混乱肯定会导致代码混乱，这里混乱指逻辑上的重叠、不全面、无效等
 
- 
+
 *enjoy programming yourself!*
 
 
 >END
+
+[DOWNLOAD](documents/ledit.zip)
