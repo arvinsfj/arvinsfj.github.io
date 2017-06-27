@@ -1,15 +1,18 @@
  body {
 	margin:0;
 	padding:0;
-	font-family: Georgia,Cambria,serif;
+	font-family: Arial,Microsoft YaHei,黑体,宋体,sans-serif,Georgia,Cambria,serif;
 	background-color: rgb(247,250,252);
 	/*background-color: #ffffff;*/
     color:#111111;
 	}
-p {
-	font-family: Georgia,Cambria,serif;
+  p {
+	font-family: Arial,Microsoft YaHei,黑体,宋体,sans-serif,Georgia,Cambria,serif;
 	margin:0 0 1em 0;
 	padding:0;
+	letter-spacing: 1px;
+	word-spacing: 2px;
+	line-height: 1.5em;
 	}
 .content>p {text-indent:2em; margin:0;}
 .content>p+p {text-indent:2em; margin-top: 1ex;}
