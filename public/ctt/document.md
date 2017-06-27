@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [Tiny Basic](detail.html?doc=documents/Tiny_Basic.md)
 * [Line Editor](detail.html?doc=documents/Line_Editor.md)
 * [BF Interpreter](detail.html?doc=documents/BF_Interpreter.md)
 * [Think In Turing Machine](detail.html?doc=documents/Think_In_Turing_Machine.md)
