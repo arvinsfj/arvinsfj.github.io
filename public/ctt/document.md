@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [Memory Manager In C](detail.html?doc=documents/Memory_Manager_In_C.md)
 * [Tiny Basic](detail.html?doc=documents/Tiny_Basic.md)
 * [Line Editor](detail.html?doc=documents/Line_Editor.md)
 * [BF Interpreter](detail.html?doc=documents/BF_Interpreter.md)
