@@ -29,6 +29,7 @@
 # TOOLs
 ----------------------
 
+* [Basic Lang](Tools/BasicLang/basic_lang.zip)
 * [Rose Editor](Tools/RoseEditor/rose_editor.zip)
 * [QBJS](Tools/qbjs/index.html)
 * [Pong](Tools/Pong/pong.html)
