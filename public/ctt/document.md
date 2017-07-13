@@ -29,6 +29,7 @@
 # TOOLs
 ----------------------
 
+* [Rose Editor](Tools/RoseEditor/rose_editor.zip)
 * [QBJS](Tools/qbjs/index.html)
 * [Pong](Tools/Pong/pong.html)
 * [pnd read](ools/Script/png.zip)
