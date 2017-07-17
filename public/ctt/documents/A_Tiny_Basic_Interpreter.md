@@ -225,8 +225,6 @@ static int op_char()
         return TOKENIZER_CR;
     } else if(*ptr == ',') {
         return TOKENIZER_COMMA;
-    } else if(*ptr == ';') {
-        return TOKENIZER_SEMICOLON;
     } else if(*ptr == '+') {
         return TOKENIZER_PLUS;
     } else if(*ptr == '-') {
@@ -287,44 +285,220 @@ static char const *ptr, *nextptr;//当前token的开始和结束指针
 static int current_token = TOKENIZER_ERROR;//当前token默认为ERROR类型
 
 enum {
-TOKENIZER_ERROR,
-TOKENIZER_ENDOFINPUT,
-TOKENIZER_NUMBER,
-TOKENIZER_STRING,
-TOKENIZER_VARIABLE,
-TOKENIZER_LET,
-TOKENIZER_PRINT,
-TOKENIZER_IF,
-TOKENIZER_THEN,
-TOKENIZER_ELSE,
-TOKENIZER_FOR,
-TOKENIZER_TO,
-TOKENIZER_NEXT,
-TOKENIZER_GOTO,
-TOKENIZER_GOSUB,
-TOKENIZER_RETURN,
-TOKENIZER_CALL,
-TOKENIZER_END,
-TOKENIZER_COMMA,
-TOKENIZER_PLUS,
-TOKENIZER_MINUS,
-TOKENIZER_AND,
-TOKENIZER_OR,
-TOKENIZER_ASTR,
-TOKENIZER_SLASH,
-TOKENIZER_MOD,
-TOKENIZER_LEFTPAREN,
-TOKENIZER_RIGHTPAREN,
-TOKENIZER_LT,
-TOKENIZER_GT,
-TOKENIZER_EQ,
-TOKENIZER_CR,
+    TOKENIZER_ERROR,
+    TOKENIZER_ENDOFINPUT,
+    TOKENIZER_NUMBER,
+    TOKENIZER_STRING,
+    TOKENIZER_VARIABLE,
+    TOKENIZER_LET,
+    TOKENIZER_PRINT,
+    TOKENIZER_IF,
+    TOKENIZER_THEN,
+    TOKENIZER_ELSE,
+    TOKENIZER_FOR,
+    TOKENIZER_TO,
+    TOKENIZER_NEXT,
+    TOKENIZER_GOTO,
+    TOKENIZER_GOSUB,
+    TOKENIZER_RETURN,
+    TOKENIZER_CALL,
+    TOKENIZER_END,
+    TOKENIZER_COMMA,
+    TOKENIZER_PLUS,
+    TOKENIZER_MINUS,
+    TOKENIZER_AND,
+    TOKENIZER_OR,
+    TOKENIZER_ASTR,
+    TOKENIZER_SLASH,
+    TOKENIZER_MOD,
+    TOKENIZER_LEFTPAREN,
+    TOKENIZER_RIGHTPAREN,
+    TOKENIZER_LT,
+    TOKENIZER_GT,
+    TOKENIZER_EQ,
+    TOKENIZER_CR,
 };
 
 ```
 
+你可以想想程序中除了关键字、数字常量、变量、操作符号、字符串常量还有什么。
+
 ### 三、语法是什么？
 ---------------------------------
+
+如果你已经对Token有一定的概念，那么语法就是Token的排列（组合）规则。规则都是可以模拟的。为了表达事物的逻辑，编程语言引入了几种逻辑结构，比如分支条件结构、循环结构等。人讲话或者写作（比如英语的从句）大部分其实是递归结构的，编程语言相应的引入了嵌套结构。分支、循环和（递归）嵌套是编程语言的基本结构和规则。具体来讲，if语句后面必须跟关系表达式再跟then，然后是执行语句，再就是else语句；for必须跟next成对使用；let后面必须跟变量再跟=号，后面是表达式；那么多token，有很多组合，而实际的编程语言语法只是其中的很小部分排列组合，关系比较确定。表达一门编程语言的语法可以使用上面的BNF描述，采用递归下降的方式表达，左边是模糊的概念，右边是相对清晰的定义，上面比较模糊，下面比较清晰，中间存在递归结构，但是最终都会用确定的token进行描述。token可以理解成对程序文本的各个字符串或字符的定义，类似单词的概念，程序都是由token组成的。BNF不仅包含语言的语法描述，还可以指导语法的编程实现，是语法实现的整体框架。比如某个结构的*，可以使用循环来实现；多个结构的并列可以使用分支条件实现；左边是函数名称右边是函数实现；右边如果包含左边名称则表示函数调用；越在下面的运算的优先级越高，越早实现和计算，比如乘除运算优先加减运算先进行计算；
+
+按照语法规则，对token进行排列组合，就能得到编译通过（能生成AST的）程序文本（程序表达的逻辑不一定正确）。
+
+什么是factor？就是表达式的基本元素，包含数字（数值）、变量（保存数值的token）、带括号的表达式（递归描述）
+什么是term？包含高优先级运算（符号）和基本元素（factor）的token组合，可以只包含factor或者多个操作符号连接的factor
+什么是expr？包含低优先级运算（符号）和term的token组合，可以只包含term或者多个操作符号连接的term
+什么是relation？包含更低优先级运算（符号）和expr的token组合，可以只包含expr或者多个操作符号连接的expr
+还有什么？比如逻辑运算（符号）和relation的token组合。可以自己实现。从上面的分析可以看出，概念是分层和嵌套的，局部可以存在递归结构，最终可以通过嵌套得到最基本的元素。
+
+表达式的递归嵌套结构非常清晰。有了表达式概念，if语句和for语句理解起来就简单的多（非递归结构）。比如if语句，可以认为是根据关系表达式的计算结果进行执行流程跳转。for语句可以理解成if语句的变种，根据关系表达式的结果循环执行（向前跳转）某段程序或者跳出循环执行下一句程序。不同的是for语句需要额外的栈来支持嵌套。非递归结构可以校验token的排列顺序来进行语法校验。递归结构也可以根据token排列结构来校验语法。
+
+变量如何实现？这其实是解释执行阶段需要考虑的问题。简单来实现就是使用26个元素的数组来实现，每个字母映射到数组的下标。
+
+我们先考虑表达式的语法实现。
+
+factor的实现（直接返回factor的数值）：
+
+```
+static int factor()
+{
+    int r;
+    switch(tokenizer_token()){
+        case TOKENIZER_NUMBER:
+            r = tokenizer_num();
+            accept(TOKENIZER_NUMBER);
+            break;
+        case TOKENIZER_VARIABLE:
+            r = vbasic_get_var(tokenizer_variable_num());//从变量中获取值
+            accept(TOKENIZER_VARIABLE);
+            break;
+        case TOKENIZER_LEFTPAREN:
+            accept(TOKENIZER_LEFTPAREN);
+            r = expr();
+            accept(TOKENIZER_RIGHTPAREN);
+            break;
+    }
+    return r;
+}
+
+```
+
+term的实现：
+
+```
+static int term()
+{
+    int f1, f2;
+    int op;
+    
+    //仔细看下面的逻辑结构和BNF中的描述结构，是有多么的相似。
+    f1 = factor();
+    op = tokenizer_token();
+    while(op == TOKENIZER_ASTR || op == TOKENIZER_SLASH || op == TOKENIZER_MOD){
+        tokenizer_next();//为什么不能使用accept函数
+        f2 = factor();
+        
+        switch(op){
+            case TOKENIZER_ASTR:
+                f1 *= f2;
+                break;
+            case TOKENIZER_SLASH:
+                f1 /= f2;//除数不能为0，想想怎么校验
+                break;
+            case TOKENIZER_MOD:
+                f1 %= f2;//f2不能为0
+                break;
+        }
+        
+        op = tokenizer_token();
+    }
+
+    return f1;//计算结果放在f1中
+}
+
+```
+
+expr的实现：
+
+```
+static int expr()
+{
+    int t1, t2;
+    int op;
+
+    //仔细看下面的逻辑结构和BNF中的描述结构，是有多么的相似。
+    t1 = term();
+    op = tokenizer_token();
+    while(op == TOKENIZER_PLUS || op == TOKENIZER_MINUS || op == TOKENIZER_AND || op == TOKENIZER_OR){
+        tokenizer_next();//为什么不能使用accept函数
+        t2 = term();
+
+        switch(op){
+            case TOKENIZER_PLUS:
+                t1 += t2;
+                break;
+            case TOKENIZER_MINUS:
+                t1 -= t2;
+                break;
+            case TOKENIZER_AND:
+                t1 &= t2;
+                break;
+            case TOKENIZER_OR:
+                t1 |= t2;
+                break;
+        }
+
+        op = tokenizer_token();
+    }
+
+    return t1;//计算结果放在t1中
+}
+
+由于factor函数中会调用expr函数，形成递归。但是factor函数给出了回归条件变量和数字，否则递归不能停止。
+
+```
+
+realtion函数的实现：
+
+```
+static int relation()
+{
+    int r1, r2;
+    int op;
+
+    //仔细看下面的逻辑结构和BNF中的描述结构，是有多么的相似。
+    r1 = expr();
+    op = tokenizer_token();
+    while(op == TOKENIZER_LT || op == TOKENIZER_GT || op == TOKENIZER_EQ){
+        tokenizer_next();//为什么不能使用accept函数
+        r2 = expr();
+
+        switch(op){
+            case TOKENIZER_LT:
+                r1 = r1 < r2;
+                break;
+            case TOKENIZER_GT:
+                r1 = r1 > r2;
+                break;
+            case TOKENIZER_EQ:
+                r1 = r1 == r2;
+                break;
+        }
+
+        op = tokenizer_token();
+    }
+
+    return r1;//计算结果放在r1中
+}
+
+```
+
+accept函数的实现：
+
+```
+static void accept(int token)
+{
+    if(token != tokenizer_token()){
+        tokenizer_error_print();
+        exit(1);
+    }
+
+    tokenizer_next();
+}
+
+```
+
+仔细观察上面的三个函数，你能领悟到什么？比如运算优先级是如何实现的；相似的原因；如何分开语法校验和程序的解释执行等。
+
+接下来考虑非递归结构的if语句和for语句等。
+
+continue....
+
 
 
 
