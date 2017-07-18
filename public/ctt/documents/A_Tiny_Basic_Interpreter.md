@@ -354,7 +354,7 @@ static int factor()
             accept(TOKENIZER_NUMBER);
             break;
         case TOKENIZER_VARIABLE:
-            r = vbasic_get_var(tokenizer_variable_num());//从变量中获取值
+            r = vbasic_get_var(tokenizer_var_num());//从变量中获取值
             accept(TOKENIZER_VARIABLE);
             break;
         case TOKENIZER_LEFTPAREN:
@@ -493,24 +493,389 @@ static void accept(int token)
 
 ```
 
-仔细观察上面的三个函数，你能领悟到什么？比如运算优先级是如何实现的；相似的原因；如何分开语法校验和程序的解释执行等。
+仔细观察上面的三个函数，你能领悟到什么？比如运算优先级是如何实现的；代码相似的原因；如何分开语法校验和程序的解释执行等。
 
-接下来考虑非递归结构的if语句和for语句等。
+接下来考虑非递归结构，比如if语句和for语句等。昨晚写太晚了，今天继续写了。
 
-continue....
+我们从简单结构入手，比如goto语句。goto语句本质是强制跳转到某一行继续执行。首先找到这一行的数值，然后扫描程序token直到找到该行。
 
+goto函数定义：
 
+```
+static void goto_statement()
+{
+    accept(TOKENIZER_GOTO);//为什么可以使用accept函数
+    int line_num = tokenizer_num();
+    jump_linenum(line_num);
+}
 
+jump_linenum函数是移动token游标直到指向某行，通用函数，gosub、return和next语句都需要使用
+
+static void jump_linenum(int linenum)
+{
+    tokenizer_init(program_ptr);//从头开始扫描，是否可以改进
+    while(tokenizer_num() != linenum){
+        do{//注意循环的结束条件
+            do {tokenizer_next();} while(tokenizer_token() != TOKENIZER_CR && tokenizer_token() != TOKENIZER_ENDOFINPUT);
+            if(tokenizer_token() == TOKENIZER_CR) {tokenizer_next();}
+        }while(tokenizer_token() != TOKENIZER_NUMBER);
+    }
+}
+
+```
+
+简单处理一下print语句：
+
+```
+static void print_statement()
+{
+    accept(TOKENIZER_PRINT);
+    do{
+        if(tokenizer_token() == TOKENIZER_STRING) {
+            tokenizer_string(string, sizeof(string));
+            printf("%s", string);
+            tokenizer_next();
+        } else if(tokenizer_token() == TOKENIZER_COMMA) {//每个逗号代表一个空格
+            printf(" ");
+            tokenizer_next();
+        } else if(tokenizer_token() == TOKENIZER_VARIABLE || tokenizer_token() == TOKENIZER_NUMBER) {//条件是否充分
+            printf("%d", expr());//输出表达式，这个地方连接到了表达式的解析和运算（语法和语义分析）
+        } else {
+            break;
+        }
+    }while(tokenizer_token() != TOKENIZER_CR && tokenizer_token() != TOKENIZER_ENDOFINPUT);
+    printf("\n");
+    tokenizer_next();
+}
+
+```
+
+注意观察代码实现跟BNF描述之间的关系。依照上面的思路不难写出赋值语句实现。
+
+let函数：
+
+```
+static void let_statement()
+{
+    int var;
+    var = tokenizer_var_num();
+    
+    accept(TOKENIZER_VARIABLE);
+    accept(TOKENIZER_EQ);
+    vbasic_set_var(var, expr());//使用表达式给变量赋值
+    accept(TOKENIZER_CR);
+}
+
+```
+
+基本结构if语句的实现，应该也不难。依照语法顺序读取token和计算表达式，根据表达式计算结果跳转if子句或else子句。
+
+if函数：
+
+```
+static void if_statement()
+{
+    int r;
+    
+    accept(TOKENIZER_IF);
+    r = relation();
+    accept(TOKENIZER_THEN);
+    if(r){
+        statement();//使用递归结构，因为if子句可以执行任何语句
+    } else {
+        do { tokenizer_next(); } while(tokenizer_token() != TOKENIZER_ELSE && tokenizer_token() != TOKENIZER_CR && tokenizer_token() != TOKENIZER_ENDOFINPUT);
+        
+        if(tokenizer_token() == TOKENIZER_ELSE) {
+            tokenizer_next();
+            statement();//else子句
+        } else if(tokenizer_token() == TOKENIZER_CR) {
+            tokenizer_next();
+        }
+    }
+}
+
+可以看到if结构的实现不是很难，主要是需要区分else子句是否存在。还有一个是if语句嵌套问题，上面是通过递归来处理嵌套，并没有特意去处理嵌套。因为if子句可以执行任何语句，当然包括if语句本身。函数递归调用本身就是一个栈结构，栈结构是用来处理嵌套的。
+
+```
+
+不带参数的函数调用（带参数的自己去研究），跟goto语句类似，仅多了记录返回位置（行号）的操作，被调用函数中需要使用return语句中止函数执行并返回到调用位置继续执行。函数调用当然需要栈结构来暂存返回地址。带参数的函数调用参数也是存储在栈中的。
+
+gosub函数:
+
+```
+static void gosub_statement()
+{
+    int linenum;
+    accept(TOKENIZER_GOSUB);
+    linenum = tokenizer_num();//行号作为返回地址
+    accept(TOKENIZER_NUMBER);
+    accept(TOKENIZER_CR);
+    if(gosub_stack_ptr < MAX_GOSUB_STACK_DEPTH) {
+        gosub_stack[gosub_stack_ptr] = tokenizer_num();//存储gosub语句下一行语句的行号（地址）作为返回地址
+        gosub_stack_ptr++;
+        jump_linenum(linenum);//跳转
+    } else {
+        printf("gosub_statement: gosub stack exhausted\n");
+    }
+}
+
+gosub_stack是一个数组（作为函数调用栈），gosub_stack_ptr是数组下标作为栈顶指针。
+
+```
+
+return函数：
+
+```
+static void return_statement()
+{
+    accept(TOKENIZER_RETURN);
+    if(gosub_stack_ptr > 0) {
+        gosub_stack_ptr--;
+        jump_linenum(gosub_stack[gosub_stack_ptr]);//返回调用位置的下一行语句开始执行
+    } else {
+        printf("return_statement: non-matching return\n");
+    }
+}
+
+```
+
+for-next语句，首先要处理循环执行问题（回退式的条件跳转），其次要处理子句嵌套问题。我们可以按照if语句的方式处理跳转和嵌套，但是嵌套的深度不可以控制。换一种思路，我们可以按照函数调用的方式来处理for语句嵌套问题，即自定义调用栈来处理嵌套。相对于函数调用for语句需要多保存一个变量和一个结束值，当然需要记录返回位置（行号或地址）。我们需要一个结构体记录这些数据。并且将该结构实体入栈，实现可控的嵌套。next语句检查条件，并作出回退跳转还是中止循环执行下一行语句。for语句初始化循环环境结构体数据（步进变量初始值、结束值、循环体第一句语句行号（地址））并入栈。
+
+for函数：
+
+```
+static void for_statement()
+{
+    int for_variable, to;
+
+    accept(TOKENIZER_FOR);
+    for_variable = tokenizer_var_num();//获取步进变量（下标或索引）
+    accept(TOKENIZER_VARIABLE);
+    accept(TOKENIZER_EQ);
+    vbasic_set_var(for_variable, expr());//类似let语句，设置步进变量初始数值
+    accept(TOKENIZER_TO);
+    to = expr();//设置结束数值
+    accept(TOKENIZER_CR);
+
+    if(for_stack_ptr < MAX_FOR_STACK_DEPTH) {
+        for_stack[for_stack_ptr].line_after_for = tokenizer_num();//记录循环体的第一句行号（地址）
+        for_stack[for_stack_ptr].for_variable = for_variable;//记录步进变量（数组下标）
+        for_stack[for_stack_ptr].to = to;//记录结束数值
+        for_stack_ptr++;//入栈
+    } else {
+        printf("for_statement: for stack depth exceeded\n");
+    }
+}
+
+for_stack是数组作为循环嵌套栈使用，里面存储循环环境结构体，for_stack_ptr是循环栈栈顶指针（数组下标）。
+
+```
+
+next函数：
+
+```
+static void next_statement()
+{
+    int var;
+    accept(TOKENIZER_NEXT);
+    var = tokenizer_var_num();//获取步进变量（下标）
+    accept(TOKENIZER_VARIABLE);
+
+    if(for_stack_ptr > 0 && var == for_stack[for_stack_ptr - 1].for_variable) {
+        vbasic_set_var(var, vbasic_get_var(var) + 1);//步进变量增加1
+        if(vbasic_get_var(var) <= for_stack[for_stack_ptr - 1].to) {//步进变量小于结束数值则继续循环
+            jump_linenum(for_stack[for_stack_ptr - 1].line_after_for);//回退跳转继续执行循环
+        } else {
+            for_stack_ptr--;//出栈
+            accept(TOKENIZER_CR);//跳出循环
+        }
+    } else {
+        printf("next_statement: non-matching next (expected %d, found %d)\n", for_stack[for_stack_ptr - 1].for_variable, var);
+        accept(TOKENIZER_CR);
+    }
+}
+
+```
+
+仔细观察上面的gosub-return语句和for-next语句的实现，是多么的相似。
+
+最后是程序结束end语句。
+
+end函数：
+
+```
+static void end_statement()
+{
+    accept(TOKENIZER_END);
+    ended = 1;//程序结束标志变量
+}
+
+```
 
 ### 四、将Token作为命令来解释和执行
 ---------------------------------
 
+上面是全部的表达式和语句的语法分析（校验是否符合语法规则）和语义分析执行的全部核心实现。还需要额外的接口函数，比如statement函数，line函数等。
+
+statement函数：
+
+```
+static void statement()
+{
+    int token;
+
+    token = tokenizer_token();
+
+    switch(token) {
+        case TOKENIZER_PRINT:
+            print_statement();
+            break;
+        case TOKENIZER_IF:
+            if_statement();
+            break;
+        case TOKENIZER_GOTO:
+            goto_statement();
+            break;
+        case TOKENIZER_GOSUB:
+            gosub_statement();
+            break;
+        case TOKENIZER_RETURN:
+            return_statement();
+            break;
+        case TOKENIZER_FOR:
+            for_statement();
+            break;
+        case TOKENIZER_NEXT:
+            next_statement();
+            break;
+        case TOKENIZER_END:
+            end_statement();
+            break;
+        case TOKENIZER_LET:
+            accept(TOKENIZER_LET);
+        /* Fall through. */
+        case TOKENIZER_VARIABLE:
+            let_statement();
+            break;
+        default:
+            printf("ubasic.c: statement(): not implemented %d\n", token);
+            exit(1);
+    }
+}
+
+```
+
+line函数：
+
+```
+static void line_statement()
+{
+    accept(TOKENIZER_NUMBER);
+    statement();
+}
+
+```
+
+run函数：
+
+```
+void vbasic_run()
+{
+    if(tokenizer_finished()) {
+        printf("vBASIC program finished\n");
+        return;
+    }
+
+    line_statement();
+}
+
+```
+
+finished函数：
+
+```
+int vbasic_finished()
+{
+    return ended || tokenizer_finished();
+}
+
+```
+
+init初始化函数：
+
+```
+void vbasic_init(const char *program)
+{
+    program_ptr = program;
+    for_stack_ptr = gosub_stack_ptr = 0;
+    tokenizer_init(program);
+    ended = 0;//程序结束标志，0：未结束 1：已结束
+}
+
+program_ptr是程序文本的第一个字符的指针。程序的起始地址。跳转都是从头开始扫描的（有点尴尬）。
+
+```
+
+当然不要忘记变量环境的设置和获取函数。
+
+```
+void vbasic_set_var(int varnum, int value)
+{
+    if(varnum > 0 && varnum <= MAX_VARNUM) {
+        variables[varnum] = value;
+    }
+}
+
+int vbasic_get_var(int varnum)
+{
+    if(varnum > 0 && varnum <= MAX_VARNUM) {
+        return variables[varnum];
+    }
+    return 0;
+}
+
+variables是数组，前面讲到的26个元素的数组，作为26个变量的内存空间。字母会映射到下标。
+
+```
 
 
 ### 五、其他代码
 ---------------------------------
 
+主要是测试代码。
 
+```
+static const char program[] =
+"\
+10 gosub 100\n\
+20 for i = 1 to 10\n\
+30 print i\n\
+40 next i\n\
+50 print \"end\"\n\
+60 end\n\
+100 print \"subroutine\"\n\
+110 return\n\
+";
+
+int main(void)
+{
+    vbasic_init(program);
+
+    do { ubasic_run(); } while(!vbasic_finished());
+
+    return 0;
+}
+
+```
+
+### 六、随便说点
+---------------------------------
+
+程序基本都是来自大神dunkels的ubasic，修改一点东西。主要是分析解释器的写法（非正常实现），正常实现基本都是走AST，然后虚拟机。上面的实现基本将词法分析（分词token）跟其他部分分开，语法分析（检验）和语义分析实现合并在一起。语法校验成功后直接执行语义解释，失败则直接exit。相比较于工业级别的解释器（如python等），有很多不完善的地方，比如不支持完整的函数和类，但是根据dunkels的说明是作为嵌入式领域（硬件资源有限）的设备使用的解释器（或语言），能实现基本的功能，比汇编写起来还是好很多的。
+
+基于这篇你可以对ubasic进行改进和添加新特性，也可以思考更加一般通用的东西，还可以进一步思考虚拟机、模拟器、语言转换、汇编代码生成的问题。
+
+写这篇花了不少时间，希望对你有用，希望以后你看到的不仅是语法还有原理结构。
 
 >END
 
