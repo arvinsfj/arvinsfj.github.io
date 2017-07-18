@@ -532,7 +532,7 @@ static void print_statement()
     accept(TOKENIZER_PRINT);
     do{
         if(tokenizer_token() == TOKENIZER_STRING) {
-            tokenizer_string(string, sizeof(string));
+            tokenizer_str(string, sizeof(string));
             printf("%s", string);
             tokenizer_next();
         } else if(tokenizer_token() == TOKENIZER_COMMA) {//每个逗号代表一个空格
