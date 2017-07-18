@@ -859,7 +859,7 @@ int main(void)
 {
     vbasic_init(program);
 
-    do { ubasic_run(); } while(!vbasic_finished());
+    do { vbasic_run(); } while(!vbasic_finished());
 
     return 0;
 }
