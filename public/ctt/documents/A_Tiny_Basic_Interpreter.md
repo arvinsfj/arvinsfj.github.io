@@ -443,7 +443,7 @@ static int expr()
 
 ```
 
-realtion函数的实现：
+relation函数的实现：
 
 ```
 static int relation()
