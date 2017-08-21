@@ -31,6 +31,7 @@
 # TOOLs
 ----------------------
 
+* [CNES](Tools/TestNes/TestNes.zip)
 * [Basic Lang](Tools/BasicLang/basic_lang.zip)
 * [Rose Editor](Tools/RoseEditor/rose_editor.zip)
 * [QBJS](Tools/qbjs/index.html)
