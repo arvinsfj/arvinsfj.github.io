@@ -31,6 +31,7 @@
 # TOOLs
 ----------------------
 
+* [C 运算符 优先级](Tools/CPRI/C_Operator_Priority.html)
 * [CNES](Tools/TestNes/TestNes.zip)
 * [Basic Lang](Tools/BasicLang/basic_lang.zip)
 * [Rose Editor](Tools/RoseEditor/rose_editor.zip)
