@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [CC++ Tips](documents/cc++tips.txt)
 * [A Tiny Game](detail.html?doc=documents/A_Tiny_Game.md)
 * [Tiny Basic Interpreter](detail.html?doc=documents/A_Tiny_Basic_Interpreter.md)
 * [Memory Manager In C](detail.html?doc=documents/Memory_Manager_In_C.md)
