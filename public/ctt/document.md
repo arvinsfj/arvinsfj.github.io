@@ -2,7 +2,8 @@
 # HOWTOs
 ----------------------
 
-* [How To Get Images From A Video In IOS](detail.html?doc=documents//How_To_Get_Images_From_A_Video_In_IOS.md)
+* [How To Create OR Play A GIF In IOS](detail.html?doc=documents/How_To_Create_OR_Play_A_GIF_In_IOS.md)
+* [How To Get Images From A Video In IOS](detail.html?doc=documents/How_To_Get_Images_From_A_Video_In_IOS.md)
 * [CC++ Tips](documents/cc++tips.txt)
 * [A Tiny Game](detail.html?doc=documents/A_Tiny_Game.md)
 * [Tiny Basic Interpreter](detail.html?doc=documents/A_Tiny_Basic_Interpreter.md)
