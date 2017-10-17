@@ -90,3 +90,4 @@ UIImage *animatedImage = [UIImage animatedImageWithImages:images duration:durati
 1. CoreGraphics框架提供了大量对单张图片处理的方法（本质是绘制）
 2. ImageIO框架提供了图片集的读取和合并处理方法
 3. AVFoundation框架提供了对多媒体数据（音视频数据）的处理方法，其中AVAsset实现了多媒体资源的抽象
+4. iOS官方的多媒体框架大多基于生产者消费者模式架构（输入-处理会话-输出）
