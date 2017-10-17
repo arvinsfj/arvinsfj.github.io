@@ -37,7 +37,3 @@ UIImage *image=[UIImage imageWithCGImage:imageRef];
 1. 生成缩略图和预览图（单张图片）
 2. 将多张图片合成GIF、WEBP或APNG等格式的文件（多张图片）
 3. 将多张图片通过slam算法生成物体的3D模型
-
-
->END
-
