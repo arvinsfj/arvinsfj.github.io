@@ -2,7 +2,7 @@
 # HOWTOs
 ----------------------
 
-*[How To Replay A Audio In A HTML Video.md](detail.html?doc=documents/How_To_Replay_A_Audio_In_HTML_Video.md)
+* [How To Replay A Audio In A HTML Video.md](detail.html?doc=documents/How_To_Replay_A_Audio_In_HTML_Video.md)
 * [How To Create A Video By Images In IOS](detail.html?doc=documents/How_To_Create_A_Video_By_Images_In_IOS.md)
 * [NAT Without Server](detail.html?doc=documents/NAT_UDP_Without_Server.md)
 * [How To Create A AppStore Video](detail.html?doc=documents/How_To_Create_A_AppStore_Video.md)
