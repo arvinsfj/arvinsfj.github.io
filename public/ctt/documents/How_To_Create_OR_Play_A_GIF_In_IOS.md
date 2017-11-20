@@ -94,4 +94,4 @@ UIImage *animatedImage = [UIImage animatedImageWithImages:images duration:durati
 
 >END
 ---------------------------------
-[DOWNLOAD](./TestGIF.zip)
+[DOWNLOAD](documents/TestGIF.zip)

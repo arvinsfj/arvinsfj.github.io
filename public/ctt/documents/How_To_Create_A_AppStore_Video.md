@@ -67,5 +67,5 @@ AppStore支持视频的上传（以前只能上传图片），大公司有自己
 
 ---------------------------------------------
 
-[DOWNLOAD](./ScreenReplay.zip)
+[DOWNLOAD](documents/ScreenReplay.zip)
 
