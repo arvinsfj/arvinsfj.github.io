@@ -234,7 +234,7 @@ callq指令机器码是e8，后面跟4个字节的偏移地址。跳转地址计
 虽然可以修改callq的偏移地址，但是最终的目标地址所表示的函数应该满足当前的参数要求，否则目标函数的运行有可能出现错误。
 
 
-![机器码](documents/jqm.png)
+![机器码](documents/testasm/jqm.png)
 机器码截图
 
 我们可以找到"hello, world!"字符串，直接修改就行了。
@@ -247,10 +247,10 @@ callq指令机器码是e8，后面跟4个字节的偏移地址。跳转地址计
 
 
 
-![修改后的机器码](documents/jqmxg.png)
+![修改后的机器码](documents/testasm/jqmxg.png)
 修改后的机器码截图
 
-![修改后的运行效果](documents/zxxg.png)
+![修改后的运行效果](documents/testasm/zxxg.png)
 修改后的运行效果
 
 
