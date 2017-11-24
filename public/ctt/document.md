@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [How To Edit A EXE](detail.html?doc=documents/testasm/How_To_Edit_A_EXE.md)
 * [How To Modify A EXE](detail.html?doc=documents/testasm/How_To_Modify_A_EXE.md)
 * [A++ or ++A](detail.html?doc=documents/A++.md)
 * [How To Replay A Audio In A HTML Video](detail.html?doc=documents/How_To_Replay_A_Audio_In_HTML_Video.md)
