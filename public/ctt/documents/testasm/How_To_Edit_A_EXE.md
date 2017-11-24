@@ -155,7 +155,7 @@ putchar函数、格式化字符串、printf函数
 
 运行程序OK！效果如下：
 
-![修改后的运行效果](http://arvinsfj.github.io/public/ctt/documents/testasm/zxxg.png)
+![修改后的运行效果](http://arvinsfj.github.io/public/ctt/documents/testasm/zxxg1.png)
 
 
 运行命令：otool -tv test
