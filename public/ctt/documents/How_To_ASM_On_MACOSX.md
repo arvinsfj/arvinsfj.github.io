@@ -277,6 +277,8 @@ L_.str1:
 上面的代码请自行阅读和理解。ps：将retq指令当成callq指令进行使用（类似缓存区溢出）。
 
 ```
+#include <stdio.h>
+
 void hello_arr1(void)
 {
     int a = 0;
@@ -284,7 +286,25 @@ void hello_arr1(void)
     gets(arr);
 	printf("a=%d\n", a);
 }
+
+void hello_arr21(void)
+{
+    printf("hello, world! arr21\n");
+}
+
+void hello_arr2(void)
+{
+    int arr[1];
+    arr[3] = hello_arr21;
+}
+
+int main(void)
+{
+    hello_arr1();
+    hello_arr2();
+}
 ```
+上面的代码输出是什么？
 
 
 ---------------------------------------------
