@@ -120,20 +120,14 @@ pushq %rbp
 	.cfi_offset %rbp, -16
 movq %rsp, %rbp
 	.cfi_def_cfa_register %rbp
-subq $16, %rsp
-leaq L_.str1(%rip), %rax
-movl %edi, -4(%rbp)
-movl %esi, -8(%rbp)
-movl -4(%rbp), %esi
-movl -8(%rbp), %edx
-movq %rax, %rdi
+movl %esi, %edx
+movl %edi, %esi
+leaq L_.str1(%rip), %rdi
 movb $0, %al
 callq _printf
-movl %eax, -12(%rbp)
-addq $16, %rsp
 popq %rbp
 retq
-		.cfi_endproc
+	.cfi_endproc
 
 	.globl _hello
 	.p2align 4, 0x90
