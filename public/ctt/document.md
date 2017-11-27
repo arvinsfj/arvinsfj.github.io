@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [How To ASM On MACOSX](detail.html?doc=documents/How_To_ASM_On_MACOSX.md)
 * [How To Edit A EXE](detail.html?doc=documents/testasm/How_To_Edit_A_EXE.md)
 * [How To Modify A EXE](detail.html?doc=documents/testasm/How_To_Modify_A_EXE.md)
 * [A++ or ++A](detail.html?doc=documents/A++.md)
