@@ -306,6 +306,122 @@ int main(void)
 ```
 上面的代码输出是什么？
 
+```
+	.section	__TEXT,__text,regular,pure_instructions
+	.macosx_version_min 10, 13
+	.globl	_hello_arr1
+	.p2align	4, 0x90
+_hello_arr1:                            ## @hello_arr1
+	.cfi_startproc
+## BB#0:
+	pushq	%rbp
+Lcfi0:
+	.cfi_def_cfa_offset 16
+Lcfi1:
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+Lcfi2:
+	.cfi_def_cfa_register %rbp
+	subq	$32, %rsp
+	leaq	-5(%rbp), %rdi
+	movl	$0, -4(%rbp)
+	movb	l_hello_arr1.arr(%rip), %al
+	movb	%al, -5(%rbp)
+	callq	_gets
+	leaq	L_.str(%rip), %rdi
+	movl	-4(%rbp), %esi
+	movq	%rax, -16(%rbp)         ## 8-byte Spill
+	movb	$0, %al
+	callq	_printf
+	movl	%eax, -20(%rbp)         ## 4-byte Spill
+	addq	$32, %rsp
+	popq	%rbp
+	retq
+	.cfi_endproc
+
+	.globl	_hello_arr21
+	.p2align	4, 0x90
+_hello_arr21:                           ## @hello_arr21
+	.cfi_startproc
+## BB#0:
+    leaq    _hello(%rip), %rax
+    pushq   %rax
+	pushq	%rbp
+Lcfi3:
+	.cfi_def_cfa_offset 16
+Lcfi4:
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+Lcfi5:
+	.cfi_def_cfa_register %rbp
+	subq	$16, %rsp
+	leaq	L_.str.1(%rip), %rdi
+	movb	$0, %al
+	callq	_printf
+	movl	%eax, -4(%rbp)          ## 4-byte Spill
+	addq	$16, %rsp
+	popq	%rbp
+	retq
+	.cfi_endproc
+
+	.globl	_hello_arr2
+	.p2align	4, 0x90
+_hello_arr2:                            ## @hello_arr2
+	.cfi_startproc
+## BB#0:
+	pushq	%rbp
+Lcfi6:
+	.cfi_def_cfa_offset 16
+Lcfi7:
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+Lcfi8:
+	.cfi_def_cfa_register %rbp
+	leaq	_hello_arr21(%rip), %rax
+	movl	%eax, %ecx
+	movl	%ecx, 8(%rbp)
+	popq	%rbp
+	retq
+	.cfi_endproc
+
+	.globl	_main
+	.p2align	4, 0x90
+_main:                                  ## @main
+	.cfi_startproc
+## BB#0:
+	pushq	%rbp
+Lcfi9:
+	.cfi_def_cfa_offset 16
+Lcfi10:
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+Lcfi11:
+	.cfi_def_cfa_register %rbp
+	callq	_hello_arr1
+	callq	_hello_arr2
+_hello:
+	xorl	%eax, %eax
+	popq	%rbp
+	retq
+	.cfi_endproc
+
+	.section	__TEXT,__const
+l_hello_arr1.arr:                       ## @hello_arr1.arr
+	.byte	1
+
+	.section	__TEXT,__cstring,cstring_literals
+L_.str:                                 ## @.str
+	.asciz	"a=%d\n"
+
+L_.str.1:                               ## @.str.1
+	.asciz	"hello, world! arr21\n"
+
+
+.subsections_via_symbols
+```
+
+上面的代码呢？
+
 
 ---------------------------------------------
 
