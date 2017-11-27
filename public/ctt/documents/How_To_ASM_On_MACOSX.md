@@ -124,6 +124,8 @@ subq $16, %rsp
 leaq L_.str1(%rip), %rax
 movl %edi, -4(%rbp)
 movl %esi, -8(%rbp)
+movl -4(%rbp), %esi
+movl -8(%rbp), %edx
 movq %rax, %rdi
 movb $0, %al
 callq _printf
