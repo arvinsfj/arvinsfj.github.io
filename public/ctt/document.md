@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [A Non-Rectangular Button](detail.html?doc=documents/A_Non_Rectangular_Button.md)
 * [How To ASM On MACOSX2](detail.html?doc=documents/How_To_ASM_On_MACOSX2.md)
 * [How To ASM On MACOSX](detail.html?doc=documents/How_To_ASM_On_MACOSX.md)
 * [How To Edit A EXE](detail.html?doc=documents/testasm/How_To_Edit_A_EXE.md)
