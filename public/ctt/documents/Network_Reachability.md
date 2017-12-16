@@ -203,7 +203,63 @@ SCNetworkReachabilityGetFlags(self.networkReachability, &flags)
 5. 阅读和使用API，按照使用逻辑来理解，会事半功倍。
 6. 上面的网络状态检测创建，在ip地址（0.0.0.0）创建时会返回一次状态，在域名创建是会返回2次（请求连接一次，完成后断开链接一次）。
 7. 我们为什么需要封装系统提供的某种服务的接口？一是提供符合业务简单的调用接口，二是封装底层的复杂性提高使用的健壮性。
+8. block变量可以看成一个含有函数指针的某个类实例对象的指针变量。首先创建对象，然后把该对象的指针赋值给block指针变量。
+9. block的传递是在栈上的，ARC时需要使用copy赋值，使其放在堆上，不至于函数调用结束而被释放。
 
+### 五、附加block的实现
+---------------------------------
+
+```
+#import <Foundation/Foundation.h>
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        void (^myblock)() = ^() {
+            NSLog(@"hello block");
+        };
+        myblock();
+    }
+    return 0;
+}
+```
+下面是C++代码的实现(通过命令clang -rewrite-objc main.m生成的)
+```
+struct __block_impl {
+  void *isa;
+  int Flags;
+  int Reserved;
+  void *FuncPtr;
+};
+//在C++中class跟struct没有本质的区别
+struct __main_block_impl_0 {
+  struct __block_impl impl;
+  struct __main_block_desc_0* Desc;
+  __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int flags=0) {//类的构造函数
+    impl.isa = &_NSConcreteStackBlock;
+    impl.Flags = flags;
+    impl.FuncPtr = fp;
+    Desc = desc;
+  }
+};
+static void __main_block_func_0(struct __main_block_impl_0 *__cself) {
+
+            NSLog((NSString *)&__NSConstantStringImpl__var_folders_cl_6hv0835563z0xtzr3sdql5g80000gn_T_main_0106be_mi_0);
+        }
+
+static struct __main_block_desc_0 {
+  size_t reserved;
+  size_t Block_size;
+} __main_block_desc_0_DATA = { 0, sizeof(struct __main_block_impl_0)};
+int main(int argc, const char * argv[]) {
+    /* @autoreleasepool */ { __AtAutoreleasePool __autoreleasepool; 
+
+        void (*myblock)() = ((void (*)())&__main_block_impl_0((void *)__main_block_func_0, &__main_block_desc_0_DATA));//调用类的构造方法，生成实例对象，并把对象指针赋值给指针变量myblock
+
+        ((void (*)(__block_impl *))((__block_impl *)myblock)->FuncPtr)((__block_impl *)myblock);//函数FuncPtr调用
+    }
+    return 0;
+}
+```
+自己仔细分析上面的代码，会对block的底层实现有所领会。
 
 
 >END
