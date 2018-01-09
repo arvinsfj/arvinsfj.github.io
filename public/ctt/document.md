@@ -47,6 +47,7 @@
 # TOOLs
 ----------------------
 
+* [TCP Client On Chrome](Tools/Script/tcp_client.zip)
 * [8086 INS](documents/8086instructions.html)
 * [WebAssembly](Tools/wasm/index.html)
 * [C 运算符 优先级](Tools/CPRI/C_Operator_Priority.html)
