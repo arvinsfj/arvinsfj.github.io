@@ -2,7 +2,7 @@
 # HOWTOs
 ----------------------
 
-* [How To Test Machine Code In C](detail.html?doc=documents/How_To_Test_Machine_Code_In_C.md)
+* [How To Test Machine Code In C](detail.html?doc=documents/testasm/How_To_Test_Machine_Code_In_C.md)
 * [BF Analysis](detail.html?doc=documents/BF.txt)
 * [SSL Certificate Valid In Client](detail.html?doc=documents/SSL_Cert_Valid_In_Client.md)
 * [Network Reachability Service On iOS](detail.html?doc=documents/Network_Reachability.md)
