@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [A Doom Like Render](detail.html?doc=documents/A_Doom_Like_Render.md)
 * [How To Execute Code In Data Segment](detail.html?doc=documents/testasm/How_To_Execute_Code_In_Data_Segment.md)
 * [How To Test Machine Code In C](detail.html?doc=documents/testasm/How_To_Test_Machine_Code_In_C.md)
 * [BF Analysis](detail.html?doc=documents/BF.txt)
