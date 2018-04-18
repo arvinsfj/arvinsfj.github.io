@@ -2,7 +2,7 @@
 # HOWTOs
 ----------------------
 
-* [Draw Something In Computer](detail.html?doc=documents/testasm/Draw_Something_In_Computer.md)
+* [Draw Something In Computer](detail.html?doc=documents/Draw_Something_In_Computer.md)
 * [Hook And Overflow](detail.html?doc=documents/testasm/Hook_And_Overflow.md)
 * [C Lib Test](detail.html?doc=documents/ctest.md)
 * [A Doom Like Render](detail.html?doc=documents/A_Doom_Like_Render.md)
