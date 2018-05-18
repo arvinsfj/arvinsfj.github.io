@@ -1,7 +1,6 @@
 
 
 content = "\
-#include <stdio.h>\
 int main() {\
     int score[6] = {76, 82, 90, 86, 79, 62};\
     int credit[6] = {2, 2, 1, 2, 2, 3};\
@@ -26,8 +25,7 @@ int main() {\
          printf(\"the score of student number %d is %f lower than 60.\n\", stu_number, mean );\
     }\
     return 0;\
-}\
-";
+}";
 
 var l = new Lexer();
 l.show();
