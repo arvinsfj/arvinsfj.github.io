@@ -122,7 +122,7 @@ Lexer.prototype.main = function() {
 			this.tokens.push(new Token(4, content[i]));
 			i = this.skip_blank(i+1);
 			while (i < content.length) {
-				if (content.slice(i).search('include')) {
+				if (content.slice(i).search(/include/) != -1) {
 					this.tokens.push(new Token(0, 'include'));
 					i = this.skip_blank(i+7);
 				}
@@ -141,8 +141,8 @@ Lexer.prototype.main = function() {
 					this.tokens.push(new Token(1, lib));
 					this.tokens.push(new Token(4, close_flag));
 					i = this.skip_blank(i+1);
+					break;
 				} else {
-					// 'include error!'
 					console.log('include error!');
 					//exit();
 				}
