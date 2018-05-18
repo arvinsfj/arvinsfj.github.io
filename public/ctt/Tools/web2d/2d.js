@@ -204,6 +204,7 @@ function Render2DObject(width, height, top, jsonObject, bgColor) {
     this.app = new Application({ width: height-top-bottom, height: height-top-bottom, antialiasing: true, transparent: false, resolution: 1 , backgroundColor: bgColor} );
     //Add the canvas that Pixi automatically created for you to the HTML document
     document.body.appendChild(this.app.view);
+    this.app.renderer.plugins.interaction.autoPreventDefault = false;
     this.app.renderer.view.style.position = "absolute"
     this.app.renderer.view.style.marginLeft = (width - this.app.view.width) * 0.5 + "px";
     this.app.renderer.view.style.marginTop = top + "px";
