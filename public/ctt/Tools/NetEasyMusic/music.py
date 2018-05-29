@@ -108,7 +108,7 @@ def musicSave(name, path, url):
 
 
 isSave = True
-jsonStr = musicSearch("王菲", 0, 100)
+jsonStr = musicSearch("小苏菲", 0, 100)
 data = json.loads(jsonStr)
 songs = data["result"]["songs"]
 for i in xrange(len(songs)):
