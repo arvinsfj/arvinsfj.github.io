@@ -2,6 +2,8 @@
 # HOWTOs
 ----------------------
 
+
+* [Something Abount C Language](detail.html?doc=documents/Something_Abount_C.md)
 * [Draw Something In Computer](detail.html?doc=documents/Draw_Something_In_Computer.md)
 * [Hook And Overflow](detail.html?doc=documents/testasm/Hook_And_Overflow.md)
 * [C Lib Test](detail.html?doc=documents/ctest.md)
