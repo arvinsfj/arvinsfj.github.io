@@ -2,12 +2,12 @@
 # HOWTOs
 ----------------------
 
-
+* [A C Build System Config File In Sublime](detail.html?doc=documents/Sublime_Config_C.md)
 * [Something Abount C Language](detail.html?doc=documents/Something_Abount_C.md)
 * [Draw Something In Computer](detail.html?doc=documents/Draw_Something_In_Computer.md)
 * [Hook And Overflow](detail.html?doc=documents/testasm/Hook_And_Overflow.md)
 * [C Lib Test](detail.html?doc=documents/ctest.md)
-* [A Doom Like Render](detail.html?doc=documents/A_Doom_Like_Render.md)
+* [Doom Like Render](detail.html?doc=documents/Doom_Like_Render.md)
 * [How To Execute Code In Data Segment](detail.html?doc=documents/testasm/How_To_Execute_Code_In_Data_Segment.md)
 * [How To Test Machine Code In C](detail.html?doc=documents/testasm/How_To_Test_Machine_Code_In_C.md)
 * [BF Analysis](detail.html?doc=documents/BF.txt)
