@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [Something Abount C Language2](detail.html?doc=documents/Something_Abount_C2.md)
 * [A C Build System Config File In Sublime](detail.html?doc=documents/Sublime_Config_C.md)
 * [Something Abount C Language](detail.html?doc=documents/Something_Abount_C.md)
 * [Draw Something In Computer](detail.html?doc=documents/Draw_Something_In_Computer.md)
