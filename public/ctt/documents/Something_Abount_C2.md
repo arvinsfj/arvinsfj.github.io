@@ -765,8 +765,307 @@ int main(int argc, char** argv)
 
 ```
 
+### 八、列表（数据容器）
+---------------------------------
 
-### 八、随便说点
+代码如下：
+
+```
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_SIGN_LENGTH 64
+
+typedef struct {
+    int x;
+    int y;
+    int z;
+    int face;
+    char text[MAX_SIGN_LENGTH];
+} Sign;
+
+typedef struct {
+    unsigned int capacity;
+    unsigned int size;
+    Sign *data;
+} SignList;
+
+
+void sign_list_alloc(SignList* list, int capacity)
+{
+	list->capacity = capacity;
+	list->size = 0;
+	list->data = (Sign*)calloc(capacity, sizeof(Sign));
+}
+
+void sign_list_free(SignList* list)
+{
+	free(list->data);
+}
+
+void sign_list_grow(SignList* list)
+{
+	SignList new_list;
+	sign_list_alloc(&new_list, list->capacity*2);
+	memcpy(new_list.data, list->data, list->size * sizeof(Sign));
+	free(list->data);
+	list->capacity = new_list.capacity;
+	list->data = new_list.data;
+}
+
+void _sign_list_add(SignList* list, Sign* sign)
+{
+	if (list->size == list->capacity) {
+		sign_list_grow(list);
+	}
+	Sign* e = list->data + list->size++;
+	memcpy(e, sign, sizeof(Sign));
+}
+
+
+int sign_list_remove(SignList *list, int x, int y, int z, int face);
+
+void sign_list_add(SignList *list, int x, int y, int z, int face, const char *text)
+{
+    sign_list_remove(list, x, y, z, face);
+    Sign sign;
+    sign.x = x;
+    sign.y = y;
+    sign.z = z;
+    sign.face = face;
+    strncpy(sign.text, text, MAX_SIGN_LENGTH);
+    sign.text[MAX_SIGN_LENGTH - 1] = '\0';
+    _sign_list_add(list, &sign);
+}
+
+int sign_list_remove(SignList *list, int x, int y, int z, int face) 
+{
+    int result = 0;
+    for (int i = 0; i < list->size; i++) {
+        Sign *e = list->data + i;
+        if (e->x == x && e->y == y && e->z == z && e->face == face) {
+            Sign *other = list->data + (--list->size);
+            memcpy(e, other, sizeof(Sign));
+            i--;
+            result++;
+        }
+    }
+    return result;
+}
+
+int sign_list_remove_all(SignList *list, int x, int y, int z) 
+{
+    int result = 0;
+    for (int i = 0; i < list->size; i++) {
+        Sign *e = list->data + i;
+        if (e->x == x && e->y == y && e->z == z) {
+            Sign *other = list->data + (--list->size);
+            memcpy(e, other, sizeof(Sign));
+            i--;
+            result++;
+        }
+    }
+    return result;
+}
+
+int sign_list_get(SignList *list, int x, int y, int z, int face) 
+{
+    for (int i = 0; i < list->size; i++) {
+        Sign *e = list->data + i;
+        if (e->x == x && e->y == y && e->z == z && e->face == face) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+int main(int argc, char** argv)
+{
+	SignList* list = malloc(sizeof(SignList));
+	sign_list_alloc(list, 10);
+
+	sign_list_add(list, 1, 1, 1, 1, "hello");
+	Sign* sign = &list->data[sign_list_get(list, 1, 1, 1, 1)];
+	printf("%s\n", sign->text);
+
+	sign_list_remove_all(list, 1,1,1);
+	sign_list_free(list);
+	free(list);
+
+	return 0;
+}
+
+```
+
+### 十、环状队列（数据容器）
+---------------------------------
+
+代码如下：
+
+```
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef enum {
+    BLOCK,
+    LIGHT,
+    KEY,
+    COMMIT,
+    EXIT
+} RingEntryType;
+
+typedef struct {
+    RingEntryType type;
+    int p;
+    int q;
+    int x;
+    int y;
+    int z;
+    int w;
+    int key;
+} RingEntry;
+
+typedef struct {
+    unsigned int capacity;
+    unsigned int start;
+    unsigned int end;
+    RingEntry *data;
+} Ring;
+
+
+void ring_alloc(Ring *ring, int capacity) 
+{
+    ring->capacity = capacity;
+    ring->start = 0;
+    ring->end = 0;
+    ring->data = (RingEntry *)calloc(capacity, sizeof(RingEntry));
+}
+
+void ring_free(Ring *ring) 
+{
+    free(ring->data);
+}
+
+int ring_empty(Ring *ring) 
+{
+    return ring->start == ring->end;
+}
+
+int ring_full(Ring *ring) 
+{
+    return ring->start == (ring->end + 1) % ring->capacity;
+}
+
+int ring_size(Ring *ring) 
+{
+    if (ring->end >= ring->start) {
+        return ring->end - ring->start;
+    }
+    else {
+        return ring->capacity - (ring->start - ring->end);
+    }
+}
+
+int ring_get(Ring *ring, RingEntry *entry);
+void ring_put(Ring *ring, RingEntry *entry);
+
+void ring_grow(Ring *ring) 
+{
+    Ring new_ring;
+    RingEntry entry;
+    ring_alloc(&new_ring, ring->capacity * 2);
+    while (ring_get(ring, &entry)) {
+        ring_put(&new_ring, &entry);
+    }
+    free(ring->data);
+    ring->capacity = new_ring.capacity;
+    ring->start = new_ring.start;
+    ring->end = new_ring.end;
+    ring->data = new_ring.data;
+}
+
+void ring_put(Ring *ring, RingEntry *entry) 
+{
+    if (ring_full(ring)) {
+        ring_grow(ring);
+    }
+    RingEntry *e = ring->data + ring->end;
+    memcpy(e, entry, sizeof(RingEntry));
+    ring->end = (ring->end + 1) % ring->capacity;
+}
+
+// 定制写入实体
+void ring_put_block(Ring *ring, int p, int q, int x, int y, int z, int w) 
+{
+    RingEntry entry;
+    entry.type = BLOCK;
+    entry.p = p;
+    entry.q = q;
+    entry.x = x;
+    entry.y = y;
+    entry.z = z;
+    entry.w = w;
+    ring_put(ring, &entry);
+}
+
+void ring_put_light(Ring *ring, int p, int q, int x, int y, int z, int w) 
+{
+    RingEntry entry;
+    entry.type = LIGHT;
+    entry.p = p;
+    entry.q = q;
+    entry.x = x;
+    entry.y = y;
+    entry.z = z;
+    entry.w = w;
+    ring_put(ring, &entry);
+}
+
+int ring_get(Ring *ring, RingEntry *entry) 
+{
+    if (ring_empty(ring)) {
+        return 0;
+    }
+    RingEntry *e = ring->data + ring->start;
+    memcpy(entry, e, sizeof(RingEntry));
+    ring->start = (ring->start + 1) % ring->capacity;
+    return 1;
+}
+
+int main(int argc, char** argv)
+{
+	Ring* ring = malloc(sizeof(Ring));
+	ring_alloc(ring, 1);
+
+	ring_put_block(ring, 1, 1, 1, 1, 1, 1);
+    ring_put_light(ring, 21, 1, 1, 1, 1, 1);
+
+    RingEntry* entry1 = malloc(sizeof(RingEntry));
+    RingEntry* entry2 = malloc(sizeof(RingEntry));
+    ring_get(ring, entry1);
+    ring_get(ring, entry2);
+
+    printf("%d: %d\n", entry1->p, entry1->type);
+    printf("%d: %d\n", entry2->p, entry2->type);
+
+    free(entry1);
+    free(entry2);
+
+	ring_free(ring);
+	free(ring);
+
+	return 0;
+}
+
+
+```
+
+
+### 十一、随便说点
 ---------------------------------
 
 1. C代码的解释有时间再做，上面的代码已经够复杂了
