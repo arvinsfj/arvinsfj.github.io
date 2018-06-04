@@ -526,6 +526,8 @@ int main(int argc, char** argv)
 ### 六、lodepng库
 ---------------------------------
 
+代码如下：
+
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -582,15 +584,195 @@ int main(int argc, char** argv)
 
 ```
 
+### 七、hash表
+---------------------------------
 
-### 七、随便说点
+代码如下：
+
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define EMPTY_ENTRY(entry) ((entry)->value == 0)
+
+#define MAP_FOR_EACH(map, ex, ey, ez, ew) \
+    for (unsigned int i = 0; i <= map->mask; i++) { \
+        MapEntry *entry = map->data + i; \
+        if (EMPTY_ENTRY(entry)) { \
+            continue; \
+        } \
+        int ex = entry->e.x + map->dx; \
+        int ey = entry->e.y + map->dy; \
+        int ez = entry->e.z + map->dz; \
+        int ew = entry->e.w;
+
+#define END_MAP_FOR_EACH }
+
+typedef union {
+    unsigned int value;
+    struct {
+        unsigned char x;
+        unsigned char y;
+        unsigned char z;
+        char w;
+    } e;
+} MapEntry;
+
+typedef struct {
+    int dx;
+    int dy;
+    int dz;
+    unsigned int mask;
+    unsigned int size;
+    MapEntry *data;
+} Map;
+
+int hash_init(int key) 
+{
+	key = ~key + (key << 15);
+    key = key ^ (key >> 12);
+    key = key + (key << 2);
+    key = key ^ (key >> 4);
+    key = key * 2057;
+    key = key ^ (key >> 16);
+    return key;
+}
+
+int hash(int x, int y, int z)
+{
+    x = hash_init(x);
+    y = hash_init(y);
+    z = hash_init(z);
+    return x ^ y ^ z;
+}
+
+void map_alloc(Map* map, int dx, int dy, int dz, int mask)
+{
+	map->dx = dx;
+    map->dy = dy;
+    map->dz = dz;
+    map->mask = mask;
+    map->size = 0;
+    map->data = (MapEntry *)calloc(map->mask + 1, sizeof(MapEntry));
+}
+
+void map_free(Map* map)
+{
+	free(map->data);
+}
+
+void map_copy(Map *dst, Map *src) {
+    dst->dx = src->dx;
+    dst->dy = src->dy;
+    dst->dz = src->dz;
+    dst->mask = src->mask;
+    dst->size = src->size;
+    dst->data = (MapEntry *)calloc(dst->mask + 1, sizeof(MapEntry));
+    memcpy(dst->data, src->data, (dst->mask + 1) * sizeof(MapEntry));
+}
+
+int map_set(Map* map, int x, int y, int z, int w);
+
+void map_grow(Map *map) 
+{
+    Map new_map;
+    new_map.dx = map->dx;
+    new_map.dy = map->dy;
+    new_map.dz = map->dz;
+    new_map.mask = (map->mask << 1) | 1;
+    new_map.size = 0;
+    new_map.data = (MapEntry *)calloc(new_map.mask + 1, sizeof(MapEntry));
+    MAP_FOR_EACH(map, ex, ey, ez, ew) {
+        map_set(&new_map, ex, ey, ez, ew);
+    } END_MAP_FOR_EACH;
+    free(map->data);
+    map->mask = new_map.mask;
+    map->size = new_map.size;
+    map->data = new_map.data;
+}
+
+int map_set(Map* map, int x, int y, int z, int w)
+{
+	unsigned int index = hash(x, y, z) & map->mask;
+	x -= map->dx;
+    y -= map->dy;
+    z -= map->dz;
+    MapEntry *entry = map->data + index;
+    int overwrite = 0;
+    while (!EMPTY_ENTRY(entry)) {
+        if (entry->e.x == x && entry->e.y == y && entry->e.z == z) {
+            overwrite = 1;
+            break;
+        }
+        index = (index + 1) & map->mask;
+        entry = map->data + index;
+    }
+
+    if (overwrite) {
+        if (entry->e.w != w) {
+            entry->e.w = w;
+            return 1;
+        }
+    }
+	else if (w) {
+        entry->e.x = x;
+        entry->e.y = y;
+        entry->e.z = z;
+        entry->e.w = w;
+        map->size++;
+        if (map->size * 2 > map->mask) {
+            map_grow(map);
+        }
+        return 1;
+    }
+
+    return 0;
+}
+
+int map_get(Map *map, int x, int y, int z) 
+{
+    unsigned int index = hash(x, y, z) & map->mask;
+    x -= map->dx;
+    y -= map->dy;
+    z -= map->dz;
+    if (x < 0 || x > 255) return 0;
+    if (y < 0 || y > 255) return 0;
+    if (z < 0 || z > 255) return 0;
+    MapEntry *entry = map->data + index;
+    while (!EMPTY_ENTRY(entry)) {
+        if (entry->e.x == x && entry->e.y == y && entry->e.z == z) {
+            return entry->e.w;
+        }
+        index = (index + 1) & map->mask;
+        entry = map->data + index;
+    }
+    return 0;
+}
+
+int main(int argc, char** argv)
+{
+	Map* map = malloc(sizeof(Map));
+	map_alloc(map, 0, 0, 0, 10);
+
+	map_set(map, 1, 1, 0, 13);
+	printf("%d\n", map_get(map, 1, 1, 0));
+	map_free(map);
+	free(map);
+
+	return 0;
+}
+
+```
+
+
+### 八、随便说点
 ---------------------------------
 
 1. C代码的解释有时间再做，上面的代码已经够复杂了
 2. 开发惯例，数据的读写（i/o）放到后台线程操作
 3. 上面的代码使用到了：tinycthread、socket、curl、sqlite3、lodepng等知识，相应的C库请自行下载
 4. 测试平台用的是macOS High Sierra平台，全部可以执行
-5. 后面添加lodepng库的使用....
 
 
 >END
