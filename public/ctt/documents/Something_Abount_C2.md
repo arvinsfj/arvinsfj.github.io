@@ -462,12 +462,15 @@ int db_worker_run(void *arg)
             cnd_wait(&cnd, &mtx);
         }
         mtx_unlock(&mtx);
+        printf("%s%d\n", "hello", cond);
         switch (cond) {
             case 1:
                 _db_set_key(pg, qg, keyg);
+                cond = -1;
                 break;
             case 2:
                 _db_commit();
+                cond = -1;
                 break;
             case 3:
                 running = 0;
@@ -504,13 +507,18 @@ int main(int argc, char** argv)
 	db_init("./test.sqlite");
 	db_worker_start();
 	db_set_key(12,13,14);
-	db_commit();
-	sleep(3);
+    sleep(1);
+    db_set_key(13,14,15);
+    sleep(1);
+    db_commit();
+    sleep(1);
 	printf("%d\n", db_get_key(12,13));
+    printf("%d\n", db_get_key(13,14));
 	db_worker_stop();
 	db_close();
 	return 0;
 }
+
 
 
 ```
