@@ -1,5 +1,5 @@
 
-# C的线程、网络和SQLite
+# C的线程、网络、SQLite和lodepng
 
 > *作者：Arvin 日期：2018年6月1日*
 
@@ -523,13 +523,72 @@ int main(int argc, char** argv)
 
 ```
 
+### 六、lodepng库
+---------------------------------
 
-### 六、随便说点
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "lodepng.h"
+
+static unsigned char* outbuf = NULL;
+static unsigned width = 536, height = 204;
+
+void decodepng(const char* filename)
+{
+    outbuf = malloc(4*width*height);
+    unsigned err = lodepng_decode32_file(&outbuf, &width, &height, filename);
+    if (err) {
+        printf("code: %d, text: %s\n", err, lodepng_error_text(err));
+    }
+}
+
+void ophbpng()
+{
+    unsigned long i = 0;
+    if (outbuf) {
+        //
+        for (i = 0; i < 4*width*height; i+=4) {
+            char r = outbuf[i+0];
+            char g = outbuf[i+1];
+            char b = outbuf[i+2];
+            char avg = (r+g+b)/3;
+            outbuf[i+2] = outbuf[i+1] = outbuf[i+0] = avg;
+        }
+    }
+}
+
+void encodepng(const char* filename)
+{
+    if (outbuf) {
+        unsigned err = lodepng_encode32_file(filename, outbuf, width, height);
+        if (err) {
+            printf("code: %d, text: %s\n", err, lodepng_error_text(err));
+        }
+        free(outbuf);
+    }
+}
+
+int main(int argc, char** argv)
+{
+    decodepng("./f87.png");
+    ophbpng();
+    encodepng("./f87hb.png");
+    
+    return 0;
+}
+
+
+```
+
+
+### 七、随便说点
 ---------------------------------
 
 1. C代码的解释有时间再做，上面的代码已经够复杂了
 2. 开发惯例，数据的读写（i/o）放到后台线程操作
-3. 上面的代码使用到了：tinycthread、socket、curl、sqlite3等知识，相应的C库请自行下载
+3. 上面的代码使用到了：tinycthread、socket、curl、sqlite3、lodepng等知识，相应的C库请自行下载
 4. 测试平台用的是macOS High Sierra平台，全部可以执行
 5. 后面添加lodepng库的使用....
 
