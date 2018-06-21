@@ -251,6 +251,7 @@ int main(int argc, const char * argv[])
 3. 上面的代码包括fishhook只做了C的修饰符判断（编译出来的函数名称比原有函数名称前面增加了下划线_），只能实现C的Hook
 4. OC的Hook可以使用method_exchangeImplementations等函数
 5. hook古老的技术，原理并不难，很多地方还是用得到的
+6. 动态性，本质上是内存（变量）的可读写性质。
 
 >END
 
