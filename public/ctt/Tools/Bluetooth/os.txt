@@ -13,3 +13,5 @@ when a process needs to invoke a kernel service, it invokes a procedure call in 
 the kernel uses the cpu's hardware protection mechanisms to ensure that each process executing in user space can access only its own memory. the kernel executes with the hardware privileges required to implement these protections. user programs execute without those privileges. when a user program invokes a system call, the hardware raise the privilege level and starts executing a pre-arranged function in the kernel.
 
 the collection of system calls that a kernel provides is the interface that user program see. the xv6 kernel provides a subset of the services and system calls that Unix kernels traditional offer.
+
+the rest of this chapter outlines xv6's services--processes, memory, file descriptors, pipes and file system--and illustrates them with code snippets and discussions of how the shell uses them. the shell's use of system calls illustrates how carefully the have been designed.
