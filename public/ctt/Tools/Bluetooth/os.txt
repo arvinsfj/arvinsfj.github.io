@@ -1,0 +1,15 @@
+this is a draft text for a class on operating systems. it explains the main concepts of operating systems by studing an example kernel, named xv6. xv6 is a reimplementation of DR's and KT's Unix Version 6 (v6). xv6 loosely follows the structure and style of v6, but is implemented in ANSI C for an x86-based multiprocessor.
+
+the job of an operating system is to share computer among multiple programs and to provide a more useful set of services than the hardware alone supports. the operating system manages and absracts the low-level hardware. it also multiplexes the hardware, allowing many programs to share the computer and run (or appear to run) at the same time. finally, operating systems provide controlled ways for programs to interact, so that they can share data or work together.
+
+an operating system provides services to user programs through an interface. designing a good interface turns out to be diffcult. on the one hand, we would like the interface to be simple and narrow because that makes it easier to get the implementation right. on the other hand, we may be tempted to offer many sophisticated features to applications. the trick in resolving this tension is to design interfaces that rely on a few mechanisms that can be combined to provide much generality.
+
+this book uses a single operating system as a concrete example to illustrate operating system concepts. that operating system, xv6, provides the basic interfaces introduced by KT and DR Unix operating system, as well as mimicking Unix's internal design. Unix provides a narrow interface whose mechanisms combine well, offering a surprising degree of generality. this interface has been so successful that modern operating system have Unix-like interfaces. Understanding xv6 is a good start toward understanding any of these systems and many others.
+
+xv6 takes traditional form of a kernel, a special program that provides services to running programs. each running program, called process, has memory containing instructions, data, and a stack. the instructions implement the program's computation. the data are the variables on which the computation acts. the stack organizes the program's procedure calls.
+
+when a process needs to invoke a kernel service, it invokes a procedure call in the operating system interface. such a procedure is called a system call. the system call enters the kernel, the kernel performs the service and returns. thus a process alternates between executing in user space and kernel space.
+
+the kernel uses the cpu's hardware protection mechanisms to ensure that each process executing in user space can access only its own memory. the kernel executes with the hardware privileges required to implement these protections. user programs execute without those privileges. when a user program invokes a system call, the hardware raise the privilege level and starts executing a pre-arranged function in the kernel.
+
+the collection of system calls that a kernel provides is the interface that user program see. the xv6 kernel provides a subset of the services and system calls that Unix kernels traditional offer.
