@@ -14,7 +14,7 @@
 
 Github上的xv6库很多都不能直接在linux下编译成功，需要自己仔细找找（后面会放出完整的源代码的）。编译成功后，需要使用Qemu模拟器运行，一些参数的设置自己可以查看Makefile文件。最终的运行效果如下：
 
-![xv6运行效果](http://arvinsfj.github.io/public/ctt/documents/osxv6/xv6_run.png)
+![xv6运行效果](http://arvinsfj.github.io/public/ctt/documents/osxv6/xv6_run.PNG)
 
 也可以采用非图形模式运行，xv6还有一本课程讲义草稿，可以在MIT官网下载（见过的最好的os资料，建议看英文的）。
 
