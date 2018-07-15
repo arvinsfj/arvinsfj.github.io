@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [xv6 boot](detail.html?doc=documents/osxv6/os_xv6_boot.md)
 * [HOOK Tech](detail.html?doc=documents/testasm/Fish_Hook.md)
 * [Something Abount C Language2](detail.html?doc=documents/Something_Abount_C2.md)
 * [A C Build System Config File In Sublime](detail.html?doc=documents/Sublime_Config_C.md)
