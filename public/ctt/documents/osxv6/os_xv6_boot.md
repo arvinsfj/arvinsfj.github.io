@@ -198,5 +198,9 @@ entry代表的是那个函数呢？entry()调用那个函数呢？又会跳转�
 
 xv6的下一步是开启x86的分页机制，敬请期待。24点瞌睡了。:]
 
+![xv6 boot运行效果](http://arvinsfj.github.io/public/ctt/documents/osxv6/xv6_boot.png)
+
 > END
+
+[Download](http://arvinsfj.github.io/public/ctt/documents/osxv6/xv6_boot.zip)
 
