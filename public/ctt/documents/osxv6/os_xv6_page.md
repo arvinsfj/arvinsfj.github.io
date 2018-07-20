@@ -61,7 +61,11 @@ entry:
 
 ![PSE下的分页](http://arvinsfj.github.io/public/ctt/documents/osxv6/page_pse.png)
 
-少了二级页表查找的过程。
+正常的分页机制：
+
+![正常的分页](http://arvinsfj.github.io/public/ctt/documents/osxv6/page_normal.png)
+
+相比之下，PSE下少了二级页表查找的过程。
 
 开启PSE之后，就是正常的开启分页过程。1》cr3寄存器加载页目录基址；2》cr0设置开启分页标识位。注意：cr3寄存器加载页目录基址，这里的基址是物理地址，而非线性地址。entrypgdir在main.c文件中定义，属于内核是线性地址，需要转换成物理地址才能使用。32位寄存器cr0的最高位（bit31）是开启分页位，最低位（bit0）是开启保护模式位。
 
@@ -81,6 +85,11 @@ pde_t entrypgdir[NPDENTRIES] = {
 };
 
 ```
+
+页目录项和[页表项](https://blog.csdn.net/longintchar/article/details/52166130)（页目录和页表里面的项目结构是一样的）：
+
+![页表项](http://arvinsfj.github.io/public/ctt/documents/osxv6/page_item.png)
+
 
 页表和页目录表必须按照页大小（4K）对齐，分页机制决定的。在开启PSE的情况下，线性地址的高10位是页目录的索引（每个页目录项和页表项，占用4字节，pde_t被定义成uint类型），共1K个项目，占用4K大小（1页）。线性地址的低22位作为偏移量，可以表示4M空间。上面的entrypgdir页目录表，共定义了2项，分别将虚拟地址[0,4M)和[KERNBASE, KERNBASE+4M)都映射到物理地址[0,4M)空间。这也是使用分页机制的好处，可以灵活的将线性地址（虚拟地址）空间映射到同一个物理地址空间。上面页目录项目定义的4M空间的基地址是物理地址0。页目录项（页表项）的高20位是基地址的物理地址，低12位定义所表示的地址空间的访问属性等。
 
