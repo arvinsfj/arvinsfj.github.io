@@ -86,7 +86,7 @@ pde_t entrypgdir[NPDENTRIES] = {
 
 ```
 
-页目录项和[页表项](https://blog.csdn.net/longintchar/article/details/52166130)（页目录和页表里面的项目结构是一样的）：
+[页目录项和页表项](https://blog.csdn.net/longintchar/article/details/52166130)（页目录和页表里面的项目结构是一样的）：
 
 ![页表项](http://arvinsfj.github.io/public/ctt/documents/osxv6/page_item.png)
 
