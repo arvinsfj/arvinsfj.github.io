@@ -104,6 +104,8 @@ main(int argc, char** argv)
 
 ```
 
+![VGA显示效果](http://arvinsfj.github.io/public/ctt/documents/osxv6/page_show.png)
+
 用到了前篇中提到的gcc内嵌汇编的知识。主要是在vga显示器中显示OK和KO四个字母。地址0xb8000时vga显存的开始地址。$0x2f4b2f4f表示绿底白字的OK两个字母。关于VGA显示卡的知识请自行学习[VGA Text Mode](https://os.phil-opp.com/vga-text-mode/)和[VGA Hardware](https://wiki.osdev.org/VGA_Hardware)。关于[Multiboot](https://os.phil-opp.com/multiboot-kernel/)也可以了解一下，毕竟很方便。关于x64的[Long Mode](https://os.phil-opp.com/entering-longmode/)了解一下。
 
 该篇到此为止。开启分页过程：CR4开启PSE、CR3加载页目录基址和CR0开启分页。页目录项和页表项结构也要注意一下。还有就是整个过程中的物理地址和线性地址之间的关系和转换。
