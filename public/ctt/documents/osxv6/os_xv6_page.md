@@ -99,6 +99,8 @@ pde_t entrypgdir[NPDENTRIES] = {
 
 到这个地方，分页机制的开启就完成了。
 
+------------------------------------------
+
 内核的main函数定义如下：
 
 ```
@@ -115,7 +117,7 @@ main(int argc, char** argv)
 
 ![VGA显示效果](http://arvinsfj.github.io/public/ctt/documents/osxv6/page_show.png)
 
-用到了前篇中提到的gcc内嵌汇编的知识。主要是在vga显示器中显示OK和KO四个字母。地址0xb8000时vga显存的开始地址。$0x2f4b2f4f表示绿底白字的OK两个字母。关于VGA显示卡的知识请自行学习[VGA Text Mode](https://os.phil-opp.com/vga-text-mode/)和[VGA Hardware](https://wiki.osdev.org/VGA_Hardware)。关于[Multiboot](https://os.phil-opp.com/multiboot-kernel/)也可以了解一下，毕竟很方便。关于x64的[Long Mode](https://os.phil-opp.com/entering-longmode/)了解一下。
+用到了前篇中提到的gcc内嵌汇编的知识。主要是在VGA显示器中显示OK和KO四个字母。物理地址0xb8000是VGA显存的开始地址。$0x2f4b2f4f表示绿底白字的OK两个字母。关于VGA显示卡的知识请自行学习[VGA Text Mode](https://os.phil-opp.com/vga-text-mode/)和[VGA Hardware](https://wiki.osdev.org/VGA_Hardware)。关于[multiboot](https://os.phil-opp.com/multiboot-kernel/)也可以了解一下，毕竟很方便。关于x64的[Long Mode](https://os.phil-opp.com/entering-longmode/)也了解一下，你可以自己把32位的xv6改写成64位的xv6。
 
 该篇到此为止。开启分页过程：CR4开启PSE、CR3加载页目录基址和CR0开启分页。页目录项和页表项结构也要注意一下。还有就是整个过程中的物理地址和线性地址之间的关系和转换。
 
@@ -165,7 +167,7 @@ kernel: $(OBJS) entry.o kernel.ld
 
 第二步是编译entry.S和main.c成一个IA32位ELF可执行文件（正常结构的ELF可执行文件）。注意使用了linker script脚本文件kernel.ld。
 
-第三步是使用dd命令，先分配一个包含1000个块（block）的xv6.img文件，默认每个块应该是512字节，并且全部使用数值0填充（/dev/zero文件的作用）。其次，是将bootloader镜像bootblock写入xv6.img文件，不截短（？不知道是什么意思）。最后将kernel的ELF文件从第二个块（扇区）（seek=1）开始写入xv6.img文件。完成xv6.img内核镜像的制作。
+第三步是使用dd命令，先分配一个包含1000个块（block）的xv6.img文件，默认每个块应该是512字节，并且全部使用数值0填充（/dev/zero文件的作用）。其次，是将bootloader镜像bootblock写入xv6.img文件，不截断（？不知道是什么意思）。最后将kernel的ELF文件从第二个块（扇区）（seek=1）开始写入xv6.img文件。完成xv6.img内核镜像的制作。
 
 下面是xv6.img磁盘镜像文件的16进制截图：
 
