@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [xv6 kalloc](detail.html?doc=documents/osxv6/os_xv6_kalloc.md)
 * [xv6 page](detail.html?doc=documents/osxv6/os_xv6_page.md)
 * [xv6 spinlock](detail.html?doc=documents/osxv6/os_xv6_spinlock.md)
 * [xv6 boot](detail.html?doc=documents/osxv6/os_xv6_boot.md)
