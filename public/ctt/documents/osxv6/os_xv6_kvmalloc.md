@@ -201,7 +201,49 @@ walkpgdir函数首先获取虚拟地址va对应的页目录表项基地址pde，
 
 xv6的代码写的比较通用，像函数setupkvm、switchkvm、mappages和walkpgdir都不仅仅在内核初始化的时候用到，其他地方也会用到。分析上面代码的时候注意各个页面的初始化数值，以及各种宏、函数、变量的命名规则。
 
+### 三、关于内存管理的额外补充
 ----------------------------------
+
+在main函数里面，还会调用seginit函数，对段进行重新分配。函数如下：
+
+```
+// Set up CPU's kernel segment descriptors.
+// Run once on entry on each CPU.
+void
+seginit(void)
+{
+  struct cpu *c;
+
+  // Map "logical" addresses to virtual addresses using identity map.
+  // Cannot share a CODE descriptor for both kernel and user
+  // because it would have to have DPL_USR, but the CPU forbids
+  // an interrupt from CPL=0 to DPL=3.
+  c = &cpus[cpunum()];
+  c->gdt[SEG_KCODE] = SEG(STA_X|STA_R, 0, 0xffffffff, 0);
+  c->gdt[SEG_KDATA] = SEG(STA_W, 0, 0xffffffff, 0);
+  c->gdt[SEG_UCODE] = SEG(STA_X|STA_R, 0, 0xffffffff, DPL_USER);
+  c->gdt[SEG_UDATA] = SEG(STA_W, 0, 0xffffffff, DPL_USER);
+
+  // Map cpu, and curproc
+  c->gdt[SEG_KCPU] = SEG(STA_W, &c->cpu, 8, 0);
+
+  lgdt(c->gdt, sizeof(c->gdt));
+  loadgs(SEG_KCPU << 3);
+  
+  // Initialize cpu-local storage.
+  cpu = c;
+  proc = 0;
+}
+
+```
+
+每个cpu对内存分为7段，分别是：空段0、内核代码段、内核数据段、内核CPU数据段、用户代码段、用户数据段、空段6。
+
+用户段的DPL（描述符特权级别）数值为DPL_USER，也就是0x3。其他段该字段都为0。内核CPU数据段主要是暂存cpu的信息，大小为8字节，描述符（段表索引）保存在gs段寄存器。除了空段和内核CPU数据段，其他段都是单位映射（从0开始，大小4GB），逻辑地址即是虚拟地址（线性地址）。数据段都是可读可写（不可执行）权限，代码段都是可读可执行（不可写）权限。
+
+函数的最后使用新的段描述符表基地址加载gdtr寄存器。最后，记录当前的cpu指针。
+
+--------------------------------
 
 > END
 
