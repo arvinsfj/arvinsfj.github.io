@@ -167,7 +167,7 @@ mpinit(void)
     // Bochs doesn't support IMCR, so this doesn't run on Bochs.
     // But it would on real hardware.
     outb(0x22, 0x70);   // Select IMCR
-    outb(0x23, inb(0x23) | 1);  // Mask external interrupts.
+    outb(0x23, inb(0x23) | 1);  // APIC Mask external interrupts(NMI和PICs).
   }
 }
 
@@ -179,13 +179,15 @@ mpinit首先调用mpconfig函数拿到mp结构体实体指针和mpconf结构体�
 
 关于IMCR寄存器的知识，参考[文档MPS](http://arvinsfj.github.io/public/ctt/documents/osxv6/mp_1_4.pdf)。
 
-``` 
+
 IMCRP. When the IMCR presence bit is set, the IMCR is present and PIC Mode is implemented; otherwise, Virtual Wire Mode is implemented.
 
 This register controls whether the interrupt signals that reach the BSP come from the master PIC or from the local APIC. Before entering Symmetric I/O Mode, either the BIOS or the operating system must switch out of PIC Mode by changing the IMCR.
 
 The IMCR is supported by two read/writable or write-only I/O ports, 22h and 23h, which receive address and data respectively. To access the IMCR, write a value of 70h to I/O port 22h, which selects the IMCR. Then write the data to I/O port 23h. The power-on default value is zero, which connects the NMI and 8259 INTR lines directly to the BSP. Writing a value of 01h forces the NMI and 8259 INTR signals to pass through the APIC.
-```
+
+上图的```outb(0x22, 0x70);   outb(0x23, inb(0x23) | 1); ```会让NMI和8259A芯片的PIC产生的中断信号经过I/O APIC传递给BSP，而不是直接传递给BSP。
+
 
 注意上面的for循环中conf+1，实际是跳过多核配置表头，直接遍历配置表实体。
 
