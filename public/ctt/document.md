@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [xv6 mp info](detail.html?doc=documents/osxv6/os_xv6_mp.md)
 * [xv6 kvmalloc](detail.html?doc=documents/osxv6/os_xv6_kvmalloc.md)
 * [xv6 kalloc](detail.html?doc=documents/osxv6/os_xv6_kalloc.md)
 * [xv6 page](detail.html?doc=documents/osxv6/os_xv6_page.md)
