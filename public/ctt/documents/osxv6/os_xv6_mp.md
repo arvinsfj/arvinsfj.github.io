@@ -175,9 +175,17 @@ mpinit(void)
 
 收集的信息包括：是否是多处理器架构（ismp）、lapic入口地址（lapic）、cpu核心数量（ncpu）、boot处理器（bcpu）、ioapic编号（ioapicid）、lapic编号（```cpus[ncpu].id = ncpu;```）。这些信息，在后面的apic中断设置需要用到。
 
-mpinit首先调用mpconfig函数拿到mp结构体实体指针和mpconf结构体实体指针。然后通过mpconf（配置表头部）找到多核配置表实体，并且遍历表，获取我们需要收集的信息。遍历的时候主要关注MPPROC实体和MPIOAPIC实体。遍历完成后，主要设置IMCR寄存器，屏蔽外部中断。
+mpinit首先调用mpconfig函数拿到mp结构体实体指针和mpconf结构体实体指针。然后通过mpconf（配置表头部）找到多核配置表实体，并且遍历表，获取我们需要收集的信息。遍历的时候主要关注MPPROC实体和MPIOAPIC实体。遍历完成后，设置IMCR寄存器，屏蔽外部中断。
 
-关于IMCR寄存器的知识，参考[文档MPS](http://arvinsfj.github.io/public/ctt/documents/osxv6/mp_1_4.pdf)
+关于IMCR寄存器的知识，参考[文档MPS](http://arvinsfj.github.io/public/ctt/documents/osxv6/mp_1_4.pdf)。
+
+``` 
+IMCRP. When the IMCR presence bit is set, the IMCR is present and PIC Mode is implemented; otherwise, Virtual Wire Mode is implemented.
+
+This register controls whether the interrupt signals that reach the BSP come from the master PIC or from the local APIC. Before entering Symmetric I/O Mode, either the BIOS or the operating system must switch out of PIC Mode by changing the IMCR.
+
+The IMCR is supported by two read/writable or write-only I/O ports, 22h and 23h, which receive address and data respectively. To access the IMCR, write a value of 70h to I/O port 22h, which selects the IMCR. Then write the data to I/O port 23h. The power-on default value is zero, which connects the NMI and 8259 INTR lines directly to the BSP. Writing a value of 01h forces the NMI and 8259 INTR signals to pass through the APIC.
+```
 
 注意上面的for循环中conf+1，实际是跳过多核配置表头，直接遍历配置表实体。
 
