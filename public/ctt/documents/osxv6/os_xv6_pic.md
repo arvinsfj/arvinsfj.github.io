@@ -16,7 +16,7 @@
 
 ![8259A](http://arvinsfj.github.io/public/ctt/documents/osxv6/8259pic.png)
 
-提供一篇关于PIC编程的文章[HRER](https://wiki.osdev.org/8259_PIC)。
+提供关于PIC编程的文章[HRER](https://wiki.osdev.org/8259_PIC)、[HERE](http://www.brokenthorn.com/Resources/OSDevPic.html)和[HERE](https://pdos.csail.mit.edu/6.828/2005/readings/hardware/8259A.pdf)。
 
 
 ### 二、8259 PIC 做什么？
@@ -174,7 +174,7 @@ picinit(void)
   //   ef:  0x = NOP, 10 = clear specific mask, 11 = set specific mask
   //    p:  0 = no polling, 1 = polling mode
   //   rs:  0x = NOP, 10 = read IRR, 11 = read ISR
-  outb(IO_PIC1, 0x68);             // clear specific mask
+  outb(IO_PIC1, 0x68);             // set specific mask
   outb(IO_PIC1, 0x0a);             // read IRR by default
 
   outb(IO_PIC2, 0x68);             // OCW3
@@ -190,7 +190,7 @@ picinit(void)
 
 然后，pic的命令端口写入初始化命令（0x11），进行pic的初始化任务。写入初始化命令之后，需要在数据端口写入三个初始化字：设置向量偏移量、设置主从连接关系、设置关于环境的附加信息。（ICW2、ICW3、ICW4）。各个初始化的字的含义，代码中有解释，自己去思考。
 
-最后写入OCW3命令，设置成clear specific mask和read IRR by default。上面两个操作对主从pic都是一样的。
+最后写入OCW3命令，设置成set specific mask和read IRR by default。上面两个操作对主从pic都是一样的。
 
 设置完成后，调用```picsetmask(irqmask);```函数，设置master的irq2为有效，使主从pic连通。完成pic初始化工作。
 
