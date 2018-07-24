@@ -190,7 +190,7 @@ picinit(void)
 
 然后，pic的命令端口写入初始化命令（0x11），进行pic的初始化任务。写入初始化命令之后，需要在数据端口写入三个初始化字：设置向量偏移量、设置主从连接关系、设置关于环境的附加信息。（ICW2、ICW3、ICW4）。各个初始化的字的含义，代码中有解释，自己去思考。
 
-最后写入OCW3命令，设置成set specific mask和read IRR by default。上面两个操作对主从pic都是一样的。
+最后写入OCW3命令，设置成read IRR by default。上面两个操作对主从pic都是一样的。
 
 设置完成后，调用```picsetmask(irqmask);```函数，设置master的irq2为有效，使主从pic连通。完成pic初始化工作。
 
