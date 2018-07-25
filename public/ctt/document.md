@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [xv6 lapic](detail.html?doc=documents/osxv6/os_xv6_lapic.md)
 * [xv6 ioapic](detail.html?doc=documents/osxv6/os_xv6_ioapic.md)
 * [xv6 8259 pic](detail.html?doc=documents/osxv6/os_xv6_pic.md)
 * [xv6 mp info](detail.html?doc=documents/osxv6/os_xv6_mp.md)
