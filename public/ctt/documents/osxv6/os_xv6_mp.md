@@ -103,7 +103,7 @@ MP配置数据结构图，如下所示：
 
 最后附一张完整的apic的连接图：
 
-![MP Configuration Data Structures](http://arvinsfj.github.io/public/ctt/documents/osxv6/mp_apic.png)
+![APIC](http://arvinsfj.github.io/public/ctt/documents/osxv6/mp_apic.png)
 
 
 ### 三、收集MP信息
