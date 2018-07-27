@@ -66,6 +66,7 @@
 # TOOLs
 ----------------------
 
+* [Apple II](Tools/apple2js/apple2js.html)
 * [A C Demo Framework](Tools/CFW/cfw.c)
 * [JSC](Tools/jsc/cctest.html)
 * [TFJS](Tools/threejs/testtfjs.html)

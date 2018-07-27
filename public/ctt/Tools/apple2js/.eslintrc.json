@@ -1,0 +1,13 @@
+{
+    "rules": {
+        "indent": [
+            2,
+            4
+        ]
+    },
+    "env": {
+        "browser": true,
+        "jquery": true
+    },
+    "extends": "eslint:recommended"
+}
