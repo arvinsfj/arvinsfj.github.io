@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [xv6 uart](detail.html?doc=documents/osxv6/os_xv6_uart.md)
 * [xv6 console](detail.html?doc=documents/osxv6/os_xv6_console.md)
 * [xv6 lapic](detail.html?doc=documents/osxv6/os_xv6_lapic.md)
 * [xv6 ioapic](detail.html?doc=documents/osxv6/os_xv6_ioapic.md)
