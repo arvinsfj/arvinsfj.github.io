@@ -1,0 +1,260 @@
+<!DOCTYPE html><!-- -*- mode: HTML; indent-tabs-mode: nil -*- -->
+<!--
+ Copyright 2010-2016 Will Scullin <scullin@scullinsteel.com>
+
+ Permission to use, copy, modify, distribute, and sell this software and its
+ documentation for any purpose is hereby granted without fee, provided that
+ the above copyright notice appear in all copies and that both that
+ copyright notice and this permission notice appear in supporting
+ documentation.  No representations are made about the suitability of this
+ software for any purpose.  It is provided "as is" without express or
+ implied warranty.
+-->
+<html>
+<head>
+
+<title>Apple //jse - An Apple //e Emulator in JavaScript</title>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Apple //jse">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta charset="utf-8" />
+<meta name="description" content="Apple //jse is an Apple //e emulator written using only JavaScript and HTML5. It has color display, sound and disk support." />
+<meta name="keywords" content="apple2e,apple,ii,javascript,emulator,html5" />
+
+<link rel="apple-touch-icon" href="img/webapp-iphone.png" />
+<link rel="apple-touch-icon" size="72x72" href="img/webapp-ipad.png" />
+<link rel="shortcut icon" href="logoicon.png" />
+<link rel="stylesheet" type="text/css" href="css/apple2.css" />
+<link rel="stylesheet" type="text/css"
+      href="http://code.jquery.com/ui/1.10.3/themes/mint-choc/jquery-ui.css" />
+
+<meta property="og:title" content="Apple //js" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Apple //jse is an Apple //e written using only JavaScript and HTML5." />
+<meta property="og:url" content="http://www.scullinsteel.com/apple2/" />
+<meta property="og:image" content="http://www.scullinsteel.com/apple2/img/image.png" />
+<meta property="fb:admins" content="700585391" />
+
+<!-- jQuery -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js">
+</script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js">
+</script>
+
+<!-- Emulator Scripts -->
+<script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/prefs.js"></script>
+<script type="text/javascript" src="js/ram.js"></script>
+<script type="text/javascript" src="js/mmu.js"></script>
+<script type="text/javascript" src="js/applesoft/decompiler.js"></script>
+<script type="text/javascript" src="js/intbasic/decompiler.js"></script>
+<script type="text/javascript" src="js/canvas.js"></script>
+<script type="text/javascript" src="js/apple2io.js"></script>
+<script type="text/javascript" src="js/cards/parallel.js"></script>
+<script type="text/javascript" src="js/cards/disk2.js"></script>
+<script type="text/javascript" src="js/cards/ramfactor.js"></script>
+<script type="text/javascript" src="js/cards/thunderclock.js"></script>
+<script type="text/javascript" src="js/cpu6502.js"></script>
+<script type="text/javascript" src="js/base64.js"></script>
+<script type="text/javascript" src="js/roms/apple2e.js"></script>
+<script type="text/javascript" src="js/roms/apple2enh.js"></script>
+<script type="text/javascript" src="js/roms/apple2e_char.js"></script>
+<script type="text/javascript" src="js/roms/apple2enh_char.js"></script>
+<script type="text/javascript" src="js/ui/audio.js"></script>
+<script type="text/javascript" src="js/ui/keyboard.js"></script>
+<script type="text/javascript" src="js/ui/gamepad.js"></script>
+<script type="text/javascript" src="js/ui/printer.js"></script>
+
+<!-- Disk Index -->
+<script type="text/javascript" src="json/disks/index.js"></script>
+
+</head>
+<body class="apple2e">
+  <div style="margin: auto; width: 604px">
+    <div id="header">
+      <a href="http://www.w3.org/html/logo/"><img src="http://www.w3.org/html/logo/badge/html5-badge-h-solo.png" width="63" height="64" alt="HTML5 Powered" title="HTML5 Powered" style="float: right"></a>
+      <a href="about.html" target="_blank">
+        <img src="img/badge.png" id="badge" />
+      </a>
+      <h1 id="subtitle">An Apple //e Emulator in JavaScript</h1>
+    </div>
+    <div id="display">
+      <div class="overscan"
+           onkeydown="_keydown(event);"
+           onkeyup="_keyup(event);">
+        <canvas id="screen" width="560" height="384"></canvas>
+      </div>
+    </div>
+    <div class="inset">
+      <div style="float: left; width: 50%">
+        <div class="disk" id="disk1">&nbsp;</div>
+        <span id="disklabel1" class="disklabel">Disk 1</span>
+        <button id="diskload1" class="diskload" value="Load"
+                onclick="openLoad(1, event);">
+          Load
+        </button>
+        <button id="disksave1" class="disksave" value="Save"
+                onclick="openSave(1, event);">
+          Save
+        </button>
+      </div>
+      <div style="float: left; width: 50%">
+        <div class="disk" id="disk2">&nbsp;</div>
+        <span id="disklabel2" class="disklabel">Disk 2</span>
+        <button id="diskload2" class="diskload" value="Load"
+                onclick="openLoad(2, event);">
+          Load
+        </button>
+        <button id="disksave2" class="disksave" value="Save"
+                onclick="openSave(2, event);">
+          Save
+        </button>
+      </div>
+      <div style="clear: both"></div>
+    </div>
+    <div style="position: relative">
+      <div id="controls" class="inset">
+        <div id="khz" onclick="showFPS = !showFPS">0KHz</div>
+        <input type="button" value="Pause" onclick="pauseRun(this)" />
+        <div style="float: right">
+          <input type="button" onclick="window.open('about.html','_html')"
+                 name="About" value="About">
+          <input type="button" onclick="$('#options').dialog('open')"
+                 name="Options" value="Options">
+        </div>
+      </div>
+      <input id="reset" type="button" value="Reset" onclick="reset()" />
+    </div>
+    <div class="inset">
+      <div id="keyboard"></div>
+    </div>
+  </div>
+  <div id="loading" title="Loading" style="display: none">
+    Loading...
+  </div>
+  <div id="options" title="Options" style="display: none">
+    <h3>CPU</h3>
+    <ul>
+      <li>
+        <select id="computer_type" value="apple2enh" onchange="updateCPU()">
+          <option value="apple2enh">Enhanced Apple //e</option>
+          <option value="apple2e">Apple //e</option>
+        </select>
+        <label for="computer_type">
+          Type
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="accelerator_toggle" onclick="updateCPU()"/>
+        <label for="accelerator_toggle">
+          Accelerated CPU
+        </label>
+      </li>
+    </ul>
+    <h3>Joystick</h3>
+    <ul>
+      <li>
+        <input type="checkbox" id="disable_mouse"
+               onclick="updateJoystick()" />
+        <label for="disable_mouse">
+          Disable Mouse Joystick
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="flip_x"
+               onclick="updateJoystick()" />
+        <label for="flip_x">
+          Flip X-Axis
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="flip_y"
+               onclick="updateJoystick()" />
+        <label for="flip_y">
+          Flip Y-Axis
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="swap_x_y"
+               onclick="updateJoystick()" />
+        <label for="swap_x_y">
+          Swap X-Y Axis
+        </label>
+      </li>
+    </ul>
+    <h3>Monitor</h3>
+    <ul>
+      <li>
+        <input type="checkbox" id="green_screen"
+               onclick="updateScreen()" />
+        <label for="green_screen">
+          Green Screen
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="show_scanlines"
+               onclick="updateScreen()" />
+        <label for="show_scanlines">
+          Show Scanlines
+        </label>
+      </li>
+    </ul>
+    <h3>Sound</h3>
+    <ul>
+      <li>
+        <input type="checkbox" id="enable_sound"
+               onclick="updateSound()" checked="checked" />
+        <label for="enable_sound">
+          Enable (Experimental)
+        </label>
+      </li>
+    </ul>
+  </div>
+  <div id="save" title="Save Disk" style="display: none">
+    <form action="#" onsubmit="return false;">
+      <b>Save to Browser</b>
+      <br /><br />
+      Save Name: <input type="text" name="name" id="save_name"
+                  style="width: 200px" />
+    </form>
+    <hr />
+    <div>
+      <b>Download to Local Disk</b>
+      <br /><br />
+      <a id="local_save_link" class="button">Download</a>
+    </div>
+  </div>
+  <div id="manage" title="Manage Disks" style="display: none">
+  </div>
+  <div id="http_load" title="Load URL">
+    <form action="#">
+      <input type="text" id="http_url" style="width: 500px"/>
+    </form>
+  </div>
+  <div id="load" title="Load Disk" style="display: none">
+    <table>
+      <tr>
+        <td>
+          <select id="category_select" multiple="multiple"
+                  class="ui-widget ui-state-default"
+                  onchange="selectCategory(event)" >
+          </select>
+        </td>
+        <td>
+          <select id="disk_select" multiple="multiple"
+                  class="ui-widget ui-state-default"
+                  onchange="selectDisk(event)"
+                  ondblclick="clickDisk(event)">
+          </select>
+        </td>
+      </tr>
+    </table>
+    <form action="#">
+      <input type="file" id="local_file" />
+    </form>
+  </div>
+  <script type="text/javascript" src="js/main2e.js"></script>
+</body>
+</html>

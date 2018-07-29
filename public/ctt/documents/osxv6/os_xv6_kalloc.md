@@ -126,6 +126,97 @@ kinit1和kinit2，是内核启动两个阶段的物理页面初始化方法。ki
 
 对于忘记了自旋锁（spinlock）的同学，可以翻翻之前的文章。
 
+### 三、补充说明
+----------------------------------
+
+两个宏解释如下：
+
+#define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1)) // 向高地址按4K对齐
+#define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1)) // 确保数值a的低12位全部为0，其它高位保持原值不变。即，向低地址按4K对齐。
+
+```PGSIZE```宏定义成4096，即 2^12 二进制表示：0001, 0000, 0000, 0000
+
+```PGSIZE-1``` 二进制表示：0000, 1111, 1111, 1111
+
+```~(PGSIZE-1)``` 二进制表示：1111, 0000, 0000, 0000
+
+也就是说，任何数值跟```~(PGSIZE-1)```作按位与(&)操作，会确保该数值的低12位全部为0，其它高位保持原值不变。
+
+```(((a)) & ~(PGSIZE-1))``` 宏就是上面的按位与(&)操作。简单来讲，这种操作就是将数值a的低12位全部置0。也就是，向低地址按4K（2^12）对齐。
+
+```(((sz)+PGSIZE-1) & ~(PGSIZE-1))``` 相比较于前面的操作多了一个映射，将数值sz映射成数值sz+PGSIZE-1，你也可以想象成一个[sz, sz+PGSIZE-1]区间在另外一个PGSIZE页面区间[x, x+PGSIZE]移动。结果就是向高地址按4K（2^12）对齐。
+
+-------------------------------------
+
+关于memset函数：
+
+```
+void*
+memset(void *dst, int c, uint n)
+{
+  if ((int)dst%4 == 0 && n%4 == 0){
+    c &= 0xFF;
+    stosl(dst, (c<<24)|(c<<16)|(c<<8)|c, n/4);
+  } else
+    stosb(dst, c, n);
+  return dst;
+}
+
+static inline void
+stosb(void *addr, int data, int cnt)
+{
+  asm volatile("cld; rep stosb" :
+               "=D" (addr), "=c" (cnt) :
+               "0" (addr), "1" (cnt), "a" (data) :
+               "memory", "cc");
+}
+
+static inline void
+stosl(void *addr, int data, int cnt)
+{
+  asm volatile("cld; rep stosl" :
+               "=D" (addr), "=c" (cnt) :
+               "0" (addr), "1" (cnt), "a" (data) :
+               "memory", "cc");
+}
+
+```
+
+这里的memset函数是属于内核函数（不是C标准库中的，内核开发是不允许使用任何C标准库函数的）。
+
+上面的memset函数核心是使用工具函数stosb或者stosl将[dst, dst+n)的内存区域使用数值c填充。函数stosb和stosl唯一的区别是使用的汇编指令不同，stosb使用stosb指令，stosl使用stosl指令。一个是单字节填充一个4字节填充。这里memset函数为什么要使用两个函数，大概是因为stosl指令效率更高吧:)，具体原因不明。gcc内嵌汇编，不懂的自己去学习一下，很简单的。
+
+-------------------------------
+
+关于panic函数，你可以认为是内核崩溃函数，进入了这个函数会打印一些崩溃信息然后进入无限死循环。
+
+```
+void
+panic(char *s)
+{
+  int i;
+  uint pcs[10];
+  
+  cli();
+  cons.locking = 0;
+  cprintf("cpu%d: panic: ", cpu->id);
+  cprintf(s);
+  cprintf("\n");
+  getcallerpcs(&s, pcs);
+  for(i=0; i<10; i++)
+    cprintf(" %p", pcs[i]);
+  panicked = 1; // freeze other CPU
+  for(;;)
+    ;
+}
+
+```
+
+--------------------------------
+
+关于如何获取到内核在内存中结束的位置。```kinit1(end, P2V(4*1024*1024)); // phys page allocator```在main函数中有上面一句话，其中的end在那个地方定义的呢？你在代码中找不到的，end是在链接脚本kernel.ld中定义的。链接脚本你可以理解成程序在物理内存中的布局。可以定义起始位置，也可以获取结束位置，还可以布局各个段。end就是获取到的内核结束物理地址。能不能读写该地址呢？当然是可以的。读到这，是不是对什么是变量有一些了解了呢。end定义在kernel.ld中但是可以作为指针（没有类型，也可以认为是```void*```类型）来使用，所指向的内存可以认为是一个变量（但是没有类型，也可以认为是void类型），是不是很神奇。
+
+----------------------------------
 
 > END
 

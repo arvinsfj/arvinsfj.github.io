@@ -1,0 +1,443 @@
+/* Copyright 2010-2016 Will Scullin */
+
+#header {
+  width: 580px;
+  margin: auto;
+}
+
+.motter {
+    font-family: "Motter Tektura";
+}
+
+.clear {
+    clear: both
+}
+
+.disklabel {
+    color: #000;
+    font-weight: bold;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+img {
+    border: none;
+}
+
+#badge {
+    cursor: pointer;
+}
+
+#subtitle {
+    margin: 0;
+    padding: 3px 0 0 10;
+    color: black;
+    font-family: "Adobe Garamond Pro",Garamond,Times;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.motter {
+    font-family: "Motter Tektura";
+    font-size: 12px;
+}
+
+input[type="button"] {
+    width: 75px;
+}
+
+input[type="text"] {
+    width: 40px;
+}
+
+body {
+    margin: 16px 0;
+    font-size: 10px;
+    background-color: #c4c1a0; /* Pantone 453 */
+    font-family: sans-serif;
+}
+
+.outer {
+    margin: auto;
+    width: 620px;
+}
+
+label {
+    font-weight: bold;
+}
+
+#display {
+    margin: 5px auto;
+}
+
+.overscan {
+    margin: auto;
+    position: relative;
+    background-color: black;
+    padding: 16px;
+    width: 560px;
+    height: 384px;
+    border: 6px inset #f0edd0;
+    border-radius: 10px;
+}
+
+#power {
+    padding: 2px;
+    border: 1px inset #888;
+}
+
+.disk {
+    margin: 5px;
+    float: left;
+    background-image: url(red-off-16.png);
+    width: 16px;
+    height: 16px;
+}
+
+.disklabel {
+    font-size: 11px;
+    font-family: sans-serif;
+}
+
+.disksave {
+    display: none;
+}
+
+.code {
+    font-family: Courier;
+    font-size: 14px;
+    white-space: pre;
+}
+
+.debug_page {
+    padding: 0;
+    font-family: Courier;
+    font-size: 10px;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #ccc;
+}
+
+.inset {
+    width: 594px;
+    border-radius: 6px;
+    border: 3px inset #f0edd0;
+    padding: 6px;
+    margin: 10px 0;
+}
+
+#khz {
+    margin-right: 4px;
+    overflow: hidden;
+    padding: 4px;
+    float: left;
+    font-family: Courier;
+    font-size: 12px;
+    width: 60px;
+    height: 15px;
+    text-align: right;
+    background: #000;
+    color: #0f0;
+    border: 2px inset #888;
+    border-radius: 4px;
+}
+
+canvas {
+  display: block;
+  float: left;
+}
+
+#screen {
+    cursor: crosshair;
+    -moz-image-rendering: -moz-crisp-edges;
+    -webkit-image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimizeSpeed;
+}
+
+#screen:-webkit-full-screen {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#about {
+    padding: 16px;
+    margin: 0;
+    font-family: "Adobe Garamond Pro",Garamond,Times;
+    font-size: 14px;
+    background-color: #fff;
+    color: #000;
+}
+
+#about a {
+    background-color: #fff;
+    color: #000;
+}
+
+#load select {
+    width: 250px;
+    height: 300px;
+}
+
+#keyboard .row {
+    display: block;
+    margin: 0;
+    padding: 0;
+    height: 42px;
+    font-family: Helvetica;
+    width: 570px;
+}
+
+.apple2e #keyboard .row {
+    width: 610px;
+}
+
+#keyboard .row0 {
+    margin-left: 20px;
+}
+
+#keyboard .row2 {
+    margin-left: 10px;
+}
+
+#keyboard .row3 {
+    margin-left: 10px;
+}
+
+#keyboard .row4 {
+    margin-left: 10px;
+}
+
+.apple2e #keyboard .row0 {
+    margin-left: 0;
+}
+
+.apple2e #keyboard .row2 {
+    margin-left: 0;
+}
+
+.apple2e #keyboard .row3 {
+    margin-left: 0;
+}
+
+.apple2e #keyboard .row4 {
+    margin-left: 0;
+}
+
+#keyboard .key {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    background-color: #44372C;
+    color: white;
+    text-align: center;
+    position: relative;
+    border: 5px outset #66594E;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#keyboard .pressed {
+    background-color: #22150A;
+    border: 5px outset #44372C;
+}
+
+#keyboard .key div {
+    border-radius: 3px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#keyboard .vcenter div {
+    bottom: 10px;
+}
+
+#keyboard .vcenter2 div {
+    bottom: 5px;
+}
+
+#keyboard .key span {
+    font-size: 13px;
+}
+
+#keyboard .key .small {
+    font-size: 7px;
+}
+
+#keyboard .key-SHIFT {
+    width: 53px;
+}
+
+#keyboard .active {
+    color: #4f4;
+}
+
+#keyboard .key-RETURN {
+    width: 52px;
+}
+
+#keyboard .key-DELETE {
+    width: 47px;
+}
+
+#keyboard .key-TAB {
+    width: 47px;
+}
+
+#keyboard .key-POWER {
+    width: 38px;
+    height: 38px;
+    border: 2px groove black;
+    background-color: #ffd;
+    color: black;
+    border-radius: 2px;
+}
+
+#keyboard .key-POWER div {
+    bottom: 15px;
+}
+
+#keyboard .key-nbsp {
+    margin-left: 62px;
+    width: 330px;
+}
+
+.apple2e #display {
+    margin: 5px;
+}
+
+.apple2e .inset {
+    width: 604px;
+}
+
+.apple2e #keyboard .key-CTRL {
+    width: 60px;
+}
+
+.apple2e #keyboard .key-RETURN {
+    width: 60px;
+}
+
+.apple2e #keyboard .key-SHIFT {
+    width: 81px;
+}
+
+.apple2e #keyboard .key-nbsp {
+    margin-left: 0;
+    width: 215px;
+}
+
+#keyboard .key-POW {
+    width: 38px;
+    height: 38px;
+    border: 2px groove black;
+    background-color: #ffd;
+    color: black;
+    border-radius: 2px;
+}
+
+#keyboard .key-POW div {
+    bottom: 15px;
+}
+
+#keyboard .key-POW span {
+    background: #4f4;
+    color: #4f4;
+}
+
+#keyboard .key-OPEN_APPLE div {
+    background-image: url(../img/open-apple24.png);
+    width: 24px;
+    height: 24px;
+    bottom: 1px;
+    left: 4px;
+}
+
+#keyboard .key-OPEN_APPLE span {
+    display: none;
+}
+
+#keyboard .key-M div span:first-child {
+    display: none;
+}
+
+.apple2e #keyboard .key-M div span:first-child {
+    display: inline;
+}
+
+.apple2e #controls {
+    width: calc(100% - 70px)
+}
+
+.apple2e #reset {
+    position: absolute;
+    right: 0; top: 0;
+    background: #44372C;
+    border: 3px outset #66594E;
+    border-radius: 3px;
+    color: white;
+    font: 9px Helvetica;
+    height: 42px;
+    padding: 0;
+    width: 42px;
+}
+
+.apple2e #reset:hover {
+  background: #44372C;
+  border: 3px outset #66594E;
+}
+
+.apple2e #reset:active {
+  background: #22150A;
+  border: 5px outset #44372C;
+}
+
+#keyboard .key-OPEN_APPLE.active div {
+    background-image: url(../img/open-apple24-green.png);
+}
+
+#keyboard .key-CLOSED_APPLE div {
+    background-image: url(../img/closed-apple24.png);
+    width: 24px;
+    height: 24px;
+    bottom: 1px;
+    left: 4px;
+}
+
+#keyboard .key-CLOSED_APPLE.active div {
+    background-image: url(../img/closed-apple24-green.png);
+}
+
+#keyboard .key-CLOSED_APPLE span {
+    display: none;
+}
+
+.standalone {
+  position: fixed;
+  width: 100%;
+}
+
+.standalone #header, .standalone #social {
+    display: none;
+}
+
+#textarea textarea {
+    font-family: courier;
+}
+
+#options {
+  line-height: 1.75em;
+  height: auto !important;
+}
+
+#options li {
+    list-style-type: none;
+}

@@ -3,6 +3,11 @@
 ----------------------
 
 * [xv6 console](detail.html?doc=documents/osxv6/os_xv6_console.md)
+* [xv6 lapic](detail.html?doc=documents/osxv6/os_xv6_lapic.md)
+* [xv6 ioapic](detail.html?doc=documents/osxv6/os_xv6_ioapic.md)
+* [xv6 8259 pic](detail.html?doc=documents/osxv6/os_xv6_pic.md)
+* [xv6 mp info](detail.html?doc=documents/osxv6/os_xv6_mp.md)
+* [xv6 kvmalloc](detail.html?doc=documents/osxv6/os_xv6_kvmalloc.md)
 * [xv6 kalloc](detail.html?doc=documents/osxv6/os_xv6_kalloc.md)
 * [xv6 page](detail.html?doc=documents/osxv6/os_xv6_page.md)
 * [xv6 spinlock](detail.html?doc=documents/osxv6/os_xv6_spinlock.md)
@@ -62,6 +67,7 @@
 # TOOLs
 ----------------------
 
+* [Apple II](Tools/apple2js/apple2js.html)
 * [A C Demo Framework](Tools/CFW/cfw.c)
 * [JSC](Tools/jsc/cctest.html)
 * [TFJS](Tools/threejs/testtfjs.html)
