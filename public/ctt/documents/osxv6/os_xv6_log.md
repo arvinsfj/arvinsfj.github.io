@@ -142,7 +142,8 @@ install_trans(void)
 
 如注释所示，移动log中的数据块到实际的扇区。
 
-```log.start+tail+1```为什么要加1呢？log的header块占用一个最开始的扇区。也就是跳过header，直接读取实际的数据块。
+
+```log.start+tail+1``` 为什么要加1呢？log的header块占用一个最开始的扇区。也就是跳过header，直接读取实际的数据块。
 
 这里面大量使用bread和bwrite，不懂的回头看看上一篇《xv6操作系统文件系统bio》。基本思路是：从log区域读取一个块，然后从目标地扇区读取一个块，将log块覆盖目标块的缓存区data，最后将目标块（同步）写入到磁盘扇区。
 
@@ -165,7 +166,7 @@ read_head(void)
 
 ```
 
-```log.start```是log区header所在扇区（header在log区的第一个扇区）。lh就是磁盘中log区header的内存镜像指针。然后，将lh的n和section拷贝给内存中的```log.lh```。
+```log.start``` 是log区header所在扇区（header在log区的第一个扇区）。lh就是磁盘中log区header的内存镜像指针。然后，将lh的n和section拷贝给内存中的```log.lh```。
 
 
 写入磁盘header函数：
