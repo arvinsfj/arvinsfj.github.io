@@ -290,6 +290,8 @@ commit_trans();
 
 文件系统后面的写操作都是用log_write代替bwrite函数进行磁盘写操作的，当然log_write函数是被begin_trans和commit_trans包围的。
 
+磁盘读和写的同步是谁提供的呢？答案是idelock。
+
 
 ### 四、随便说点
 ----------------------------------
