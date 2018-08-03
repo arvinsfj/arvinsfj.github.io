@@ -4,7 +4,7 @@
 
 * [xv6 file](detail.html?doc=documents/osxv6/os_xv6_file.md)
 * [xv6 fs](detail.html?doc=documents/osxv6/os_xv6_fs.md)
-* [xv6 transaction](detail.html?doc=documents/osxv6/os_xv6_log.md)
+* [xv6 log](detail.html?doc=documents/osxv6/os_xv6_log.md)
 * [xv6 bio](detail.html?doc=documents/osxv6/os_xv6_bio.md)
 * [xv6 trap](detail.html?doc=documents/osxv6/os_xv6_trap.md)
 * [xv6 uart](detail.html?doc=documents/osxv6/os_xv6_uart.md)
