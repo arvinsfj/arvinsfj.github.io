@@ -258,6 +258,55 @@ addr目前是0x7000。右移12位等于0x07。STARTUP IPI使AP在实模式下开
 
 0x7000位置放的是什么东西？是entryother.S文件汇编代码编译之后的二进制代码。作用是设置AP的临时gdt，开启保护模式，设置临时页目录entrypgdir，开启PSE模式的分页，最后跳转到main.c文件中的mpenter函数执行。这个过程中，注意BSP使用的是虚拟地址，而AP中使用的是逻辑地址。entryother.S汇编功能相比较于bootasm.S汇编，少了A20的开启。（说明A20线的开始，是一个通用功能，跟初始化CPU无关）
 
+----------------------------------
+
+补充说明一下main.c文件中的startothers函数：
+
+```
+// Start the non-boot (AP) processors.
+static void
+startothers(void)
+{
+  extern uchar _binary_entryother_start[], _binary_entryother_size[];
+  uchar *code;
+  struct cpu *c;
+  char *stack;
+
+  // Write entry code to unused memory at 0x7000.
+  // The linker has placed the image of entryother.S in
+  // _binary_entryother_start.
+  code = p2v(0x7000);
+  memmove(code, _binary_entryother_start, (uint)_binary_entryother_size);
+
+  for(c = cpus; c < cpus+ncpu; c++){
+    if(c == cpus+cpunum())  // We've started already.
+      continue;
+
+    // Tell entryother.S what stack to use, where to enter, and what 
+    // pgdir to use. We cannot use kpgdir yet, because the AP processor
+    // is running in low  memory, so we use entrypgdir for the APs too.
+    stack = kalloc();
+    *(void**)(code-4) = stack + KSTACKSIZE;
+    *(void**)(code-8) = mpenter;
+    *(int**)(code-12) = (void *) v2p(entrypgdir);
+
+    lapicstartap(c->id, v2p(code));
+
+    // wait for cpu to finish mpmain()
+    while(c->started == 0)
+      ;
+  }
+}
+
+```
+
+它是启动ap核心的入口函数。```_binary_entryother_start```其实是entryother.S中的二进制代码的起始内存位置。我们要将它移动到物理地址0x7000位置。之后，遍历cpus数组（存放cpu对象的）设置启动的基本参数，比如：启动栈、启动之后回调的函数（mpenter）、页目录表的基地址等，这些参数是启动代码执行所需要的。最后调用lapicstartap函数向被启动的ap核心发送启动命令，并执行其实是entryother.S中的cpu启动程序，最后启动程序会调用mpenter函数，完成ap的启动过程。
+
+注意 ```while(c->started == 0);``` 这句话，它是等待started变量等于1结束循环。那么started什么时候被赋值为1呢？在mpmain函数中，执行 ```xchg(&cpu->started, 1); ``` 语句被复制的。换句话，这个while循环是等待ap完全初始化好之后结束等待。
+
+还有就是注意通过栈传递参数的实现方法。
+
+
 ### 三、随便说点
 ----------------------------------
 
