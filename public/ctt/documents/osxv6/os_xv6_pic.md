@@ -198,6 +198,50 @@ picinit(void)
 
 这里虽然是在讲8259PIC，其实也是在讲中断初始化和中断处理的前端部分。后面的APIC中断芯片的初始化，也是类似的处理逻辑。这部分还是要仔细研究一下，确保自己理解了中断芯片编程的各个细节，对理解后面的东西很重要。（毕竟操作系统的运行全部是由中断驱动的）
 
+
+### 五、补充单核CPU的时钟中断（Intel 8253/8254/82C54 Programmable Interval Timer (PIT)）
+----------------------------------
+
+如果在mpinit函数中被是单核CPU，则需要在pic中独立的开启时钟中断（单核CPU使用的是独立时钟产生芯片）。
+
+数据定义：
+
+```
+#define IO_TIMER1       0x040           // 8253 Timer #1
+
+// Frequency of all three count-down timers;
+// (TIMER_FREQ/freq) is the appropriate count
+// to generate a frequency of freq Hz.
+
+#define TIMER_FREQ      1193182
+#define TIMER_DIV(x)    ((TIMER_FREQ+(x)/2)/(x))
+
+#define TIMER_MODE      (IO_TIMER1 + 3) // timer mode port
+#define TIMER_SEL0      0x00    // select counter 0
+#define TIMER_RATEGEN   0x04    // mode 2, rate generator
+#define TIMER_16BIT     0x30    // r/w counter 16 bits, LSB first
+
+```
+
+具体参考[这里](https://en.wikipedia.org/wiki/Intel_8253)、[这里](https://wiki.osdev.org/Programmable_Interval_Timer)和[这里](http://arvinsfj.github.io/public/ctt/documents/osxv6/intel-82c54-timer.pdf)。
+
+pit初始化代码：
+
+```
+void
+timerinit(void)
+{
+  // Interrupt 100 times/sec.
+  outb(TIMER_MODE, TIMER_SEL0 | TIMER_RATEGEN | TIMER_16BIT);
+  outb(IO_TIMER1, TIMER_DIV(100) % 256);
+  outb(IO_TIMER1, TIMER_DIV(100) / 256);
+  picenable(IRQ_TIMER);
+}
+
+```
+
+硬件芯片编程，思路大致一样，这里留给你们去分析了。
+
 ----------------------------------
 
 > END
