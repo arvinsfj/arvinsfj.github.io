@@ -307,7 +307,7 @@ userinit(void)
 
 这个函数只会调用一次，不是通用函数。
 
-```_binary_initcode_start```是打包进内核的```initcode.S```代码开始地址。
+```_binary_initcode_start``` 是打包进内核的 ```initcode.S``` 代码开始地址。
 
 首先调用allocproc函数分配proc结构体变量和分配进程的内核栈。初始化tf、context、trapret等。
 
@@ -1092,7 +1092,7 @@ xv6操作系统内核，大致分为：boot、内存（分段、分页）、多�
 
 -----------------------------------
 
-**All Copyright reserved for avin.**
+**All Copyright reserved for arvin.**
 
 [Gmail](mailto:arvin.sfj@gmail.com)
 
