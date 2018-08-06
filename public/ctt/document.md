@@ -18,7 +18,7 @@
 * [xv6 kalloc](detail.html?doc=documents/osxv6/os_xv6_kalloc.md)
 * [xv6 page](detail.html?doc=documents/osxv6/os_xv6_page.md)
 * [xv6 spinlock](detail.html?doc=documents/osxv6/os_xv6_spinlock.md)
-* [xv6 boot](detail.html?doc=documents/osxv6/os_xv6_boot.md)
+* [xv6 boot](detail.html?doc=documents/osxv6/os_xv6_boot.md) **THE BEGIN**
 * [HOOK Tech](detail.html?doc=documents/testasm/Fish_Hook.md)
 * [Something Abount C Language2](detail.html?doc=documents/Something_Abount_C2.md)
 * [A C Build System Config File In Sublime](detail.html?doc=documents/Sublime_Config_C.md)
