@@ -85,7 +85,9 @@ static inline void list_add_tail(struct list_head *new, struct list_head *head)
 
 ```
 
-这里的head是仍然是头节点（很奇怪是不是！这里其实是一个循环双链表）。
+这里的head是仍然是头节点（很奇怪是不是！这里其实是一个循环双链表）。如下图所示：
+
+![循环双链表](http://arvinsfj.github.io/public/ctt/documents/osxv6/bio_list.png)
 
 删除节点：
 
