@@ -209,13 +209,67 @@ int main(int argc, char** argv)
 
 hello_list是链表头节点。
 
+### 三、“节点自旋”补充
+---------------------------------
 
-### 三、随便说点
+先看下面的图：
+
+![循环双链表](http://arvinsfj.github.io/public/ctt/documents/osxv6/c_list.jpg)
+
+1个节点（最下面的）和2个节点看似完全不同。2个节点跟3个节点（或者更多的节点）是相似的。
+
+我们拿从尾部添加节点操作来说明。
+
+---------------------------------
+
+第一种情况，只有1个头节点的情况，尾部添加新节点的代码应该如下：
+
+```
+static inline void list_add_tail(struct list_head *new, struct list_head *head)
+{
+    head->next = new;  //1
+    new->prev = head;  //2
+    new->next = head;
+    head->prev = new;
+}
+
+```
+
+第二种情况，有2个节点的情况，尾部添加新节点的代码应该如下：
+
+```
+static inline void list_add_tail(struct list_head *new, struct list_head *head)
+{
+    head->prev->next = new;  //1
+    new->prev = head->prev;  //2
+    new->next = head;
+    head->prev = new;
+}
+
+```
+
+上面的代码只有第1句和第2句是不一样的。第二种情况具有通用性（超过2个节点的操作也跟2个节点的操作是一样的），第一种情况是特殊的。为什么第一种情况是特殊的？**头节点也是尾节点**。用伪代码来表达即 ```head <=> head->prev``` 。这个地方就是“尾节点自旋”，即 ```head->prev = head``` 。
+
+同样的道理，在头部添加新节点的操作里我们可以推导出“头节点自旋”，即 ```head->next = head``` 。
+
+最终，为了统一1个节点和大于或等于2个节点的情况，我们只需要这初始化头节点的时候让next和prev同时指向自己即可，即：
+
+```
+#define LIST_HEAD(name) struct list_head name = { &(name), &(name) }
+
+``` 
+
+ps：这种写法本身就很有美感。
+
+这样就不需要对1个节点的情况进行单独处理（if判断）。记得在大学的时候，自己或者老师写的链表头节点初始化的时候都是使用NULL赋值next和prev，这样就必须使用if判断了，破坏了通用性。ps：在编程的时候，一个不合理的决定可能会需要很多的判断来弥补。
+
+### 四、随便说点
 ---------------------------------
 
 1. 双链表用途还是很大的，以后可以这样实现和使用链表；
 2. 设计通用组件的时候，需要考虑“高内聚，低耦合”原则；
-3. 注意C中面向类型的编程方法：“元编程”。
+3. 注意C中面向类型的编程方法：“元编程”;
+4. “节点自旋”可以使代码更加具有通用性。
 
 >END
 
