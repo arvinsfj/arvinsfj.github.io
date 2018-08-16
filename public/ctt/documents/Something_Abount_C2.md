@@ -899,7 +899,7 @@ int main(int argc, char** argv)
 
 ```
 
-### 十、队列（数据容器）
+### 九、队列（数据容器）
 ---------------------------------
 
 代码如下：
@@ -1063,6 +1063,41 @@ int main(int argc, char** argv)
 
 
 ```
+
+
+### 十、高级宏
+---------------------------------
+
+```
+#define print_debug(str, ...)                       \
+    printf(str" - %s:%u\n", ##__VA_ARGS__, __FILE__, __LINE__);
+
+#define print_err(str, ...)                     \
+    fprintf(stderr, str, ##__VA_ARGS__);
+
+```
+
+``` ##__VA_ARGS__ ``` 替换 ```...``` 变参变量列表。
+
+```printf("hello, %s"" - %s:%u\n", "define", __FILE__, __LINE__);``` 注意第一个参数，是2个字符串，编译之后gcc会自动合并成1个字符串。
+
+下面几个宏变量自行查阅资料：
+
+```
+__FILE__  当前文件名称
+
+__LINE__  当前语句的行号
+
+__FUNCTION__  当前函数名称
+
+__TIME__  当前时间
+
+__STDC__  1
+
+__TIMESTAMP__  当前日期
+
+```
+
 
 
 ### 十一、随便说点
