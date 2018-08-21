@@ -75,6 +75,7 @@
 # TOOLs
 ----------------------
 
+* [GameBoy](Tools/gameboy/pandocs.html)
 * [Apple II](Tools/apple2js/apple2js.html)
 * [A C Demo Framework](Tools/CFW/cfw.c)
 * [JSC](Tools/jsc/cctest.html)
