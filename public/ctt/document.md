@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [vgb sdl](detail.html?doc=documents/gameboy/vgb_sdl.md.md)
 * [gb plan](detail.html?doc=documents/gameboy/gameboy_init.md) **Begin**
 * [C List](detail.html?doc=documents/C_List.md)
 * [xv6 process](detail.html?doc=documents/osxv6/os_xv6_process.md) **THE END**
