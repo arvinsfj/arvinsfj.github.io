@@ -262,6 +262,6 @@ unsigned int getDirection(void)
 
 >END
 
-[DOWNLOAD](documents/ameboy/TestVGB.zip)
+[DOWNLOAD](documents/gameboy/TestVGB.zip)
 
 
