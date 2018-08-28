@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [vgb mem](detail.html?doc=documents/gameboy/vgb_memory.md)
 * [vgb sdl](detail.html?doc=documents/gameboy/vgb_sdl.md)
 * [vgb plan](detail.html?doc=documents/gameboy/gameboy_init.md) 
 * [C List](detail.html?doc=documents/C_List.md)
