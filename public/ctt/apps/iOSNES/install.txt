@@ -1,0 +1,1 @@
+itms-services:///?action=download-manifest&url=https://arvinsfj.github.io/public/ctt/apps/iOSNES/manifest.plist
