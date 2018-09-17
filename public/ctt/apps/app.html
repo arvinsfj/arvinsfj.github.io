@@ -28,7 +28,7 @@
 		<div class="sitedate"><a href="../detail.html?doc=document.md">Archive</a></div>
 	</div>
 	
-	<div id="content" class="content">
+	<div id="content" class="content" style="text-align:center;margin:auto;">
 		
 	</div>
 	
@@ -38,7 +38,7 @@
 			for (var type in request) {
 				if (type = "doc") {
 					htmlobj=$.ajax({url:request[type],async:false});
-					jquery('#content').qrcode(htmlobj.responseText);
+					$("#content").qrcode(htmlobj.responseText);
 					break;
 				}
 			}
