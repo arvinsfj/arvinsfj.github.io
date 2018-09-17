@@ -1,1 +1,1 @@
-itms-services:///?action=download-manifest&url=https://arvinsfj.github.io/Public/apps/Photo/manifest.plist
+itms-services:///?action=download-manifest&url=https://arvinsfj.github.io/public/apps/Photo/manifest.plist
