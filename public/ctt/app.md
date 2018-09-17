@@ -2,4 +2,4 @@
 # APPs
 ----------------------
 
-* [Photo](apps/app.html?doc=apps/Photo/install.txt)
+* [Photo](apps/app.html?doc=Photo/install.txt)
