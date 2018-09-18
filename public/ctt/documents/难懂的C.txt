@@ -1,0 +1,47 @@
+#include<stdio.h>
+#include<stdlib.h>
+void why_here(){
+    printf("why u here?!\n");
+    exit(0);
+}
+void main(){
+    int buff[1];
+    buff[2]=(int)why_here;
+}
+为什么会调用why_here函数？(VC6.0编译通过)
+
+#include<stdio.h>
+#include<stdlib.h>
+int add(int x,int y){
+    return x+y;
+}
+typedef int (*PF)(int,int);
+void main(){
+    unsigned char buff[256];
+    unsigned char *ps=(unsigned char *)&add;
+    unsigned char *pd=buff;
+    int result=0;
+    PF pf=(PF)&buff;
+    while(true){
+        *pd=*ps;
+        printf("\\x%02x",*ps);
+        if(*ps==0xc3){
+            break;
+        }
+        pd++,ps++;
+    }
+    result=pf(10,20);
+    printf("\nresult=%i\n",result);
+}
+为什么会输出result=30？(VC6.0编译通过)
+
+#include<stdio.h>
+typedef int (*PF)(int,int);
+void main(){
+    unsigned char buff[256]="\xe9\x0c\x00\x00\x00\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\x55\x8b\xec\x83\xec\x40\x53\x56\x57\x8d\x7d\xc0\xb9\x10\x00\x00\x00\xb8\xcc\xcc\xcc\xcc\xf3\xab\x8b\x45\x08\x03\x45\x0c\x5f\x5e\x5b\x8b\xe5\x5d\xc3";
+    int result=0;
+    PF pf=(PF)&buff;
+    result=pf(100,20);
+    printf("result=%i\n",result);
+}
+为什么会输出result=120？(VC6.0编译通过)
