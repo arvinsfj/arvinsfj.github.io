@@ -381,4 +381,6 @@ void showTiles(const char* filename, unsigned int* buf)
 
 [DOWNLOAD](documents/gameboy/TestVG_FS.zip)
 
+[tile0.bin](documents/gameboy/tile0.bin)
+
 
