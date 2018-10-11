@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [vgb cpu](detail.html?doc=documents/gameboy/vgb_cpu.md)
 * [vgb interrupt](detail.html?doc=documents/gameboy/vgb_interrupt.md)
 * [vgb mem](detail.html?doc=documents/gameboy/vgb_memory.md)
 * [vgb sdl](detail.html?doc=documents/gameboy/vgb_sdl.md)
