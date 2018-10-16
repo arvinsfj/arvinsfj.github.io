@@ -1,7 +1,7 @@
 
 # VGB模拟器的LCD实现
 
-> *作者：Arvin 日期：2018年10月12日*
+> *作者：Arvin 日期：2018年10月16日*
 
 ---------------------------------
 
@@ -399,115 +399,182 @@ void drawBgWindow(unsigned int *buf, int line)
 
 ```
 
-上面的代码是读取屏幕坐标点（curX，curY）的颜色
+上面的代码是读取屏幕坐标点（curX，curY）的颜色。首先读取2个字节。128  <=> 2^7，也就是1个字节的最高位为1，其他位置为0， ```mask = 128>>(currX%8);```  也就是构建curX位置的掩码mask。注意操作 ```!!``` 将正常数值转成布尔值0和1，特别是非0数值转成1。colour只有最低的2位是有效的，也就是只能取：0、1、2、3，四个值（4个灰度）。最后，将colour映射成具体的RGB颜色值，并赋给像素数组buf中具体的像素。
 
+----------------------------------
 
-
-
-
-
-
-### 四、做点坏事
----------------------------------
-
-我在GB游戏rom文件定义中，没有找到tile数据。后面找到了一种方法来导出Tetris游戏中的tile图像数据。Tetris游戏执行过程中，当PC等于0x282a的时候，正好是tile被拷贝到vram结束的时候。也就是在CPU模拟中，判断PC等于0x282a的时候，讲整个vram数据导出成文件tile0.bin即可，后面解析tile0.bin文件中的tile数据即可显示tile图像。
-
-在cpuCycle函数中添加下面的代码：
+绘制精灵函数：
 
 ```
-
-
-    //tile拷贝到vram结束
-    if(registers.PC == 0x282a)
+void drawSprites(unsigned int *buf, int line, int blocks, struct sprite *sprite)
+{
+    unsigned int buf1, buf2, tileAddr, spriteRow, x;
+    unsigned char mask, colour; int *pal;
+    
+    for(int i = 0; i < blocks; i++)
     {
-        FILE *f = fopen("tile0.bin", "wb");
-        fwrite(vram, 16*20*18, 1, f);
-        fclose(f);
-    }
-
-```
-
-断点进入2次，生成完整tile数据。之后手动停止程序的执行，注释掉该段代码。然后打开下面的lcdCycle和showTiles代码，就可以看到效果。
-
-之后将lcdCycle函数改写成下面的代码：
-
-```
-
-void showTiles(const char* filename, unsigned int* buf);
-
-int lcdCycle(int timeStart)
-{
-    int end = 0;
-    
-    unsigned int *buf = sdlPixels();
-    //设置SDL背景
-    for (int i = 0; i < 160*144; ++i) {
-        buf[i] = ((0x01<<24) | (0xFF<<16) | (0x00<<8) | 0xFF);//ARGB
-    }
-    //显示所有tile
-    showTiles("tile0.bin", buf);
-    
-    sdlUpdateFrame();
-    if(sdlUpdateEvent()) end = 1;
-    //
-    float deltaT = (float)1000 / (59.7) - (float)(SDL_GetTicks() - timeStart);
-    if (deltaT > 0) SDL_Delay(deltaT);
-    
-    return end?0:1;
-}
-
-void showTiles(const char* filename, unsigned int* buf)
-{
-    unsigned char* tiles = malloc(16*20*18*sizeof(unsigned char));
-    FILE *f = fopen("tile0.bin", "rb");
-    fread(tiles, 16*20*18, sizeof(unsigned char), f);
-    fclose(f);
-    
-    //设置SDL像素
-    for (int row = 0; row < 18; ++row) {
-        for (int col = 0; col < 20; ++col) {
-            unsigned char* start = (tiles+(row*20+col)*16);
-            for (int i = 0; i < 8;  ++i) {//行
-                unsigned char byte1 = start[2*i];
-                unsigned char byte2 = start[2*i+1];
-                for (int j = 0; j < 8; ++j) {//列
-                    unsigned char mask = 128>>(j%8);
-                    unsigned char colour = (!!(byte2&mask)<<1) | !!(byte1&mask);
-                    buf[(row*8+i)*160 + (col*8+j)] = colours[colour];
-                }
+        // off screen
+        if(sprite[i].x < -7) continue;
+        
+        spriteRow = sprite[i].flags & 0x40 ? (LCDC.spriteSize ? 15 : 7)-(line - sprite[i].y) : line -sprite[i].y;
+        
+        // similar to background
+        tileAddr = 0x8000 + (sprite[i].patternNum*16) + spriteRow*2;
+        
+        buf1 = read8(tileAddr);
+        buf2 = read8(tileAddr+1);
+        
+        // draw each pixel
+        for(x = 0; x < 8; x++) {
+            // out of bounds check
+            if((sprite[i].x + x) >= 160) continue;
+            
+            if((sprite[i].x + x) >= 160) continue;
+            
+            mask = sprite[i].flags & 0x20 ? 128>>(7-x) : 128>>x;
+            colour = ((!!(buf2&mask))<<1) | !!(buf1&mask);
+            
+            if(colour == 0) continue;
+            
+            pal = (sprite[i].flags & 0x10) ? spritePalette2 : spritePalette1;
+            
+            // only render over colour 0
+            if(sprite[i].flags & 0x80) {
+                unsigned int temp = buf[line*160+(x + sprite[i].x)];
+                if(temp != colours[bgPalette[0]]) continue;
             }
+            buf[line*160+(x + sprite[i].x)] = colours[pal[colour]]; // for testing
         }
     }
-    free(tiles);
 }
 
 ```
 
-代码自行去看，跟之前显示“Nintendo”的logo方法类似。效果图如下：
+整体逻辑跟绘制背景差不多。spriteRow是扫描线line在某个精灵（8x8）下的第几行。tileAddr是获取精灵tile的起始地址。后面是读取2个字节（精灵的1行）。
+
+后面的for循环是绘制精灵的1行，8个像素。跟绘制背景差不多的逻辑，通过colour从精灵调色板pal中获取colours中的颜色值，并赋值给对应的buf像素数组。
+
+精灵绘制是从数组sprite中绘制blocks个精灵的第line行扫描线。
 
 
-![tile图像](http://arvinsfj.github.io/public/ctt/documents/gameboy/vgb_tile.png)
+--------------------------------
+
+绘制扫描线函数：
+
+```
+
+void renderLine(int line)
+{
+    int c = 0; // block counter
+    struct sprite sprite[10]; // max 10 sprites per line
+    unsigned int *buf = sdlPixels();
+    int y = 0;
+    
+    // OAM is divided into 40 4-byte blocks each - corresponding to a sprite
+    for (int i = 0; i < 40; i++)
+    {
+        y = read8(0xFE00 + (i*4)) - 16;
+        if (line < y || line >= y + 8 + (8*LCDC.spriteSize)) continue;
+        
+        sprite[c].y = y;
+        sprite[c].x = read8(0xFE00 + (i*4) + 1) - 8;
+        sprite[c].patternNum = read8(0xFE00 + (i*4) + 2);
+        sprite[c].flags = read8(0xFE00 + (i*4) + 3);
+        
+        if (++c == 10) break; // max 10 sprites per line
+    }
+    
+    if (c) sortSprites(sprite, c);
+    
+    drawBgWindow(buf, line);
+    drawSprites(buf, line, c, sprite);
+}
+
+```
+
+主要是获取扫描线line下的最多10个精灵对象OAM，通过sortSprites函数排序，然后调用drawBgWindow函数绘制背景和调用drawSprites函数绘制精灵。0xFE00是OAM存储区域的起始地址。
+
+--------------------------------
+
+最后看一下LCD循环函数：
+
+```
+// lcd循环
+int lcdCycle(int timeStart)
+{
+    int cycles = getCycles();
+    static int prevLine;
+    
+    int this_frame;
+    int end = 0;
+    
+    this_frame = cycles % (70224/4); // 70224 clks per screen
+    LCD.line = this_frame / (456/4); // 465 clks per line
+    
+    if (this_frame < 204/4)
+    LCDS.modeFlag = 2;  // OAM
+    else if (this_frame < 284/4)
+    LCDS.modeFlag = 3;  // VRA
+    else if (this_frame < 456/4)
+    LCDS.modeFlag = 0;  // HBlank
+    
+    // Done all lines
+    if (LCD.line >= 144)
+    LCDS.modeFlag = 1;  // VBlank
+    
+    if (LCD.line != prevLine && LCD.line < 144) {
+        renderLine(LCD.line);
+    }
+    
+    if (LCDS.lyInterrupt && LCD.line == LCD.lyCompare) {
+        interrupt.flags |= LCDSTAT;
+    }
+    
+    if (prevLine == 143 && LCD.line == 144) {
+        // draw the entire frame
+        interrupt.flags |= VBLANK;
+        sdlUpdateFrame();
+        if(sdlUpdateEvent())
+        end = 1;
+        float deltaT = (float)1000 / (59.7) - (float)(SDL_GetTicks() - timeStart);
+        if (deltaT > 0) SDL_Delay(deltaT);
+    }
+    
+    if (end) return 0;
+    
+    prevLine = LCD.line;
+    
+    return 1;
+}
+
+```
+
+主要是区分不同的扫描线做不同的事情。首先获取cpu的周期数，第1条扫描线切换模式0，2，3等。大于等于144的扫描线进行V-Blank操作1。
+
+0-143扫描线进行144条扫描线的绘制操作。
+
+后面是进行LCDSTAT和VBLANK中断操作。sdlUpdateFrame函数SDL更新画面，sdlUpdateEvent函数更新SDL事件。SDL_Delay函数将多余的时间还给SDL，保持稳定的60fps。
+
+LCD显示大概就是这样吧。ps：```周期数/4```没看懂。。。。
 
 
-### 五、随便说点
+最后附上一张效果图：
+
+
+![VGB运行图像](http://arvinsfj.github.io/public/ctt/documents/gameboy/vgb_tetris.png)
+
+
+### 四、随便说点
 ---------------------------------
 
-1. CPU一般需要准确模拟的，因为它是核心硬件。并且涉及到与外设的同步（ppu、apu、中断、时钟等）。
-2. CPU的模拟本身结构并不难，难点在于指令数量很多，完全调试正确并不简单。
-3. CPU模拟不仅要考虑指令长度，还要考虑指令的CPU周期（时间长度）。
-4. 中断会打乱CPU执行的顺序，因为它会修改PC寄存器。并且中断完成能够恢复中断之前的指令执行状态。
-5. CPU是什么呢？如何跟图灵机对应起来呢？内存就是纸带，CPU就是读写头（包含一些状态和操作，也就是寄存器和硬件实现的指令操作，加减乘除等）。只不过CPU不会真的在内存中移动，“移动”是通过写入地址进行读写实现的。
-6. “存储程序”思想，本质是将数据和操作都看作一样，都是01表示的数据，有区别的是数据是通过PC指针获取的还是其他方法获取的。想想计算机并没有人们想象的那样智能和神奇，并不是魔法。
-7. 如果你理解了图灵机，那么计算机相关的东西很多都是图灵机。比如：任何软件，它只不过是一种专用的图灵机。编程语言，也可以看作一种完备的图灵机。虚拟机（语言解释器）也是一样。编程语言和虚拟机本质上是等效的。
-8. 任何正确的事物背后都有另外一套正确的逻辑，正反两面无所谓对错，只是人们自己规定了对错。hacking就是正确逻辑背后的逻辑。计算机里只要能运行就OK，没有对错。
-9. 这里有很多能延伸的东西，只要你的想象力够丰富。。。。
+1. LCD绘制主要是2个绘制函数和扫描线职责分配函数的理解。
+2. 注意LCD是怎么跟CPU进行同步的和通信的。
+3. 自己可以整理一下LCD是如何从内存中的数据显示出SDL中的像素的。
 
-剩下LCD显示了（NES中称作PPU）。
+写完了，如果没有看懂自己去查资料，不要自以为是（低调:）。我之前是玩过NES模拟器的，现在玩GameBoy模拟器感觉坡度还好，不那么迷茫。（GB感觉比NES更简单一点点，黑白的嘛）
 
 >END
 
 [DOWNLOAD](documents/gameboy/TestVG_FS.zip)
-
-[tile0.bin](documents/gameboy/tile0.bin)
 
 
