@@ -2,6 +2,7 @@
 # Blogs
 ----------------------
 
+* [Time Manage](detail.html?doc=blogs/time_manage.md)
 * [Think In English](detail.html?doc=blogs/Think_In_English.md)
 * [Platform Idea](detail.html?doc=blogs/Platform_Idea.md)
 * [Unix Like Dev](detail.html?doc=blogs/Unix_Like_Dev.md)
