@@ -89,7 +89,7 @@ static inline void list_add_tail(struct list_head *new, struct list_head *head)
 
 这里的head是仍然是头节点（很奇怪是不是！这里其实是一个循环双链表）。如下图所示：
 
-![循环双链表](http://arvinsfj.github.io/public/ctt/documents/osxv6/c_list.jpg)
+![循环双链表](https://arvinsfj.github.io/public/ctt/documents/osxv6/c_list.jpg)
 
 注意：当链表没有数据，只有一个头节点的时候，头部插入和尾部插入节点方法，它们的实际操作情况。这个时候，初始化next和prev指向自己就起作用啦，我称作“节点自旋”。“节点自旋”，在分析的时候可以消除节点读取[指针]链长度，在操作的初始阶段具有很好的通用性，可以减少if判断。相反“节点自旋”也可以增长节点读取[指针]链长度，以获取更好的操作通用性。(注意分析，在只有一个头节点和两个节点的时候，操作应该是不同的，代码的写法应该也不同；通过这个“节点自旋”，可以将这2种情况归为1种情况，使代码的写法变成相同的)
 
@@ -214,7 +214,7 @@ hello_list是链表头节点。
 
 先看下面的图：
 
-![循环双链表](http://arvinsfj.github.io/public/ctt/documents/osxv6/c_list.jpg)
+![循环双链表](https://arvinsfj.github.io/public/ctt/documents/osxv6/c_list.jpg)
 
 1个节点（最下面的）和2个节点看似完全不同。2个节点跟3个节点（或者更多的节点）是相似的。
 
