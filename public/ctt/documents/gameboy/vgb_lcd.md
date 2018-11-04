@@ -563,6 +563,14 @@ LCD显示大概就是这样吧。ps：```周期数/4```没看懂。。。。
 
 ![VGB运行图像](http://arvinsfj.github.io/public/ctt/documents/gameboy/vgb_tetris.png)
 
+--------------------------------
+
+iOS版今天（2018/11/3）移植完成了，如下图：
+
+![VGB运行图像](http://arvinsfj.github.io/public/ctt/documents/gameboy/vgb_ios.png)
+
+[Fork In Github](https://github.com/arvinsfj/gb_ios)
+
 
 ### 四、随便说点
 ---------------------------------
