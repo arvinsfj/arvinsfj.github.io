@@ -3,6 +3,7 @@
 # HOWTOs
 ----------------------
 
+* [Base64](detail.html?doc=documents/Base64_Coding.md)
 * [UDP Hole Punching](detail.html?doc=documents/UDP_NAT.md)
 * [vgb lcd](detail.html?doc=documents/gameboy/vgb_lcd.md) **END**
 * [vgb cpu](detail.html?doc=documents/gameboy/vgb_cpu.md)
