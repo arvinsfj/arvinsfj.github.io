@@ -277,13 +277,16 @@ tag
 
 输入输出重定向需要认真学好。管道也是。
 
-最后看一句：
+最后看两句：
 
 ```
 svn st | awk '{if($1=="?"){print $2}}' | xargs svn add
 svn st | awk '{if($1=="!"){print $2}}' | xargs svn delete
 
 ```
+
+[AWK](http://www.ruanyifeng.com/blog/2018/11/awk.html)
+
 
 ### 四、总结
 ---------------------
