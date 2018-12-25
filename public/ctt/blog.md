@@ -2,6 +2,7 @@
 # Blogs
 ----------------------
 
+* [Python Or Ruby](detail.html?doc=blogs/python_ruby.md)
 * [Sick](detail.html?doc=blogs/sick_in_person.md)
 * [Time Manage](detail.html?doc=blogs/time_manage.md)
 * [Think In English](detail.html?doc=blogs/Think_In_English.md)
