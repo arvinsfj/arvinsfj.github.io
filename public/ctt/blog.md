@@ -2,6 +2,7 @@
 # Blogs
 ----------------------
 
+* [Society](detail.html?doc=blogs/Society.md)
 * [Python Or Ruby](detail.html?doc=blogs/python_ruby.md)
 * [Sick](detail.html?doc=blogs/sick_in_person.md)
 * [Time Manage](detail.html?doc=blogs/time_manage.md)
