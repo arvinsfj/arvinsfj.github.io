@@ -2,6 +2,7 @@
 # Blogs
 ----------------------
 
+* [2019 Learning Plan](detail.html?doc=blogs/Learn_Plan_2019.md)
 * [Society](detail.html?doc=blogs/Society.md)
 * [Python Or Ruby](detail.html?doc=blogs/python_ruby.md)
 * [Sick](detail.html?doc=blogs/sick_in_person.md)
