@@ -60,3 +60,71 @@ function GetRequest() {
     }
     return theRequest; 
 }
+
+var tplEngine = function(tpl, data) {
+    var re = /{{(.+?)}}/g, 
+        cursor = 0
+        reExp = /(^( )?(var|if|for|else|switch|case|break|{|}|;))(.*)?/g,    
+        code = 'var r=[];\n';
+
+    // 解析html
+    function parsehtml(line) {
+        // 单双引号转义，换行符替换为空格,去掉前后的空格
+        line = line.replace(/('|")/g, '\\$1').replace(/\n/g, ' ');//.replace(/(^\s+)|(\s+$)/g,"");
+        code +='r.push("' + line + '");\n';
+    }
+    
+    // 解析js代码        
+    function parsejs(line) {   
+        // 去掉前后的空格
+        line = line.replace(/(^\s+)|(\s+$)/g,"");
+        code += line.match(reExp)? line + '\n' : 'r.push(' + line + ');\n';
+    }    
+    
+    while((match = re.exec(tpl))!== null) {
+        // 开始标签  {{ 前的内容和结束标签 }} 后的内容
+        parsehtml(tpl.slice(cursor, match.index))
+        // 开始标签  {{ 和 结束标签 }} 之间的内容
+        parsejs(match[1])
+        // 每一次匹配完成移动指针
+        cursor = match.index + match[0].length;
+    }
+    // 最后一次匹配完的内容
+    parsehtml(tpl.substr(cursor, tpl.length - cursor));
+    code += 'return r.join("");';
+    return new Function(code.replace(/[\r\t\n]/g, '')).apply(data);
+}
+
+var mdDebug = function(){
+    var request = GetRequest();
+    console.log(request);
+    for (var type in request) {
+        if (type = "doc") {
+            htmlobj = $.ajax({url:request[type],async:false});
+            html = marked(htmlobj.responseText);
+            console.log(html);
+            break;
+        }
+    }
+}
+
+var mdRefresh = function(){
+    var request = GetRequest();
+    for (var type in request) {
+        if (type = "doc") {
+            htmlobj = $.ajax({
+                url:request[type],
+                beforeSend :function(xmlHttp){ 
+                    xmlHttp.setRequestHeader("If-Modified-Since","0"); 
+                    xmlHttp.setRequestHeader("Cache-Control","no-cache");
+                },
+                cache:false, 
+                ifModified :true,
+                async:false
+            });
+            var htmlstr = marked(htmlobj.responseText);
+            document.getElementById("content").innerHTML = htmlstr;
+            break;
+        }
+    }
+}
