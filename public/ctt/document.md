@@ -1,5 +1,4 @@
 
-
 # HOWTOs
 ----------------------
 
@@ -84,11 +83,10 @@
 * [How To Build A Git Server On MacOSX](detail.html?doc=documents/How_To_Build_A_Git_Server_On_MacOSX.md)
 * [How To Control VT100 Terminal](detail.html?doc=documents/VT100_Terminal_Control.md)
 
-
 # TOOLs
 ----------------------
 
-* [GameBoy](Tools/gameboy/pandocs.html)
+<!--* [GameBoy](Tools/gameboy/pandocs.html)-->
 * [Apple II](Tools/apple2js/apple2js.html)
 * [A C Demo Framework](Tools/CFW/cfw.c)
 * [JSC](Tools/jsc/cctest.html)
@@ -132,3 +130,27 @@
 * [GBA Game](Tools/GBA_Game/index.html)
 * [APPS](detail.html?doc=apps/app.md)
 
+<script>
+
+// 特殊样式：水平横排进行布置，垂直太长了向下滑动太烦了！
+
+var h1 = document.getElementsByTagName('h1');
+
+var ul = document.getElementsByTagName('ul');
+
+var count = ul.length;
+
+var htmlctt = "";
+for(var i = 0; i < count; i++)
+{
+var html = "<div style='float: left; padding: 5px;'>";
+html += "<h1>" + h1[i].innerHTML + "</h1>";
+html += "<hr>";
+html += "<ul>" + ul[i].innerHTML + "</ul>";
+html += "</div>"
+htmlctt += html;
+}
+
+document.getElementById('content').innerHTML = htmlctt;
+
+</script>
