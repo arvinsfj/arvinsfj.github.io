@@ -7,31 +7,8 @@
 * [Shell Script](detail.html?doc=documents/shell_learn.md)
 * [Base64](detail.html?doc=documents/Base64_Coding.md)
 * [UDP Hole Punching](detail.html?doc=documents/UDP_NAT.md)
-* [vgb lcd](detail.html?doc=documents/gameboy/vgb_lcd.md) **END**
-* [vgb cpu](detail.html?doc=documents/gameboy/vgb_cpu.md)
-* [vgb interrupt](detail.html?doc=documents/gameboy/vgb_interrupt.md)
-* [vgb mem](detail.html?doc=documents/gameboy/vgb_memory.md)
-* [vgb sdl](detail.html?doc=documents/gameboy/vgb_sdl.md)
-* [vgb plan](detail.html?doc=documents/gameboy/gameboy_init.md) **BEGIN**
 * [Thread Speed](detail.html?doc=documents/Thread_Speed.md)
 * [C List](detail.html?doc=documents/C_List.md)
-* [xv6 process](detail.html?doc=documents/osxv6/os_xv6_process.md) **END**
-* [xv6 file](detail.html?doc=documents/osxv6/os_xv6_file.md)
-* [xv6 fs](detail.html?doc=documents/osxv6/os_xv6_fs.md)
-* [xv6 log](detail.html?doc=documents/osxv6/os_xv6_log.md)
-* [xv6 bio](detail.html?doc=documents/osxv6/os_xv6_bio.md)
-* [xv6 trap](detail.html?doc=documents/osxv6/os_xv6_trap.md)
-* [xv6 uart](detail.html?doc=documents/osxv6/os_xv6_uart.md)
-* [xv6 console](detail.html?doc=documents/osxv6/os_xv6_console.md)
-* [xv6 lapic](detail.html?doc=documents/osxv6/os_xv6_lapic.md)
-* [xv6 ioapic](detail.html?doc=documents/osxv6/os_xv6_ioapic.md)
-* [xv6 8259 pic](detail.html?doc=documents/osxv6/os_xv6_pic.md)
-* [xv6 mp info](detail.html?doc=documents/osxv6/os_xv6_mp.md)
-* [xv6 kvmalloc](detail.html?doc=documents/osxv6/os_xv6_kvmalloc.md)
-* [xv6 kalloc](detail.html?doc=documents/osxv6/os_xv6_kalloc.md)
-* [xv6 page](detail.html?doc=documents/osxv6/os_xv6_page.md)
-* [xv6 spinlock](detail.html?doc=documents/osxv6/os_xv6_spinlock.md)
-* [xv6 boot](detail.html?doc=documents/osxv6/os_xv6_boot.md) **BEGIN**
 * [HOOK Tech](detail.html?doc=documents/testasm/Fish_Hook.md)
 * [Something Abount C Language2](detail.html?doc=documents/Something_Abount_C2.md)
 * [A C Build System Config File In Sublime](detail.html?doc=documents/Sublime_Config_C.md)
@@ -109,7 +86,7 @@
 * [jscii](Tools/jscii/index.html)
 * [ASCIIMAGE](Tools/Script/asciimage.zip)
 * [Brainf***](Tools/BFLang/BF.html)
-* [DTTS](Tools/Script/dtts.zip) -> **install sox first**
+* [DTTS](Tools/Script/dtts.zip) -> *install sox first ----------- *
 * [PhotoBrowser For OC](Tools/Script/PhotoBrowser.zip)
 * [ShareAPI For OC](Tools/Script/ShareAPI.zip)
 * [TGA Tool For C](Tools/Script/tga_c.zip)
@@ -130,27 +107,35 @@
 * [GBA Game](Tools/GBA_Game/index.html)
 * [APPS](detail.html?doc=apps/app.md)
 
+# Xv6 & vGB
+----------------------
+
+* [xv6 process](detail.html?doc=documents/osxv6/os_xv6_process.md)
+* [xv6 file](detail.html?doc=documents/osxv6/os_xv6_file.md)
+* [xv6 fs](detail.html?doc=documents/osxv6/os_xv6_fs.md)
+* [xv6 log](detail.html?doc=documents/osxv6/os_xv6_log.md)
+* [xv6 bio](detail.html?doc=documents/osxv6/os_xv6_bio.md)
+* [xv6 trap](detail.html?doc=documents/osxv6/os_xv6_trap.md)
+* [xv6 uart](detail.html?doc=documents/osxv6/os_xv6_uart.md)
+* [xv6 console](detail.html?doc=documents/osxv6/os_xv6_console.md)
+* [xv6 lapic](detail.html?doc=documents/osxv6/os_xv6_lapic.md)
+* [xv6 ioapic](detail.html?doc=documents/osxv6/os_xv6_ioapic.md)
+* [xv6 8259 pic](detail.html?doc=documents/osxv6/os_xv6_pic.md)
+* [xv6 mp info](detail.html?doc=documents/osxv6/os_xv6_mp.md)
+* [xv6 kvmalloc](detail.html?doc=documents/osxv6/os_xv6_kvmalloc.md)
+* [xv6 kalloc](detail.html?doc=documents/osxv6/os_xv6_kalloc.md)
+* [xv6 page](detail.html?doc=documents/osxv6/os_xv6_page.md)
+* [xv6 spinlock](detail.html?doc=documents/osxv6/os_xv6_spinlock.md)
+* [xv6 boot](detail.html?doc=documents/osxv6/os_xv6_boot.md) *----------- xv6 Begin----------*
+* [vgb lcd](detail.html?doc=documents/gameboy/vgb_lcd.md) *-------------VGB End------------*
+* [vgb cpu](detail.html?doc=documents/gameboy/vgb_cpu.md)
+* [vgb interrupt](detail.html?doc=documents/gameboy/vgb_interrupt.md)
+* [vgb mem](detail.html?doc=documents/gameboy/vgb_memory.md)
+* [vgb sdl](detail.html?doc=documents/gameboy/vgb_sdl.md)
+* [vgb plan](detail.html?doc=documents/gameboy/gameboy_init.md)
+
 <script>
 
-// 特殊样式：水平横排进行布置，垂直太长了向下滑动太烦了！
-
-var h1 = document.getElementsByTagName('h1');
-
-var ul = document.getElementsByTagName('ul');
-
-var count = ul.length;
-
-var htmlctt = "";
-for(var i = 0; i < count; i++)
-{
-var html = "<div style='float: left; padding: 5px;'>";
-html += "<h1>" + h1[i].innerHTML + "</h1>";
-html += "<hr>";
-html += "<ul>" + ul[i].innerHTML + "</ul>";
-html += "</div>"
-htmlctt += html;
-}
-
-document.getElementById('content').innerHTML = htmlctt;
+ulBlock();
 
 </script>

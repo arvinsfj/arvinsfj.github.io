@@ -128,3 +128,23 @@ var mdRefresh = function(){
         }
     }
 }
+
+var ulBlock = function()
+{
+    // 特殊样式：水平横排进行布置，垂直太长了向下滑动太烦了！
+    var h1 = document.getElementsByTagName('h1');
+    var ul = document.getElementsByTagName('ul');
+
+    var count = ul.length;
+    var htmlctt = "";
+    for(var i = 0; i < count; i++)
+    {
+        var html = "<div style='float: left; padding: 5px;'>";
+        html += "<h1>" + h1[i].innerHTML + "</h1>";
+        html += "<hr>";
+        html += "<ul>" + ul[i].innerHTML + "</ul>";
+        html += "</div>"
+        htmlctt += html;
+    }
+    document.getElementById('content').innerHTML = htmlctt;
+}
