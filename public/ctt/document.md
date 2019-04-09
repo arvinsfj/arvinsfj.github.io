@@ -2,7 +2,7 @@
 # HOWTOs
 ----------------------
 
-* [C/C++/Go](detail.html?doc=documents/C/C++/Go.md)
+* [C/C++/Go](detail.html?doc=documents/C_C++_Go.md)
 * [CSP](detail.html?doc=documents/CSP.md)
 * [Coroutine[coobjc]](detail.html?doc=documents/Coroutine.md)
 * [Shell Script](detail.html?doc=documents/shell_learn.md)
