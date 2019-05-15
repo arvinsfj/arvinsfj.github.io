@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [C Base Data Struct](detail.html?doc=documents/C_Base_Data_Struct.md)
 * [C/C++/Go](detail.html?doc=documents/C_C++_Go.md)
 * [CSP](detail.html?doc=documents/CSP.md)
 * [Coroutine[coobjc]](detail.html?doc=documents/Coroutine.md)
