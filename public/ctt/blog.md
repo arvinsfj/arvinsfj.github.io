@@ -2,6 +2,7 @@
 # Blogs
 ----------------------
 
+* [About Open Source](detail.html?doc=blogs/About_Open_Source.md)
 * [Think And Do](detail.html?doc=blogs/Person_Think_Do.md)
 * [2019 Learning Plan](detail.html?doc=blogs/Learn_Plan_2019.md)
 * [Society](detail.html?doc=blogs/Society.md)
