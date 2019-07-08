@@ -93,6 +93,18 @@ public:
     enum { Value = 0 };
 };
 
+class People;
+class Son;
+template<> struct TPointerIsConvertibleFromTo<Son, People>
+{
+    enum{ Value = 1 };
+};
+
+template<> struct TPointerIsConvertibleFromTo<People, Son>
+{
+    enum{ Value = 0 };
+};
+
 template <class ObjectType>
 class TShareRef
 {
@@ -122,18 +134,15 @@ class People
 
 class Son : public People
 {
-    
+public:
+    void hello(People&& people)
+    {
+        // 右值引用
+        printf("%p\n", &people);
+    }
 };
 
-template<> struct TPointerIsConvertibleFromTo<Son, People>
-{
-    enum{ Value = 1 };
-};
 
-template<> struct TPointerIsConvertibleFromTo<People, Son>
-{
-    enum{ Value = 0 };
-};
 
 
 int main(int argc, const char * argv[])
@@ -146,6 +155,9 @@ int main(int argc, const char * argv[])
     
     //printf("%p, %p\n", &people, &son);
     printf("%p\n", &people);
+    
+    Son son;
+    son.hello(People());
     
     return 0;
 }
