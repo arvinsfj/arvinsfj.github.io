@@ -21,7 +21,7 @@ My name is Cheng Ze. You can call me Arvin. I was born in 1980s. I live in Shang
 # Thanks
 ----------------------
 
-To [Vencent](http://blog.sina.com.cn/vincentgao0520) and [Eric Raymond](http://www.catb.org/~esr/), because you inspired me. [Others](detail.html?doc=sitemap.md).
+To [Vencent](http://blog.sina.com.cn/vincentgao0520) and [Eric Raymond](http://www.catb.org/~esr/), because you inspired me. [Others](detail.html?doc=sitemap.md). [QuickJS](https://bellard.org/quickjs/).
 
 
 <!--采用模版技术-->
