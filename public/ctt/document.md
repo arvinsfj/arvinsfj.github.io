@@ -67,6 +67,7 @@
 ----------------------
 
 <!--* [GameBoy](Tools/gameboy/pandocs.html)-->
+* [jor1k](Tools/jor1k/simple.html)
 * [v86](Tools/V86mini/v86_basic.html)
 * [Apple II](Tools/apple2js/apple2js.html)
 * [A C Demo Framework](Tools/CFW/cfw.c)
