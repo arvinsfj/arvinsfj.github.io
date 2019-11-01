@@ -2,6 +2,7 @@
 # HOWTOs
 ----------------------
 
+* [FreeRTOS list](detail.html?doc=documents/freertos/rtos_list.md)
 * [A Line C Code](detail.html?doc=documents/One_Line_C_Code.md)
 * [How To Build A More Common Software](detail.html?doc=documents/How_To_Build_A_Common_Software.md) 
 * [C Base Data Struct](detail.html?doc=documents/C_Base_Data_Struct.md)
