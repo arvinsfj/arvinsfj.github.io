@@ -274,4 +274,4 @@ List_t * const pxList = pxItemToRemove->pxContainer; // 获取删除节点所在
 
 > END
 
-![FreeRTOS官网](https://www.freertos.org/a00104.html)
+[FreeRTOS官网](https://www.freertos.org/a00104.html)
